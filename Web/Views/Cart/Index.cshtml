@@ -1,0 +1,25 @@
+﻿@model IEnumerable<ViewModel.ViewModels.ProductVm>
+
+@{
+    ViewData["Title"] = "Cac san pham";
+}
+
+<div class="card-columns">
+    @foreach (var product in Model)
+    {
+        <div class="card">
+            <h3 class="card-header">@product.ProductName</h3>
+            <div class="card-footer">
+                <span class="text-muted">@product.Price VND</span>
+                <a class="btn btn-primary float-right" @Html.ActionLink("AddToCart", "AddToCart", new { IdProduct = product.IdProduct })>
+                    Đặt hàng
+                </a>
+            </div>
+
+
+        </div>
+    }
+
+
+
+</div>

@@ -1,0 +1,201 @@
+﻿@model IEnumerable<ViewModel.ViewModels.AnalystAccess>
+
+<head>
+    <!-- Step 1 - Include the fusioncharts core library -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <!-- Step 2 - Include the fusion theme -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
+
+</head>
+<body>
+    <form class="form-inline" method="post" asp-action="AnalystAccess">
+        <div class="form-goup">
+            <label>Month</label>
+            <select name="month" class=" col-4 me-2">
+                <option selected>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+            </select>
+
+            <label>Year</label>
+            <select name="year" class="col-4 me-2">
+                <option  selected>2020</option>
+                <option >2021</option>
+                <option>2022</option>
+            </select>
+
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    @*@if (Model != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateAccess)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NumberOfAccesss)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateAccess)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumberOfAccesss)
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }*@
+    @{ 
+
+    }
+    @if (ViewBag.listmonth != null)
+    {
+        <h1>Bảng thống kê Truy cập tháng @ViewBag.month năm @ViewBag.year </h1>
+
+    <div id="chart-container"></div>
+    }
+
+</body>
+
+@section Scripts{
+    <script>
+        var listmonth = '@ViewBag.listmonth';
+        const categories = [
+            {
+                "category": [
+                    { "label": "1" },
+                    { "label": "2" },
+                    { "label": "3" },
+                    { "label": "4" },
+                    { "label": "5" },
+                    { "label": "6" },
+                    { "label": "7" },
+                    { "label": "8" },
+                    { "label": "9" },
+                    { "label": "10" },
+                    { "label": "11" },
+                    { "label": "12" },
+                    { "label": "13" },
+                    { "label": "14 " },
+                    { "label": "15" },
+                    { "label": "16" },
+                    { "label": "17" },
+                    { "label": "18" },
+                    { "label": "19" },
+                    { "label": "20" },
+                    { "label": "21" },
+                    { "label": "22" },
+                    { "label": "23" },
+                    { "label": "24" },
+                    { "label": "25" },
+                    { "label": "26" },
+                    { "label": "27" },
+                    { "label": "28" },
+                    { "label": "29" },
+                    { "label": "30" },
+
+                ]
+            }
+        ];
+        // Construct the dataset comprising multiple series
+        const dataset = [
+            {
+                "seriesName": "Profit",
+                "renderAs": "area",
+                "data": [
+                    { "value": listmonth[0] },
+                    { "value": listmonth[1] },
+                    { "value": listmonth[2] },
+                    { "value": listmonth[3] },
+                    { "value": listmonth[4] },
+                    { "value": listmonth[5] },
+                    { "value": listmonth[6] },
+                    { "value": listmonth[7] },
+                    { "value": listmonth[8] },
+                    { "value": listmonth[9] },
+                    { "value": listmonth[10] },
+                    { "value": listmonth[11] },
+                    { "value": listmonth[12] },
+                    { "value": listmonth[13] },
+                    { "value": listmonth[14] },
+                    { "value": listmonth[15] },
+                    { "value": listmonth[16] },
+                    { "value": listmonth[17] },
+                    { "value": listmonth[18] },
+                    { "value": listmonth[19] },
+                    { "value": listmonth[20] },
+                    { "value": listmonth[21] },
+                    { "value": listmonth[22] },
+                    { "value": listmonth[23] },
+                    { "value": listmonth[24] },
+                    { "value": listmonth[25] },
+                    { "value": listmonth[26] },
+                    { "value": listmonth[27] },
+                    { "value": listmonth[28] },
+                    { "value": listmonth[29] },
+                ]
+            }
+        ];
+
+        //STEP 3 - Chart Configurations
+        var chartConfigurations = {
+            type: 'mscombi2d',
+            renderAt: 'chart-container',
+            width: '1000',
+            height: '600',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "caption": "Truong Company",
+                    "subCaption": "User Access analysis of last year",
+                    "xAxisname": "Day",
+                    "yAxisName": "Access",
+                    "numberPrefix": "",
+                    "divlineColor": "#999999",
+                    "divLineIsDashed": "1",
+                    "divLineDashLen": "1",
+                    "divLineGapLen": "1",
+                    "toolTipColor": "#ffffff",
+                    "toolTipBorderThickness": "0",
+                    "toolTipBgColor": "#000000",
+                    "toolTipBgAlpha": "80",
+                    "toolTipBorderRadius": "2",
+                    "toolTipPadding": "5",
+                    "theme": "fusion"
+                },
+                "categories": categories,
+                "dataset": dataset
+            }
+        }
+        FusionCharts.ready(function () {
+            var fusioncharts = new FusionCharts(chartConfigurations);
+            fusioncharts.render();
+        });
+
+        document.getElementById("test").innerHTML = listmonth[1];
+    </script>
+}
+
+

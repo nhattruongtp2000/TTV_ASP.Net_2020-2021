@@ -1,0 +1,80 @@
+﻿@model IEnumerable<ViewModel.ViewModels.CategoryVm>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+<h1>Index</h1>
+
+@if (ViewBag.Success != null)
+{
+    <div class="alert-primary">@ViewBag.Success</div>
+
+}
+@if (ViewBag.Edit != null)
+{
+    <div class="alert-primary">@ViewBag.Edit</div>
+}
+@if (ViewBag.Delete != null)
+{
+    <div class="alert-primary">@ViewBag.Delete</div>
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div style="margin-top:30px;margin-bottom:30px">
+    <label>Search category</label>
+    <input id="namecate" type="search" class="form-control " style="width:300px" />
+    <a id="searchcate" class="btn btn-primary" >Search</a>
+</div>
+
+
+<table  id="showcate" class="table ">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NameCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdCategory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameCategory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParentId)
+                </td>
+
+                <td>
+                    <a href="/Admin/Category/Edit/?IdCategory=@item.IdCategory">Edit</a>|
+                    <a href="/Admin/Category/Delete/?IdCategory=@item.IdCategory">Delete</a>|
+
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+    new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+
+    })
+

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ViewModel.ViewModels.OrdersVm>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "OrderHistory";
+}
+
+
+<div style="margin-top:30px;margin-bottom:30px">
+    <label>Tìm kiếm đơn hàng</label>
+    <input id="idorder" type="search" class="form-control col-5" />
+    <a id="search" class="btn btn-primary" data-id="@Model.FirstOrDefault().UserName">Search</a>
+</div>
+
+
+
+<div id="show">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalPice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VoucherCode)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.OrderType)</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDay)
+                    </td>
+                    <td>
+                        @Convert.ToInt32(item.TotalPice).ToString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VoucherCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "OrderHistoryDetails", "Accounts", new { IdOrder = item.IdOrder })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("OrderHistory", new { IdUser = User.Identity.Name, page = page }),
+          new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+          {
+              LiElementClasses = new string[] { "page-item" },
+              PageClasses = new string[] { "page-link" }
+
+          })
+</div>
+
+
+
+

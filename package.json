@@ -1,0 +1,23 @@
+{
+  "name": "asp.net-core-3.1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhattruongtp2000/ASP.net-Core-3.1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nhattruongtp2000/ASP.net-Core-3.1/issues"
+  },
+  "homepage": "https://github.com/nhattruongtp2000/ASP.net-Core-3.1#readme",
+  "dependencies": {
+    "@microsoft/signalr": "^5.0.8"
+  }
+}

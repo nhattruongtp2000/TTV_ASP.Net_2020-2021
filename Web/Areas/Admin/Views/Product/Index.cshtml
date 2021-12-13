@@ -1,0 +1,212 @@
+﻿@model IEnumerable<ViewModel.ViewModels.ProductVm>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@if (ViewBag.Success != null)
+{
+    <div class="alert-primary">@ViewBag.Success</div>
+
+}
+@if (ViewBag.Edit != null)
+{
+    <div class="alert-primary">@ViewBag.Edit</div>
+}
+@if (ViewBag.AddImage != null)
+{
+    <div class="alert-primary">@ViewBag.AddImage</div>
+}
+
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table ">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProduct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdBrand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAccept)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsShow)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsStandout)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhotoReview)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdBrand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAccept)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @if (item.IsShow == true)
+                {
+                    <a class="click" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-1.png" /></a>
+                }
+                else
+                {
+                    <a class="click" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-2.png" /></a>
+                }
+            </td>
+            <td>
+                @if (item.IsStandout == true)
+                {
+                    <a class="click2" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-1.png" /></a>
+                }
+                else
+                {
+                    <a class="click2" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-2.png" /></a>
+                }
+            </td>
+            <td>
+                <img src="~/@item.PhotoReview" class="rounded-circle" height="40" width="40" />
+            </td>
+            <td>
+                @Html.CheckBoxFor(modelItem => item.IsFree, new { disabled = "disabled" })
+            </td>
+            <td>
+                <a href="/Admin/Product/Edit/?IdProduct=@item.IdProduct">Edit</a>|
+                <a href="/Admin/Product/Details/?IdProduct=@item.IdProduct">Details</a>|
+                <a href="/Admin/Product/Delete/?IdProduct=@item.IdProduct">Delete</a>|
+                <a href="/Admin/Product/AddImages/?IdProduct=@item.IdProduct">AddImages</a>|
+
+            </td>
+        </tr>
+        }
+
+
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+    new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+
+    })
+
+<a class="btn btn-success" href="/Admin/Product/Excel">Export Excel</a>
+@section Scripts{
+    <script>
+     $(document).ready(function () {
+        $(".click").click(function () {
+            event.preventDefault();
+            Swal.fire({
+                showDenyButton: true,
+                title: 'Thông báo',
+                text: 'Đồng ý thay đổi trạng thái? ',
+                icon: 'warning',
+                confirmButtonText: 'Đồng ý',
+                denyButtonText: 'Hủy bỏ',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var blogidd = parseInt($(this).attr("data-idproduct"));
+                    $.ajax({
+                        type: "POST",               //update
+                        url: '@Url.Action("ChangeIsShow","Product")',
+                        data: {
+                            IdProduct: blogidd,
+                        },
+                        success: function (result) {
+                            window.alert = 'Thay đổi thành công'
+                            window.location.href = '@Url.Action("Index", "Product")'
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Trạng thái chưa được thay đổi,vui lòng thử lại', '', 'info')
+                }
+            })
+        });
+
+          $(".click2").click(function () {
+            event.preventDefault();
+            Swal.fire({
+                showDenyButton: true,
+                title: 'Thông báo',
+                text: 'Đồng ý thay đổi trạng thái? ',
+                icon: 'warning',
+                confirmButtonText: 'Đồng ý',
+                denyButtonText: 'Hủy bỏ',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var blogidd = parseInt($(this).attr("data-idproduct"));
+                    $.ajax({
+                        type: "POST",               //update
+                        url: '@Url.Action("ChangeIsStandout","Product")',
+                        data: {
+                            IdProduct: blogidd,
+                        },
+                        success: function (result) {
+                            window.alert = 'Thay đổi thành công'
+                            window.location.href = '@Url.Action("Index", "Product")'
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Trạng thái chưa được thay đổi,vui lòng thử lại', '', 'info')
+                }
+            })
+        });
+    });
+
+
+
+
+
+    </script>
+
+
+
+
+ }

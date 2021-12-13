@@ -1,0 +1,33 @@
+﻿@model ViewModel.ViewModels.BlogDetailsVm
+<head>
+    <style>
+        .related{
+            margin-top:20px;
+        }
+    </style>
+</head>
+
+<div class="row">
+    <div class="col-sm-3 mt-5">
+        <h2>Bài viết liên quan</h2>
+        @foreach (var item in Model.RelatedBlogs)
+        {
+            if( item.Status == true)
+            {
+        <div class="row related">
+            <div class="col-sm-4">
+                <img  width="90" src="~/@item.Image" />
+            </div>
+            <div class="col-sm-8">
+                <a href="@Url.ActionLink("BlogDetails", "Blog", new { Blogid = item.BlogId })">@item.Content</a>
+            </div>
+        </div>
+            }
+        }
+    </div>
+    <div class="col-sm-9">      
+        <code class="row">
+          @Html.Raw(@Model.Blog.Description)
+        </code>
+    </div>
+</div>

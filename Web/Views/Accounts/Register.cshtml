@@ -1,0 +1,76 @@
+﻿@model ViewModel.ViewModels.RegisterVm
+
+<head>
+    <style>
+        .main {
+            display: flex;
+            justify-content: center;
+        }
+
+            .main > div {
+                border: 1px solid none;
+                border-radius: 10px;
+                padding: 20px;
+                width: 300px;
+                height: 400px;
+                background-color: antiquewhite;
+                height:500px;
+            }
+
+        h3 {
+            text-align: center;
+        }
+
+        h4 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="body2">
+        <h3>
+            Welcome to Ustora. Let's Login!
+        </h3>
+        <div class="main">
+            <div>
+                <h4>Register User</h4>
+                <form method="post" asp-controller="Accounts" asp-action="Register">
+                    <div class="form-group">
+                        <label>PhoneNumber*</label>
+                        <input asp-for="PhoneNumer" class="form-control col-12" placeholder="Please fill your PhoneNumber" />
+                        <span asp-validation-for="PhoneNumer" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Password*</label>
+                        <input asp-for="Pass" type="password" class="form-control col-12" placeholder="Please fill your Password" />
+                        <span asp-validation-for="Pass" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password*</label>
+                        <input asp-for="ConfirmPass" type="password" class="form-control col-12" placeholder="Please fill your Password" />
+                        <span asp-validation-for="ConfirmPass" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input asp-for="Name" class="form-control col-12" placeholder="Please fill your Name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Email*</label>
+                        <input asp-for="Email" type="email" class="form-control col-12" placeholder="Please fill your Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    @if (ViewBag.Email != null)
+                    {
+                        <div style="color:red">@ViewBag.Email</div>
+                    }
+                    <input type="submit" class="btn btn-success col-12" value="Register" />
+                </form>
+              
+            </div>
+        </div>
+    </div>
+</body>
+
+

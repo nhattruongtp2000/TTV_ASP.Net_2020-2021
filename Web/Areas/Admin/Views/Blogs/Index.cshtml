@@ -1,0 +1,126 @@
+﻿@model IEnumerable<ViewModel.ViewModels.BlogVm>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<head>
+
+</head>
+<h1>Index</h1>
+@{ 
+    var count = 1;
+}
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BlogId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlogName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ViewCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlogId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlogName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ViewCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @if (item.Status == true)
+                {
+                    <a class="click" id="change_@item.BlogId" data-blogid="@item.BlogId" href="#"><img src="~/Images/icons8-like-1.png" /></a>
+                }
+                else
+                {
+                    <a class="click" id="change_@item.BlogId" data-blogid="@item.BlogId" href="#"><img src="~/Images/icons8-like-2.png" /></a>
+                }
+
+
+            </td>
+            <td>
+            
+                <img src="~/@item.Image" class="rounded-circle" height="40" width="40" />
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts{ 
+    <script>
+    $(document).ready(function () {
+        $(".click").click(function () {
+            event.preventDefault();
+            Swal.fire({
+                showDenyButton: true,
+                title: 'Thông báo',
+                text: 'Đồng ý thay đổi trạng thái? ',
+                icon: 'warning',
+                confirmButtonText: 'Đồng ý',
+                denyButtonText: 'Hủy bỏ',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var blogidd = parseInt($(this).attr("data-blogid"));
+                    $.ajax({
+                        type: "POST",               //update
+                        url: '@Url.Action("ChangeStatus","Blogs")',
+                        data: {
+                            BlogId: blogidd,
+                        },
+                        success: function (result) {
+                            window.alert = 'Thay đổi thành công'
+                            window.location.href = '@Url.Action("Index","Blogs")'
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Trạng thái chưa được thay đổi,vui lòng thử lại', '', 'info')
+                }
+            })
+        });
+    });
+    </script>
+}

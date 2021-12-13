@@ -1,0 +1,27 @@
+﻿@model IEnumerable<MailChimp.Net.Models.List>
+
+@{ 
+    ViewBag.Title = "All Lists";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Mail</th>
+            <th>Created On</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var list in Model)
+        {
+                <tr>
+                    <td>@list.Id</td>
+                    <td>@list.CampaignDefaults</td>
+                    <td>@list.DateCreated</td>
+                </tr>
+        }
+
+
+    </tbody>
+</table>

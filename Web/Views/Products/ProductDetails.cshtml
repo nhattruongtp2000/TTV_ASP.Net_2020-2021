@@ -1,0 +1,780 @@
+﻿@{
+    Layout = null;
+}
+
+@model ViewModel.ViewModels.ProductDetailsVm
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="@Model.Description"/>
+    <meta name="keywords" content=""/>
+    <meta property="og:url" content="http://ustoram.somee.com/products/@Model.Alias"/>
+    <meta property="og:image" content="http://ustoram.somee.com/Images/@Model.PhotoReview.Substring(7)"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="@Model.ProductName"/>
+
+    <title>@Model.ProductName</title>
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+    <div class="area">
+        <div class="header-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="user-menu">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
+                                <li><a href="@Url.ActionLink("Checkout","Cart")"><i class="fa fa-user"></i> Checkout</a></li>
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <li><a href="/login"><i class="fa fa-user"></i> Login</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="col-md-4">
+                            <div class="header-right">
+                                <ul class="list-unstyled list-inline">
+                                    <li><a href="@Url.ActionLink("OrderHistory","Accounts",new {IdUser=User.Identity.Name })"><i class="fa fa-shopping-cart"></i>Order History</a></li>
+                                    <li>
+                                        <a href="@Url.ActionLink("GetUser", "Accounts")"><i class="fa fa-user"></i> My Account</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.ActionLink("Logout", "Accounts")"><i class="fa fa-sign-out"></i>Log out</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div> <!-- End header area -->
+
+        <div class="site-branding-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="logo pt-0">
+                            <h1><a href="/home"><img src="/img/logo.png"></a></h1>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <form class="form-inline pt-5" asp-controller="Products" asp-action="GetAllProduct" method="post">
+                            <input name="key" class="form-control" placeholder="Search" style="width:300px" />
+                            <button style="height:35px;width:50px" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="shopping-item mt-5">
+                            <a href="@Url.ActionLink("Cart","Cart")">Cart<i class="fa fa-shopping-cart"></i> @await Html.PartialAsync("~/Views/Shared/_CartPartial.cshtml")</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>@*End site branding area*@
+
+    <div class="mainmenu-area">
+        <div class="container">
+            @*<nav class="navbar navbar-expand-sm row">
+
+                    <div class="navbar-collapse collapse" id="cll">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="active nav-item"><a href="/Home/Indexx">Home</a></li>
+                            <li class="nav-item"><a href="/Cart/Cart">Cart</a></li>
+                            <li class="nav-item"><a href="checkout.html">Checkout</a></li>
+                            <li class="nav-item dropdown">
+                                <a class=" dropdown-toggle" data-toggle="dropdown" href="#">Category</a>
+                                <div class="dropdown-menu">
+                                     <a class="dropdown-item bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Shirt</a>
+                                    <a class="dropdown-item bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Pants</a>
+                                    <a class="dropdown-item bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=3})">Cap</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Brands</a>
+                                <ul class="dropdown-menu">
+                                    <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=1})">Dior</a></li>
+                                    <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=2})">Channel</a></li>
+                                    <li><a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=3})">Louis Vutton</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </nav>*@
+            <div class="menu_header2 clearfix">
+
+                <!-- div con dùng float thì thêm class clearfix ở div cha -->
+                <div id="menu_contain">
+                    <ul class="menu_hmain menuheader_mid clearfix">
+                        <li class="li_co_cap ">
+                            <a class="active para" onclick="Data(this)" href="/Home/Indexx" id="Ao">Home</a>
+                        </li>
+                        <li class="li_co_cap">
+                            <a class="para" onclick="Data(this)" href="#montht">Category</a>
+                            <ul class="menu_con">
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Laptop</a></li>
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Phone</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Headphone</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">PC</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Mouse</a></li>
+                            </ul>
+                        </li>
+                        <li class="li_co_cap">
+                            <a href="#">Brand</a>
+                            <ul class="menu_con">
+                                <li><a class="para" onclick="Data(this)" href="#">SamSung</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Dell</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Apple</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Asus</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">LG</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Lenovo</a></li>
+                            </ul>
+                        </li>
+                        <li class="li_co_cap">
+                            <a class="para" onclick="Data(this)" href="/Contact/Index">Contact</a>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="product-big-title-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="product-bit-title text-center">
+                                <h2>Shop</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="single-product-area">
+                <div class="zigzag-bottom"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+
+
+                            <div class="single-sidebar">
+                                <h2 class="sidebar-title">Maybe You Will Like</h2>
+
+                                @for (int i = 0; i < Model.MaybeLike.Count(); i++)
+                                {
+                                    var price = (int)Model.MaybeLike[i].Price;
+                                    <div class="thubmnail-recent">
+                                        <img style="height:70px;width:70px" src="~/@Model.MaybeLike[i].PhotoReview" class="recent-thumb" alt="image">
+                                        <h2><a href="">@Model.MaybeLike[i].ProductName</a></h2>
+                                        <div class="product-sidebar-price">
+                                            <ins>@price VND</ins>
+                                        </div>
+                                    </div>
+
+                                }
+
+
+                            </div>
+
+                            <div class="single-sidebar">
+                                <h2 class="sidebar-title">Recent Posts</h2>
+                                <ul>
+                                    <li><a href="">Sony Smart TV - 2015</a></li>
+                                    <li><a href="">Sony Smart TV - 2015</a></li>
+                                    <li><a href="">Sony Smart TV - 2015</a></li>
+                                    <li><a href="">Sony Smart TV - 2015</a></li>
+                                    <li><a href="">Sony Smart TV - 2015</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="product-content-right">
+                                <div class="product-breadcroumb">
+                                    <a href="">Home</a>
+                                    <a href="">Category Name</a>
+                                    <a href="">Sony Smart TV - 2015</a>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="product-images">
+                                            <div class="product-main-img" style="margin-bottom:40px">
+                                                <img style="height: 243px; width: 195px" src="~/@Model.PhotoReview" alt="image">
+                                            </div>
+
+                                            <div class="product-gallery">
+                                                @for (int i = 0; i < Model.ListPhotos.Count(); i++)
+                                                {
+                                                    <img src="~/@Model.ListPhotos[i]" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="product-inner">
+                                            @{var a = (int)Model.Price;}
+                                            <h2 class="product-name">@Model.ProductName</h2>
+                                            <div class="product-inner-price">
+                                                <ins>@a VND</ins> <del></del>
+                                            </div>
+
+                                            <form action="" class="cart">
+                                                <div class="quantity">
+                                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
+                                                </div>
+                                                <a class="btn btn-primary test" data-IdProduct="@Model.IdProduct">Add To Cart</a>
+                                            </form>
+                                            <div id="fb-root"></div>
+
+                                            <div class="fb-share-button" data-href="http://ustoram.somee.com/@Model.Alias" data-layout="button_count" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fustoram.somee.com%2Fproducts%2Fideapad-flex-5-graphite-grey&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+
+                                            <div class="product-inner-category">
+                                                <p>Category: <a href="">Summer</a>. Tags: <a href="">awesome</a>, <a href="">best</a>, <a href="">sale</a>, <a href="">shoes</a>. </p>
+                                            </div>
+
+                                            <div role="tabpanel">
+                                                <ul class="product-tab" role="tablist">
+                                                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Description</a></li>
+                                                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Reviews</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                                        <h2>Product Description</h2>
+                                                        <p>@Model.Description</p>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade" id="profile">
+                                                        <h2>Reviews</h2>
+                                                        <div class="submit-review">
+                                                            <p><label for="name">Name</label> <input name="name" type="text"></p>
+                                                            <p><label for="email">Email</label> <input name="email" type="email"></p>
+                                                            <div class="rating-chooser">
+                                                                <p>Your rating</p>
+
+                                                                <div class="rating-wrap-post">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                            </div>
+                                                            <p><label for="review">Your review</label> <textarea name="review" id="" cols="30" rows="10"></textarea></p>
+                                                            <p><input type="submit" value="Submit"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="related-products-wrapper">
+                                    <h2 class="related-products-title">Related Products</h2>
+                                    <div class="related-products-carousel">
+                                        @for (int i = 0; i < Model.RelatedProducts.Count(); i++)
+                                        {
+                                            <div class="single-product">
+                                                <div class="product-f-image">
+                                                    <img src="~/@Model.RelatedProducts[i].PhotoReview" alt="image">
+                                                    <div class="product-hover">
+                                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                                        <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                                    </div>
+                                                </div>
+
+                                                <h2><a href="">@Model.RelatedProducts[i].ProductName</a></h2>
+                                                <div class="product-carousel-price">
+                                                    <ins>@Model.RelatedProducts[i].Price</ins> <del>$999.00</del>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="single-product">
+                                            <div class="product-f-image">
+                                                <img src="/img/product-2.jpg" alt="image">
+                                                <div class="product-hover">
+                                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                                    <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                                </div>
+                                            </div>
+
+                                            <h2><a href="">Apple new mac book 2015 March :P</a></h2>
+                                            <div class="product-carousel-price">
+                                                <ins>$899.00</ins> <del>$999.00</del>
+                                            </div>
+                                        </div>
+                                        <div class="single-product">
+                                            <div class="product-f-image">
+                                                <img src="/img/product-3.jpg" alt="image">
+                                                <div class="product-hover">
+                                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                                    <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                                </div>
+                                            </div>
+
+                                            <h2><a href="">Apple new i phone 6</a></h2>
+
+                                            <div class="product-carousel-price">
+                                                <ins>$400.00</ins> <del>$425.00</del>
+                                            </div>
+                                        </div>
+                                        <div class="single-product">
+                                            <div class="product-f-image">
+                                                <img src="/img/product-4.jpg" alt="image">
+                                                <div class="product-hover">
+                                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                                    <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                                </div>
+                                            </div>
+
+                                            <h2><a href="">Sony playstation microsoft</a></h2>
+
+                                            <div class="product-carousel-price">
+                                                <ins>$200.00</ins> <del>$225.00</del>
+                                            </div>
+                                        </div>
+                                        <div class="single-product">
+                                            <div class="product-f-image">
+                                                <img src="/img/product-5.jpg" alt="image">
+                                                <div class="product-hover">
+                                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                                    <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                                </div>
+                                            </div>
+
+                                            <h2><a href="">Sony Smart Air Condtion</a></h2>
+
+                                            <div class="product-carousel-price">
+                                                <ins>$1200.00</ins> <del>$1355.00</del>
+                                            </div>
+                                        </div>
+                                        <div class="single-product">
+                                            <div class="product-f-image">
+                                                <img src="/img/product-6.jpg" alt="image">
+                                                <div class="product-hover">
+                                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                                    <a href="" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                                </div>
+                                            </div>
+
+                                            <h2><a href="">Samsung gallaxy note 4</a></h2>
+
+                                            <div class="product-carousel-price">
+                                                <ins>$400.00</ins>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <h2>Bình luận</h2>
+
+                                    <p>What is your feeling about this product?</p>
+                                    <div>
+                                        <div onclick="star1()" id="off1" style="display:inline-block;margin-right:10px;text-align:center">
+                                            <img style="cursor:pointer" src="~/Images/star-1.png" />
+                                            <p>too bad</p>
+                                        </div>
+                                        <div id="on1" style="display:none;margin-right:10px;text-align:center;">
+                                            <img  src="~/Images/star-3.png" />
+                                            <p>too bad</p>
+                                        </div>
+
+                                        <div onclick="star2()" id="off2"  style="display: inline-block; margin-right: 10px; text-align: center">
+                                            <img style="cursor:pointer" src="~/Images/star-1.png" />
+                                            <p>bad</p>
+                                        </div>
+                                        <div id="on2" style="display:none;margin-right:10px;text-align:center;">
+                                            <img src="~/Images/star-3.png" />
+                                            <p>bad</p>
+                                        </div>
+
+                                        <div onclick="star3()" id="off3"  style="display: inline-block; margin-right: 10px; text-align: center">
+                                            <img style="cursor:pointer" src="~/Images/star-1.png" />
+                                            <p>normal</p>
+                                        </div>
+                                        <div id="on3" style="display:none;margin-right:10px;text-align:center;">
+                                            <img src="~/Images/star-3.png" />
+                                            <p>normal</p>
+                                        </div>
+
+                                        <div onclick="star4()" id="off4"  style="display: inline-block; margin-right: 10px; text-align: center">
+                                            <img style="cursor:pointer" src="~/Images/star-1.png" />
+                                            <p>good</p>
+                                        </div>
+                                        <div id="on4" style="display:none;margin-right:10px;text-align:center;">
+                                            <img src="~/Images/star-3.png" />
+                                            <p>good</p>
+                                        </div>
+
+                                        <div onclick="star5()" id="off5"  style="display: inline-block; margin-right: 10px; text-align: center">
+                                           <img style="cursor:pointer" src="~/Images/star-1.png" />
+                                            <p>excellent</p>
+                                        </div>
+                                        <div id="on5" style="display:none;margin-right:10px;text-align:center;">
+                                            <img src="~/Images/star-3.png" />
+                                            <p>excellent</p>
+                                        </div>
+
+                                    </div>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                       
+   
+                                            <textarea id="content" name="Content" id="Content" style="width:450px"></textarea>
+                                            <input id="sendpost" type="submit" value="Post" />
+                                        
+                                    }
+                                    else
+                                    {
+                                        <div>Vui lòng <a href="@Url.ActionLink("Index","Accounts")">Đăng nhập </a>để bình luận </div>
+                                    }
+                                    <div id="comments">
+                                        @{
+                                            if (Model.Comments.Count != 0)
+                                            {
+                                                for (int i = 0; i < Model.Comments.Count(); i++)
+                                                {
+                                                    <div class="comment">
+                                                        <div style="font-size:20px;margin-bottom:10px" class="comment-name">@Model.Comments[i].UserName</div>
+                                                        @for(int k = 0; k < Model.Comments[i].Review; k++) 
+                                                        { 
+                                                            <img style="inline-block" src="~/Images/star-3.png"/>
+                                                        }
+                                                        <div style="margin-top:10px;font-size:14px" class="comment-content">@Model.Comments[i].Content</div>
+                                                        
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="footer-top-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-about-us">
+                        <h2>u<span>Stora</span></h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis sunt id doloribus vero quam laborum quas alias dolores blanditiis iusto consequatur, modi aliquid eveniet eligendi iure eaque ipsam iste, pariatur omnis sint! Suscipit, debitis, quisquam. Laborum commodi veritatis magni at?</p>
+                        <div class="footer-social">
+                            <a href="https://facebook.com" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="https://twitter.com" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a href="https://youtube.com" target="_blank"><i class="fa fa-youtube"></i></a>
+                            <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-menu">
+                        <h2 class="footer-wid-title">User Navigation </h2>
+                        <ul>
+                            <li><a href="#">My account</a></li>
+                            <li><a href="#">Order history</a></li>
+                            <li><a href="#">Wishlist</a></li>
+                            <li><a href="#">Vendor contact</a></li>
+                            <li><a href="#">Front page</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-menu">
+                        <h2 class="footer-wid-title">Categories</h2>
+                        <ul>
+                            <li><a href="#">Mobile Phone</a></li>
+                            <li><a href="#">Home accesseries</a></li>
+                            <li><a href="#">LED TV</a></li>
+                            <li><a href="#">Computer</a></li>
+                            <li><a href="#">Gadets</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-newsletter">
+                        <h2 class="footer-wid-title">Newsletter</h2>
+                        <p>Đăng ý Email nhận thông báo của Ustora khi có chương trình khuyến mãi</p>
+                        <div class="newsletter-form">
+                            <form id="form" action="#">
+                                <input type="email" id="emailinput" placeholder="Email của bạn">
+                                <input type="submit" id="emails" value="Subscribe">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2 class="footer-wid-title">Follow us in</h2>
+        </div>
+    </div> <!-- End footer top area -->
+
+    <div class="footer-bottom-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="copyright">
+                        <p>&copy; 2015 uCommerce. All Rights Reserved. <a href="http://www.freshdesignweb.com" target="_blank">freshDesignweb.com</a></p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="footer-card-icon">
+                        <i class="fa fa-cc-discover"></i>
+                        <i class="fa fa-cc-mastercard"></i>
+                        <i class="fa fa-cc-paypal"></i>
+                        <i class="fa fa-cc-visa"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End footer bottom area -->
+    <!-- Messenger Chat plugin Code -->
+    <div id="fb-root"></div>
+
+    <!-- Your Chat plugin code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.min.js'></script>
+
+
+    <!-- Latest jQuery form server -->
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+
+    <!-- Bootstrap JS form CDN -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <!-- jQuery sticky menu -->
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
+
+    <!-- jQuery easing -->
+    <script src="/js/jquery.easing.1.3.min.js"></script>
+
+    <!-- Main Script -->
+    <script src="/js/main.js"></script>
+
+    <script>
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "101257308908899");
+        chatbox.setAttribute("attribution", "biz_inbox");
+
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v11.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#emails").click(function (event) {
+                event.preventDefault();
+                var email = $("#emailinput").val();
+                $.ajax({
+                    type: "POST",
+                    url: '/Contact/SendEmailPromotion',
+                    data: {
+                        Email: email
+                    },
+                    success: function () {
+                        swal("Thông báo", "Gửi thành công");
+
+                    },
+                    error: function () {
+                        swal("Thông báo", "Gửi thất bại");
+                    }
+                });
+                document.getElementById("form").reset();
+            });
+        });
+    </script>
+    <script>
+        function Data(el) {
+            $('.para').css("font-weight", "normal");
+            $(el).css("font-weight", "bold");
+        }
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+            $(".test").click(function (event) {
+                event.preventDefault();
+                var IdProduct = $(this).attr("data-IdProduct");
+                $.ajax({
+                    type: "POST",
+                    url: '/Cart/AddToCart', //đường dẫn
+                    data: {
+                        IdProduct: IdProduct,  //tham số chuyển tới controller
+                    },
+                    success: function (data) {
+
+                        swal("Thông báo", "Add to Card Success");
+                        $("#cartcount").html(data);
+                    },
+                    error: function () {
+                        swal("Thông báo", "Add Failure");
+                    }
+                });
+            });
+        });
+        var count = 0;
+
+        function star1() {
+            $("#off1").css("display", "none");
+            $("#on1").css("display", "inline-block");
+            count = 1;
+        }
+        function star2() {
+            $("#off2").css("display", "none");
+            $("#off1").css("display", "none");
+            $("#on1").css("display", "inline-block");
+            $("#on2").css("display", "inline-block");
+            count = 2;
+        }
+        function star3() {
+            $("#off1").css("display", "none");
+            $("#off2").css("display", "none");
+            $("#off3").css("display", "none");
+            $("#on1").css("display", "inline-block");
+            $("#on2").css("display", "inline-block");
+            $("#on3").css("display", "inline-block");
+            count = 3;
+        }
+        function star4() {
+            $("#off1").css("display", "none");
+            $("#off2").css("display", "none");
+            $("#off3").css("display", "none");
+            $("#off4").css("display", "none");
+            $("#on1").css("display", "inline-block");
+            $("#on2").css("display", "inline-block");
+            $("#on3").css("display", "inline-block");
+            $("#on4").css("display", "inline-block");
+            count = 4;
+        }
+        function star5() {
+            $("#off1").css("display", "none");
+            $("#off2").css("display", "none");
+            $("#off3").css("display", "none");
+            $("#off4").css("display", "none");
+            $("#off5").css("display", "none");
+            $("#on1").css("display", "inline-block");
+            $("#on2").css("display", "inline-block");
+            $("#on3").css("display", "inline-block");
+            $("#on4").css("display", "inline-block");
+            $("#on5").css("display", "inline-block");
+            count = 5;
+        }
+
+        $(document).ready(function () {
+            $("#sendpost").click(function () {
+                var content = $("#content").val();
+                var alias ='@Model.Alias';
+                    $.ajax({
+                    type: "POST",
+                    url: '/Products/Comment', //đường dẫn
+                        data: {
+                            Alias: alias,  //tham số chuyển tới controller
+                            Content: content,
+                            Review:count
+                    },
+                    success: function (data) {
+                        $("#off1").css("display", "inline-block");
+                        $("#off2").css("display", "inline-block");
+                        $("#off3").css("display", "inline-block");
+                        $("#off4").css("display", "inline-block");
+                        $("#off5").css("display", "inline-block");
+                        $("#on1").css("display", "none");
+                        $("#on2").css("display", "none");
+                        $("#on3").css("display", "none");
+                        $("#on4").css("display", "none");
+                        $("#on5").css("display", "none");
+                        window.location.href = data.redirectToUrl;
+                    },
+                    error: function () {
+                        swal("Thông báo", "Add Failure");
+                    }
+
+
+
+
+
+                });
+            });
+        });
+
+
+    </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v11.0" nonce="vnIEZT3u"></script>
+    @if (Startup.EnableSignalR)
+    {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js"></script>
+        <script src="~/js/onlinecount.js"></script>
+    }
+</body>
+</html>

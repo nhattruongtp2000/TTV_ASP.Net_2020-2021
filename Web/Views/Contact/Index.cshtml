@@ -1,0 +1,61 @@
+﻿@model ViewModel.ViewModels.ContactVm
+
+@{
+    ViewBag.Title = "Liên hệ";
+}
+
+@if (ViewBag.Success != null)
+{
+    <div class="alert-primary">@ViewBag.Success </div>
+
+}
+<head>
+    <style>
+        #mapCanvas {
+            height: 600px;
+        }
+    </style>
+</head>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <h1>Thông tin liên hệ</h1>
+                @Html.Raw(Model.Content)
+
+                <br/>
+
+                <h2>Gửi thông tin</h2>
+                <form method="post" asp-action="Feedback" asp-controller="Contact">
+                    <div class="form-group">
+                        <label>Họ tên</label>
+                        <input type="text" name="UserName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>SỐ điện thoại</label>
+                        <input type="text" name="PhoneNumber" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="Email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Nội dung</label>
+                        <textarea type="text" name="Content" class="form-control" ></textarea>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary" value="Gửi"/>
+
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2>Bản đồ</h2>
+                <div class="mappage">
+                   
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2771.4814062973005!2d106.63943912107948!3d10.775530975342463!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752ea3524580e1%3A0xada2300a039a3a09!2zMTQ5LzEyIFRy4buLbmggxJDDrG5oIFRy4buNbmcsIFBow7ogVHJ1bmcsIFTDom4gUGjDuiwgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oLCBWaWV0bmFt!5e0!3m2!1sen!2s!4v1636428545692!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

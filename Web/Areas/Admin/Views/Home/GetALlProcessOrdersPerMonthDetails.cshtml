@@ -1,0 +1,106 @@
+﻿@*@model IEnumerable<ViewModel.ViewModels.OrdersVm>
+
+@{
+    ViewData["Title"] = "GetALlProcessOrdersPerMonthDetails";
+}
+
+<head>
+
+
+
+
+</head>
+<body>
+    <h1>GetALlProcessOrdersPerDayDetails</h1>
+
+    <form method="post" asp-action="GetALlProcessOrdersPerMonthDetails">
+        <div class="form-group">
+            <label>Month</label>
+            <select id="month" name="month" class="col-4 me-2">
+                <option selected>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+            </select>
+
+            <label>Year</label>
+            <select id="year" name="year" class="col-4 me-2">
+                <option selected>2020</option>
+                <option>2021</option>
+                <option>2022</option>
+            </select>
+
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    @if (Model != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdProduct)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdUser)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDay)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalPice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdOrder)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProduct)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdUser)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderDay)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</body>*@

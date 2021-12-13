@@ -1,0 +1,55 @@
+﻿@model ViewModel.ViewModels.OrdersVm 
+@{ 
+    Layout = null;
+}
+<div id="show">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalPice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VoucherCode)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.OrderType)</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>
+                        @Model.IdOrder
+                    </td>
+                    <td>
+                        @Model.OrderDay
+                    </td>
+                    <td>
+                        @Convert.ToInt32(Model.TotalPice)
+                    </td>
+                    <td>
+                        @Model.VoucherCode
+                    </td>
+                    <td>
+                        @Model.OrderType
+                    </td>
+                    <td>
+                        @Model.Status
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "OrderHistoryDetails", "Accounts", new { IdOrder = @Model.IdOrder })
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+
+</div>

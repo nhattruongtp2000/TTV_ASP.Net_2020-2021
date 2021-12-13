@@ -1,0 +1,276 @@
+﻿@model IEnumerable<ViewModel.ViewModels.ToTalRevenue>
+@using Newtonsoft.Json 
+
+<head>
+    <!-- Step 1 - Include the fusioncharts core library -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <!-- Step 2 - Include the fusion theme -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+    <style>
+        body {
+            background-color: aquamarine;
+        }
+
+        #one {
+            display: none;
+        }
+
+        #two {
+            display: none
+        }
+
+        #but {
+            margin-top: 5px;
+            margin-left: 40px;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+            #but button {
+                width: 100px;
+            }
+    </style>
+
+</head>
+<body>
+    <div id="but" class="col-4">
+        <button onclick="clickone()" style="margin-right:50px" class="btn btn-primary">Day</button>
+        <button onclick="clicktwo()" style="margin-right:50px" class="btn btn-primary">Month</button>
+        <button onclick="clickthree()" class="btn btn-primary">Year</button>
+    </div>
+
+
+    <div id="two">
+        <form class="form-inline" asp-action="GetRevenueMonth" method="post">
+            <div name="month" class="form-group">
+                <label>Each Day</label>
+                <select name="month" class=" col-2 me-2">
+                    <option selected>--</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                </select>
+
+                <label>Year</label>
+                <select name="year" class="col-2 me-2">
+                    <option selected>--</option>
+                    <option>2020</option>
+                    <option>2021</option>
+                    <option>2022</option>
+                </select>
+
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
+
+
+
+    @if (Model != null)
+    {
+        <h2>Thống kê doanh thu các ngày trong @ViewBag.month năm @ViewBag.year</h2>
+
+        <div id="chart-container"></div>
+
+    }
+
+</body>
+
+@section Scripts{
+    <script>
+        var model=@Html.Raw(JsonConvert.SerializeObject(this.Model));
+
+
+        const categories = [
+            {
+                "category": [
+                    { "label":"1"},
+                    { "label": "2" },
+                    { "label": "3" },
+                    { "label": "4" },
+                    { "label": "5" },
+                    { "label": "6" },
+                    { "label": "7" },
+                    { "label": "8" },
+                    { "label": "9" },
+                    { "label": "10" },
+                    { "label": "11" },
+                    { "label": "12" },
+                    { "label": "13" },
+                    { "label": "14" },
+                    { "label": "15" },
+                    { "label": "16" },
+                    { "label": "17" },
+                    { "label": "18" },
+                    { "label": "19" },
+                    { "label": "20" },
+                    { "label": "21" },
+                    { "label": "22" },
+                    { "label": "23" },
+                    { "label": "24" },
+                    { "label": "25" },
+                    { "label": "26" },
+                    { "label": "27" },
+                    { "label": "28" },
+                    { "label": "29" },
+                    { "label": "30" },
+                    { "label": "31" },
+                ]
+            },
+
+        ];
+        // Construct the dataset comprising multiple series
+        const dataset = [
+            {
+                "seriesName": "OrderCount",
+                "renderAs": "area",
+                "data": [
+                    { "value": model[0].TotalOrder },
+                    { "value": model[1].TotalOrder },
+                    { "value": model[2].TotalOrder },
+                    { "value": model[3].TotalOrder },
+                    { "value": model[4].TotalOrder },
+                    { "value": model[5].TotalOrder },
+                    { "value": model[6].TotalOrder },
+                    { "value": model[7].TotalOrder },
+                    { "value": model[8].TotalOrder },
+                    { "value": model[9].TotalOrder },
+                    { "value": model[10].TotalOrder },
+                    { "value": model[11].TotalOrder },
+                    { "value": model[12].TotalOrder },
+                    { "value": model[13].TotalOrder },
+                    { "value": model[14].TotalOrder },
+                    { "value": model[15].TotalOrder },
+                    { "value": model[16].TotalOrder },
+                    { "value": model[17].TotalOrder },
+                    { "value": model[18].TotalOrder },
+                    { "value": model[19].TotalOrder },
+                    { "value": model[20].TotalOrder },
+                    { "value": model[21].TotalOrder },
+                    { "value": model[22].TotalOrder },
+                    { "value": model[23].TotalOrder },
+                    { "value": model[24].TotalOrder },
+                    { "value": model[25].TotalOrder },
+                    { "value": model[26].TotalOrder },
+                    { "value": model[27].TotalOrder },
+                    { "value": model[28].TotalOrder },
+                    { "value": model[29].TotalOrder },
+                    { "value": model[30].TotalOrder },
+                ]
+            },
+            {
+                "seriesName": "ToTal Revenue",
+                "rederAs": "area2",
+                "data": [
+                    { "value": model[0].TotalPrice },
+                    { "value": model[1].TotalPrice },
+                    { "value": model[2].TotalPrice },
+                    { "value": model[3].TotalPrice },
+                    { "value": model[4].TotalPrice },
+                    { "value": model[5].TotalPrice },
+                    { "value": model[6].TotalPrice },
+                    { "value": model[7].TotalPrice },
+                    { "value": model[8].TotalPrice },
+                    { "value": model[9].TotalPrice },
+                    { "value": model[10].TotalPrice },
+                    { "value": model[11].TotalPrice },
+                    { "value": model[12].TotalPrice },
+                    { "value": model[13].TotalPrice },
+                    { "value": model[14].TotalPrice },
+                    { "value": model[15].TotalPrice },
+                    { "value": model[16].TotalPrice },
+                    { "value": model[17].TotalPrice },
+                    { "value": model[18].TotalPrice },
+                    { "value": model[19].TotalPrice },
+                    { "value": model[20].TotalPrice },
+                    { "value": model[21].TotalPrice },
+                    { "value": model[22].TotalPrice },
+                    { "value": model[23].TotalPrice },
+                    { "value": model[24].TotalPrice },
+                    { "value": model[25].TotalPrice },
+                    { "value": model[26].TotalPrice },
+                    { "value": model[27].TotalPrice },
+                    { "value": model[28].TotalPrice },
+                    { "value": model[29].TotalPrice },
+                    { "value": model[30].TotalPrice },
+                ]
+            }
+        ];
+
+        //STEP 3 - Chart Configurations
+        var chartConfigurations = {
+            type: 'mscombi2d',
+            renderAt: 'chart-container',
+            width: '1000',
+            height: '600',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "caption": "Ustora",
+                    "subCaption": "Quantity Product analysis per month",
+                    "yAxisName": "Total Quantity",
+                    "numberPrefix": "",
+                    "divlineColor": "#999999",
+                    "divLineIsDashed": "1",
+                    "divLineDashLen": "1",
+                    "divLineGapLen": "1",
+                    "toolTipColor": "#ffffff",
+                    "toolTipBorderThickness": "0",
+                    "toolTipBgColor": "#000000",
+                    "toolTipBgAlpha": "80",
+                    "toolTipBorderRadius": "2",
+                    "toolTipPadding": "5",
+                    "theme": "fusion",
+                },
+                "categories": categories,
+                "dataset": dataset
+            }
+        }
+        FusionCharts.ready(function () {
+            $("#one").hide();
+
+            var fusioncharts = new FusionCharts(chartConfigurations);
+            fusioncharts.render();
+        });
+
+
+
+
+
+
+
+
+
+
+
+        function clickone() {
+            $("#one").css("display", "block");
+            $("#two").css("display", "none");
+            $("#three").css("display", "none");
+        }
+
+        function clicktwo() {
+            $("#one").css("display", "none");
+            $("#two").css("display", "block");
+            $("#three").css("display", "none");
+        }
+
+        function clickthree() {
+            $("#one").css("display", "none");
+            $("#two").css("display", "none");
+            $("#three").css("display", "block");
+        }
+    </script>
+}
+

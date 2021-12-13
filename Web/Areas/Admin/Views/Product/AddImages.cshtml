@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "AddImages";
+}
+
+<h1>Create</h1>
+
+@{ 
+    var c = ViewBag.Id;
+}
+<h4>ProductCreateVm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddImages" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+            <div class="form-group">
+                <label class="control-label">IdProduct</label>
+                <input value="@c" name="IdProduct" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label Image class="control-label"></label>
+                <input type="file" multiple  name="formFile" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="AddImages" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

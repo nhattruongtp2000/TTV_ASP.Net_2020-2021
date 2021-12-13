@@ -1,0 +1,20 @@
+﻿@model IEnumerable<ViewModel.ViewModels.BlogVm>
+
+<div class="row">
+
+    <div >
+        @foreach(var item in Model) { 
+          
+        <div style="border-top:1px solid black;border-bottom:1px solid black" class="row">
+            <div class="col-3">
+                <img height="150" width="150" src="~/@item.Image" />
+            </div>
+            <div class="col-9">
+                <h3><a style="text-decoration:none" href="@Url.Action("BlogDetails","Blog",new { BlogId = item.BlogId })">@item.BlogName</a></h3>
+                <div style="color:#A5A5A5;margin:10px 10px;">Bởi @item.Author vào lúc @item.DateCreated. Lượt xem: @item.ViewCount</div>
+                <div>@item.Content</div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

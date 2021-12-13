@@ -1,0 +1,81 @@
+﻿@model ViewModel.ViewModels.LoginVm
+@using Microsoft.AspNetCore.Identity;
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <style>
+        .main {
+            display: flex;
+            justify-content: center;
+        }
+
+            .main > div {
+                border: 1px solid none;
+                border-radius: 10px;
+                padding: 20px;
+                width: 600px;
+                height: 300px;
+                background-color: antiquewhite
+            }
+
+        h3 {
+            margin-left: 255px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="body2">
+        <h3>
+            Welcome to Ustora. Let's Login!
+        </h3>
+        <div class="main">
+            <div class="row">
+                <div class="col-6">
+                    <form method="post" asp-controller="Accounts" asp-action="Login">
+                        <div class="form-group">
+                            <label>PhoneNumber*</label>
+                            <input asp-for="UserName" class="form-control col-12" placeholder="Please fill your PhoneNumber" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Password*</label>
+                            <input asp-for="Pass" type="password" class="form-control col-12" placeholder="Please fill your Password" />
+                            <span asp-validation-for="Pass" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="RememberMe" type="checkbox" />
+                            <label asp-for="RememberMe">@Html.DisplayNameFor(m => m.RememberMe)</label>
+
+                            <br>
+                        </div>
+                        <div>
+                            <a href="/Accounts/ForgotPassword">Forgot Password</a>
+                        </div>
+                        @if (ViewBag.Error != null) { 
+                        <div style="color:red">@ViewBag.Error</div>
+                        }
+                        <input type="submit" class="btn btn-danger col-12" value="Login" />
+                    </form>
+                </div>
+                <div class="col-6">
+                    <div>New User? Let's Register in there</div>
+                    <a style="margin-bottom:10px" href="@Url.Action("Register","Accounts")" class="btn btn-success col-12">Register</a>
+                    <p>or login with</p>
+                    <div style="margin-bottom:10px">
+                        <form asp-action="ExternalLogin" asp-controller="Accounts">
+                            <input style="background-color: #d34836" type="submit" value="Login With Google" class="btn  col-12" />
+                        </form>
+                    </div>
+                    <form asp-action="ExternalLoginFacebook" asp-controller="Accounts">
+                        <input style="background-color: #3b5998" type="submit" value="Login With Facebook" class="btn col-12" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+

@@ -1,0 +1,136 @@
+﻿@model IEnumerable<ViewModel.ViewModels.OrdersVm>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Order</h1>
+
+
+<body>
+    @{ 
+        var stt = 1;
+    }
+
+    <table class="table table-bordered table-primary">
+        <thead>
+            <tr>
+                <th>
+
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmailShip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NameShip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddressShip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NumberShip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NoticeShip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalPice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th>@(stt++)</th>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.IdOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailShip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NameShip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddressShip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumberShip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoticeShip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem=>item.Status)
+                    </td>
+                    <td><a href="@Url.ActionLink("Details","Orders",new { IdOrder = item.IdOrder })">Details</a> </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+        new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+
+        })
+
+
+
+
+</body>
+
+
+<script>
+
+    function clickkk() {
+        var IdOrder = document.getElementById('cc').getAttribute('data-value');
+        alert(IdOrder);
+        @*var status2 = $("#a option:selected").text();
+        $.ajax(
+            {
+                type: "POST",
+                url: '@Url.Action("Change","Orders")',
+                data:
+                {
+                    IdOrder: IdOrder,
+                    x: status2
+                },
+                success: function () {
+                    alert("ssds,sad");
+                }
+            });*@
+    };
+
+</script>
+
+
+
+
+

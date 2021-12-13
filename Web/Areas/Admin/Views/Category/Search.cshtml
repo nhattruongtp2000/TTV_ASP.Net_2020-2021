@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ViewModel.ViewModels.CategoryVm>
+
+@{ 
+    Layout = null;
+}
+
+
+
+<table  class="table ">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NameCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdCategory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameCategory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParentId)
+                </td>
+
+                <td>
+                    <a href="/Admin/Category/Edit/?IdCategory=@item.IdCategory">Edit</a>|
+                    <a href="/Admin/Category/Delete/?IdCategory=@item.IdCategory">Delete</a>|
+
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

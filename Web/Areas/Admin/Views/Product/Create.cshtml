@@ -1,0 +1,136 @@
+﻿@model ViewModel.ViewModels.ProductCreateVm
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ProductCreateVm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCategory" class="control-label"></label>
+                <select asp-for="IdCategory" class="form-control" asp-items="@ViewBag.Categories">
+                    <option>Select Categories</option>
+                </select>
+                <span asp-validation-for="IdCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdBrand" class="control-label"></label>
+                <select asp-for="IdBrand" class="form-control" asp-items="@ViewBag.Brands">
+                    <option>Select Brands</option>
+                </select>
+                <span asp-validation-for="IdBrand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" placeholder="Write Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input type="number" asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Alias" class="control-label"></label>
+                <input asp-for="Alias" class="form-control" />
+                <span asp-validation-for="Alias" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Keyword" class="control-label"></label>
+                <input asp-for="Keyword" class="form-control" />
+                <span asp-validation-for="Keyword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="DateAccept" class="control-label"></label>
+                <input asp-for="DateAccept" class="form-control" />
+                <span asp-validation-for="DateAccept" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input id="gift" class="form-check-input" asp-for="UseVoucher" /> @Html.DisplayNameFor(model => model.UseVoucher)
+                </label>
+            </div>
+            <div style="display:none" id="togive" class="form-group">
+                <label asp-for="IdProductGiveTo" class="control-label"></label>
+                <input type="number" asp-for="IdProductGiveTo" class="form-control" />
+                <span asp-validation-for="IdProductGiveTo" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsGift" /> @Html.DisplayNameFor(model => model.IsGift)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsShow" /> @Html.DisplayNameFor(model => model.IsShow)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsStandout" /> @Html.DisplayNameFor(model => model.IsStandout)
+                </label>
+            </div>
+            <div>
+                <label asp-for="PhotoReview" class="control-label"></label>
+                <input type="file" name="PhotoReview" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts{ 
+<script>
+    $("#gift").change(function ()
+    {
+        if (this.checked) {
+            $("#togive").css("display", "block");
+        }
+        else
+        {
+            $("#togive").css("display", "none");
+        }
+
+
+    });
+
+
+
+</script>
+}

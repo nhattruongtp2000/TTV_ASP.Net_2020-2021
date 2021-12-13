@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ViewModel.ViewModels.BrandVm>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+<h1>Index</h1>
+
+@if (ViewBag.Success != null)
+{
+    <div class="alert-primary">@ViewBag.Success</div>
+
+}
+@if (ViewBag.Edit != null)
+{
+    <div class="alert-primary">@ViewBag.Edit</div>
+}
+@if (ViewBag.Delete != null)
+{
+    <div class="alert-primary">@ViewBag.Delete</div>
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div style="margin-top:30px;margin-bottom:30px">
+    <label>Search Brand</label>
+    <input id="namebrand" type="search" class="form-control " style="width:300px" />
+    <a id="searchbrand" class="btn btn-primary">Search</a>
+</div>
+
+
+<table id="showbrand" class="table ">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdBrand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BrandName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdBrand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BrandName)
+                </td>
+
+
+                <td>
+                    <a href="/Admin/Brand/Edit/?IdBrand=@item.IdBrand">Edit</a>|
+                    <a href="/Admin/Brand/Delete/?IdBrand=@item.IdBrand">Delete</a>|
+
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+    new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+
+    })
+

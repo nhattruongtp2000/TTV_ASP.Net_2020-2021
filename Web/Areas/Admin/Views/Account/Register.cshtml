@@ -1,0 +1,26 @@
+﻿@{ 
+    Layout = null;
+}
+@model ViewModel.ViewModels.RegisterVm
+
+<body>
+    <form method="post" asp-action="Register">
+        <div>
+            <label asp-for="PhoneNumer" class="control-label"> </label>
+            <input type="text" asp-for="PhoneNumer" class="form-control col-sm-6" />
+        </div>
+        <div>
+            <label asp-for="Email" class="control-label"> </label>
+            <input type="text" asp-for="Email" class="form-control col-sm-6" />
+        </div>
+        <div>
+            <label asp-for="Pass" class="control-label"> </label>
+            <input type="password" asp-for="Pass" class="form-control col-sm-6" />
+        </div>
+        <div>
+            <label asp-for="ConfirmPass" class="control-label"> </label>
+            <input type="password" asp-for="ConfirmPass" class="form-control col-sm-6" />
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+</body>

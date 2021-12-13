@@ -1,0 +1,88 @@
+﻿@model IEnumerable<ViewModel.ViewModels.VoucherVm>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert-primary">@TempData["Success"]</div>
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VoucherName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VoucherCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeVoucher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FromDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplyForAll)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountPercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VoucherName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VoucherCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeVoucher)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FromDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ToDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplyForAll)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiscountPercent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiscountAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a href="/Admin/Voucher/Edit/?IdVoucher=@item.IdVoucher">Edit</a>|
+                    <a href="/Admin/Voucher/Delete/?IdVoucher=@item.IdVoucher">Delete</a>|
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

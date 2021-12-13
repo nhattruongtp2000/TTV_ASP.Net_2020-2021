@@ -1,0 +1,121 @@
+﻿@model IEnumerable<ViewModel.ViewModels.SlideVm>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if (ViewBag.Success != null)
+{
+    <div class="alert-primary">@ViewBag.Success</div>
+
+}
+@if (ViewBag.Edit != null)
+{
+    <div class="alert-primary">@ViewBag.Edit</div>
+}
+@if (ViewBag.Delete != null)
+{
+    <div class="alert-primary">@ViewBag.Delete</div>
+}
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SlideName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Alias)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsShow)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateUp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FromFile)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SlideName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Alias)
+                </td>
+                <td>
+                    @if (item.IsShow == true)
+                    {
+                        <a class="clickslide" id="change_@item.Id" data-slide="@item.Id" href="#"><img src="~/Images/icons8-like-1.png" /></a>
+                    }
+                    else
+                    {
+                        <a class="clickslide" id="change_@item.Id" data-slide="@item.Id" href="#"><img src="~/Images/icons8-like-2.png" /></a>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateUp)
+                </td>
+                <td>
+                    <img src="~/@item.FromFile" class="" height="200" width="300" />
+                </td>
+                <td>
+                    <a href="/Admin/Slide/Edit/?IdSlide=@item.Id">Edit</a>|
+                    <a href="/Admin/Slide/Delete/?IdSlide=@item.Id">Delete</a>|
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".clickslide").click(function () {
+                event.preventDefault();
+                Swal.fire({
+                    showDenyButton: true,
+                    title: 'Thông báo',
+                    text: 'Đồng ý thay đổi trạng thái? ',
+                    icon: 'warning',
+                    confirmButtonText: 'Đồng ý',
+                    denyButtonText: 'Hủy bỏ',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var slideidd = parseInt($(this).attr("data-slide"));
+                        $.ajax({
+                            type: "POST",               //update
+                            url: '@Url.Action("ChangeIsShow","Slide")',
+                            data: {
+                                IdSlide: slideidd,
+                            },
+                            success: function (result) {
+                                window.alert = 'Thay đổi thành công'
+                                window.location.href = '@Url.Action("Index", "Slide")'
+                            }
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire('Trạng thái chưa được thay đổi,vui lòng thử lại', '', 'info')
+                    }
+                })
+            });
+        });
+    </script>
+}

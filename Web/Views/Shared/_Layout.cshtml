@@ -1,0 +1,388 @@
+﻿@using Microsoft.AspNetCore.Identity;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Product Page - Ustora Demo</title>
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+    <div class="area">
+        <div class="header-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="user-menu">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
+                                <li><a href="@Url.ActionLink("Checkout","Cart")"><i class="fa fa-user"></i> Checkout</a></li>
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <li><a href="~/Accounts/Login"><i class="fa fa-user"></i> Login</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="col-md-4">
+                            <div class="header-right">
+                                <ul class="list-unstyled list-inline">
+                                    <li><a href="@Url.ActionLink("OrderHistory","Accounts",new {IdUser=User.Identity.Name })"><i class="fa fa-shopping-cart"></i>Order History</a></li>
+                                    <li>
+                                        <a href="@Url.ActionLink("GetUser", "Accounts")"><i class="fa fa-user"></i> My Account</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.ActionLink("Logout", "Accounts")"><i class="fa fa-sign-out"></i>Log out</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div> <!-- End header area -->
+
+        <div class="site-branding-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="logo pt-0">
+                            <h1><a href="/home"><img src="/img/logo.png"></a></h1>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <form class="form-inline pt-5" asp-controller="Products" asp-action="GetAllProduct" method="post">
+                            <input name="key" class="form-control" placeholder="Search" style="width:300px" />
+                            <button style="height:35px;width:50px" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="shopping-item mt-5">
+                            <a href="@Url.ActionLink("Cart","Cart")">Cart<i class="fa fa-shopping-cart"></i> @await Html.PartialAsync("~/Views/Shared/_CartPartial.cshtml")</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>@*End site branding area*@
+
+    <div class="mainmenu-area">
+        <div class="container">
+            @*<nav class="navbar navbar-expand-sm row">
+
+                    <div class="navbar-collapse collapse" id="cll">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="active nav-item"><a href="/Home/Indexx">Home</a></li>
+                            <li class="nav-item"><a href="/Cart/Cart">Cart</a></li>
+                            <li class="nav-item"><a href="checkout.html">Checkout</a></li>
+                            <li class="nav-item dropdown">
+                                <a class=" dropdown-toggle" data-toggle="dropdown" href="#">Category</a>
+                                <div class="dropdown-menu">
+                                     <a class="dropdown-item bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Shirt</a>
+                                    <a class="dropdown-item bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Pants</a>
+                                    <a class="dropdown-item bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=3})">Cap</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Brands</a>
+                                <ul class="dropdown-menu">
+                                    <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=1})">Dior</a></li>
+                                    <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=2})">Channel</a></li>
+                                    <li><a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=3})">Louis Vutton</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </nav>*@
+            <div class="menu_header2 clearfix">
+
+                <!-- div con dùng float thì thêm class clearfix ở div cha -->
+                <div id="menu_contain">
+                    <ul class="menu_hmain menuheader_mid clearfix">
+                        <li class="li_co_cap ">
+                            <a class="active para" onclick="Data(this)" href="/Home/Indexx" id="Ao">Home</a>
+                        </li>
+                        @await Component.InvokeAsync("Category")
+
+                        <li class="li_co_cap">
+                            <a href="#">Brand</a>
+                            <ul class="menu_con">
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=1})">SamSung</a></li>
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=2})">Dell</a></li>
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=3})">Apple</a></li>
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=4})">Asus</a></li>
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=5})">LG</a></li>
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=6})">Lenovo</a></li>
+                            </ul>
+                        </li>
+                        <li class="li_co_cap">
+                            <a class="para" onclick="Data(this)" href="/Contact/Index">Contact</a>
+                        </li>
+                        <li class="li_co_cap">
+                            <a class="para" onclick="Data(this)" href="/Blog/Index">Blog</a>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="iconmedia">
+        <ul class="adjust">
+            <li><a href="#"><img src="~/Images/iconfacebook.png" /></a></li>
+            <li><a href="#"><img src="~/Images/instagram.png" /></a></li>
+            <li><a href="#"><img src="~/Images/youtube.png" /></a></li>
+            <li><a href="#"><img src="~/Images/twitter.png" /></a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <div class="footer-top-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-about-us">
+                        <h2>u<span>Stora</span></h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis sunt id doloribus vero quam laborum quas alias dolores blanditiis iusto consequatur, modi aliquid eveniet eligendi iure eaque ipsam iste, pariatur omnis sint! Suscipit, debitis, quisquam. Laborum commodi veritatis magni at?</p>
+                        <div class="footer-social">
+                            <a href="https://facebook.com" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="https://twitter.com" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a href="https://youtube.com" target="_blank"><i class="fa fa-youtube"></i></a>
+                            <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-menu">
+                        <h2 class="footer-wid-title">Chính sách </h2>
+                        <ul>
+                            <li><a href="@Url.Action("BlogDetails","Blog",new {BlogId=16})">Bảo mật thông tin</a></li>
+                            <li><a href="@Url.Action("BlogDetails","Blog",new {BlogId=13})">Giá cả và hình thức thanh toán</a></li>
+                            <li><a href="@Url.Action("BlogDetails","Blog",new {BlogId=14})">Quyền và nghĩa vụ các bên</a></li>
+                            <li><a href="@Url.Action("BlogDetails","Blog",new {BlogId=15})">Phương thức thanh toán</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-menu">
+                        <h2 class="footer-wid-title">Categories</h2>
+                        <ul>
+                            <li><a href="#">Mobile Phone</a></li>
+                            <li><a href="#">Home accesseries</a></li>
+                            <li><a href="#">LED TV</a></li>
+                            <li><a href="#">Computer</a></li>
+                            <li><a href="#">Gadets</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-newsletter">
+                        <h2 class="footer-wid-title">Newsletter</h2>
+                        <p>Đăng ý Email nhận thông báo của Ustora khi có chương trình khuyến mãi</p>
+                        <div class="newsletter-form">
+                            <form id="form" action="#">
+                                <input type="email" id="emailinput" placeholder="Email của bạn">
+                                <input type="submit" id="emails" value="Subscribe">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </br>
+            <div>
+                <h2 class="footer-wid-title">Follow us in</h2>
+                                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FUstora-101257308908899&tabs=timeline&width=0&height=0&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="700" height="250" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+
+            </div>
+        </div>
+    </div> <!-- End footer top area -->
+
+    <div class="footer-bottom-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="copyright">
+                        <p>&copy; 2015 uCommerce. All Rights Reserved. <a href="http://www.freshdesignweb.com" target="_blank">freshDesignweb.com</a></p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="footer-card-icon">
+                        <i class="fa fa-cc-discover"></i>
+                        <i class="fa fa-cc-mastercard"></i>
+                        <i class="fa fa-cc-paypal"></i>
+                        <i class="fa fa-cc-visa"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End footer bottom area -->
+    <!-- Messenger Chat plugin Code -->
+    <div id="fb-root"></div>
+
+    <!-- Your Chat plugin code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.min.js'></script>
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+</html>
+
+
+
+
+<script>
+    var chatbox = document.getElementById('fb-customer-chat');
+    chatbox.setAttribute("page_id", "101257308908899");
+    chatbox.setAttribute("attribution", "biz_inbox");
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            xfbml: true,
+            version: 'v11.0'
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function showcon() {
+        $(".menu_con_con").css("display", "block");
+    }
+
+    function hidecon() {
+        $(".menu_con_con").css("display", "none");
+    }
+
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#emails").click(function (event) {
+            event.preventDefault();
+            var email = $("#emailinput").val();
+            $.ajax({
+                type: "POST",
+                url: '/Contact/SendEmailPromotion',
+                data: {
+                    Email: email
+                },
+                success: function () {
+                    swal("Thông báo", "Gửi thành công");
+
+                },
+                error: function () {
+                    swal("Thông báo", "Gửi thất bại");
+                }
+            });
+            document.getElementById("form").reset();
+        });
+    });
+</script>
+<script>
+    function Data(el) {
+        $('.para').css("font-weight", "normal");
+        $(el).css("font-weight", "bold");
+    }
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $(".test").click(function (event) {
+            event.preventDefault();
+            var IdProduct = $(this).attr("data-IdProduct");
+            $.ajax({
+                type: "POST",
+                url: '/Cart/AddToCart', //đường dẫn
+                data: {
+                    IdProduct: IdProduct,  //tham số chuyển tới controller
+                },
+                success: function (data) {
+                    swal("Thông báo", "Add to Card Success");
+                    $("#cartcount").html(data);
+                },
+                error: function () {
+                    swal("Thông báo", "Add Failure, You need to login");
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#search").click(function () {
+            var Iduser = $(this).attr("data-id");
+                var IdOrder = $("#idorder").val();
+                $.ajax({
+                    type: "POST",               //update
+                    url: '@Url.Action("SearchOrder", "Account")',
+                    data: {
+                        IdOrder: IdOrder,
+                        IdUser:Iduser
+                    },
+                    success: function (result) {
+                        $("#show").html(result);
+                    }
+                });
+        });
+    });
+
+</script>
+@if (Startup.EnableSignalR)
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js"></script>
+    <script src="~/js/onlinecount.js"></script>
+}

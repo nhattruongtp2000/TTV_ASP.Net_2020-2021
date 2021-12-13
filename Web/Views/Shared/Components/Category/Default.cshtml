@@ -1,0 +1,41 @@
+﻿@model List<ViewModel.ViewModels.CategoryVm>
+
+
+        @*<li onmouseover="showcon()" onmouseout="hidecon()"><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Laptop</a>
+                <ul class="menu_con_con" style="display:none">
+                    <li><a href="#">Love </a></li>
+                </ul>
+            </li>*@
+        @*<li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Phone</a></li>
+            <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=3})">Headphone</a></li>
+            <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=4})">PC</a></li>
+            <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=5})">Mouse</a></li>*@
+
+
+        <li class="li_co_cap">
+            <a class="para" onclick="Data(this)" href="#montht">Category</a>
+            <ul class="menu_con">
+                @foreach (var item in Model.Where(x => x.ParentId == null))
+                {
+                    if (Model.Any(x => x.ParentId == item.IdCategory))
+                    {
+                        <li onmouseover="showcon()" onmouseout="hidecon()">
+                            <a class="para"  href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=item.IdCategory})">@item.NameCategory</a>
+                            <ul class="menu_con_con" style="display:none">
+                                @foreach (var subitem in Model.Where(x => x.ParentId == item.IdCategory))
+                                {
+                                    <li><a href="">@subitem.NameCategory</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nosub"><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=item.IdCategory})">@item.NameCategory</a></li>
+                    }
+
+
+                   
+                }
+            </ul>
+        </li>

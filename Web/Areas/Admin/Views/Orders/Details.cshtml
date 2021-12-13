@@ -1,0 +1,169 @@
+﻿@model IEnumerable<ViewModel.ViewModels.OrderDetailsVm>
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<p>
+    <div style="font-size:22px;font-weight:bold" >Status </div>
+</p>
+
+<div style="margin-bottom:40px  " >
+    <select onchange="change()" id="a" style="width:400px" asp-items="@ViewBag.Status" class="form-select col-md-4" >
+    <option>@ViewBag.GetStatus</option>
+
+    </select>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quality)
+            </th>
+            <th>
+                Price Product
+            </th>
+            <th>
+                Photo
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td id="cc" data-value="@item.IdOrder">
+                    @Html.DisplayFor(modelItem => item.IdOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <img src="~/@item.PhotoReview" class="rounded-circle" height="50" width="50" />
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row" style="display:block">
+    <div style="height:30px;width:390px;text-align:center;margin-bottom:5px" class="alert-primary col-sm-4">Send Email Order Status </div>
+    <div>
+        <a id="receive" class="btn btn-warning col-sm-2" style="display:inline-block">Order has been received</a>
+        <a id="delivery" class="btn btn-success col-sm-2" style="display:inline-block">Order has been delivered</a>
+        <a id="completed" class="btn btn-success col-sm-2" style="display:inline-block">Order has been completed</a>
+    </div>
+</div>
+
+
+
+
+@section Scripts{ 
+
+<script>
+
+    function change() {
+        var IdOrder = document.getElementById("cc").getAttribute("data-value");
+        var x = $("#a option:selected").text();
+        $.ajax({
+            type: "POST",
+             url: '@Url.Action("Change","Orders")',
+                data:
+                {
+                    IdOrder: IdOrder,
+                    x: x
+                },
+                success: function () {
+                    swal("Notification","Change Status Success")
+            },
+            error: function () {
+                swal("Notification", "Change Status Failure")
+            }
+        });
+    }
+
+
+</script>
+<script>
+    $(document).ready(function () {
+        $("#receive").click(function (event) {
+            event.preventDefault();
+            var IdOrder = document.getElementById("cc").getAttribute("data-value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendOrderReceived", "Contact")',
+                data:
+                {
+                    IdOrder: IdOrder
+                },
+                success: function () {
+                    swal("Notification", "Send Email Success")
+                },
+                error: function () {
+                    swal("Notification", "Send Email Fail")
+                }
+            });
+        });
+    });
+
+        $(document).ready(function(){
+        $("#delivery").click(function (event)
+        {
+            event.preventDefault();
+            var IdOrder = document.getElementById("cc").getAttribute("data-value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendOrderDelivered", "Contact")',
+                data:
+                {
+                    IdOrder: IdOrder
+                },
+                success: function () {
+                    swal("Notification","Send Email Success")
+                },
+                error: function () {
+                    swal("Notification","Send Email Fail")
+                }
+            });
+        });
+    });
+
+     $(document).ready(function () {
+        $("#completed").click(function (event) {
+            event.preventDefault();
+            var IdOrder = document.getElementById("cc").getAttribute("data-value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendOrderCompleted", "Contact")',
+                data:
+                {
+                    IdOrder: IdOrder
+                },
+                success: function () {
+                    swal("Notification", "Send Email Success")
+                },
+                error: function () {
+                    swal("Notification", "Send Email Fail")
+                }
+            });
+        });
+    });
+</script>
+
+}
