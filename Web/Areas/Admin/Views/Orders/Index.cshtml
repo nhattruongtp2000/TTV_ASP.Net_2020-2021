@@ -10,7 +10,7 @@
 
 
 <body>
-    @{ 
+    @{
         var stt = 1;
     }
 
@@ -25,21 +25,6 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.UserName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EmailShip)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NameShip)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AddressShip)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NumberShip)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NoticeShip)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.TotalPice)
@@ -58,37 +43,22 @@
             {
                 <tr>
                     <th>@(stt++)</th>
-                    <td >
+                    <td>
                         @Html.DisplayFor(modelItem => item.IdOrder)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.UserName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.EmailShip)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NameShip)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AddressShip)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NumberShip)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NoticeShip)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalPice)
+                        @item.TotalPice.ToString("#,##0") VNĐ
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.OrderDay)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem=>item.Status)
+                        @Html.DisplayFor(modelItem => item.Status)
                     </td>
-                    <td><a href="@Url.ActionLink("Details","Orders",new { IdOrder = item.IdOrder })">Details</a> </td>
+                    <td><a id="detailsbutton" href="@Url.ActionLink("Details","Orders",new { IdOrder = item.IdOrder })">Details</a> </td>
                 </tr>
             }
         </tbody>
@@ -100,7 +70,7 @@
             PageClasses = new string[] { "page-link" }
 
         })
-
+    <a class="btn btn-success" href="/Admin/Orders/Excel">Export Excel</a>
 
 
 

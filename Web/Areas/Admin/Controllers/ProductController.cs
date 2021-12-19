@@ -44,6 +44,10 @@ namespace Web.Areas.Admin.Controllers
             {
                 ViewBag.AddImage = TempData["AddImage"];
             }
+            if (TempData["Delete"] != null)
+            {
+                ViewBag.Delete = TempData["Delete"];
+            }
 
 
 
@@ -94,6 +98,24 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int IdProduct)
         {
             var c = await _IproductRepository.GetProduct(IdProduct);
+
+            var brand =await _IbrandRepository.GetAllBrand();
+            var cate = await _IcategoryRepository.GetAllCategory();
+            ViewBag.brand = brand.Select(x => new SelectListItem()
+            {
+                Text = x.BrandName,
+                Value = x.IdBrand.ToString()
+
+            }) ;
+
+            ViewBag.cate = cate.Select(x => new SelectListItem()
+            {
+                Text = x.NameCategory,
+                Value = x.IdCategory.ToString()
+
+            });
+
+
             return View(c);
         }
 
@@ -108,6 +130,14 @@ namespace Web.Areas.Admin.Controllers
             }
             return Content("Edit Failure");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int IdProduct)
+        {
+            var c = await _IproductRepository.GetProduct(IdProduct);
+            return View(c);
+        }
+
 
 
         [HttpGet]
@@ -141,14 +171,12 @@ namespace Web.Areas.Admin.Controllers
                 IXLWorksheet worksheet =
                    workbook.Worksheets.Add("Products");
                 worksheet.Cell(1, 1).Value = "IdProduct";
-                worksheet.Cell(1, 2).Value = "IdBrand";
-                worksheet.Cell(1, 3).Value = "ProductName";
-                worksheet.Cell(1, 4).Value = "UseVoucher";
-                worksheet.Cell(1, 5).Value = "PhotoReview";
-                worksheet.Cell(1, 6).Value = "IdCategory";
-                worksheet.Cell(1, 7).Value = "Price";
-                worksheet.Cell(1, 8).Value = "IsFree";
-                worksheet.Cell(1, 9).Value = "DateAccept";
+                worksheet.Cell(1, 2).Value = "ProductName";
+                worksheet.Cell(1, 3).Value = "Price";
+                worksheet.Cell(1, 4).Value = "PriceExport";
+                worksheet.Cell(1, 5).Value = "IsShow";
+                worksheet.Cell(1, 6).Value = "IsStandout";        
+                worksheet.Cell(1, 7).Value = "PhotoReview";
 
                 for (int index = 1; index <= 9; index++)
                 {
@@ -158,14 +186,12 @@ namespace Web.Areas.Admin.Controllers
                 for (int index = 1; index <= products.Count(); index++)
                 {
                     worksheet.Cell(index + 1, 1).Value = products[index - 1].IdProduct;
-                    worksheet.Cell(index + 1, 2).Value = products[index - 1].IdBrand;
-                    worksheet.Cell(index + 1, 3).Value = products[index - 1].ProductName;
-                    worksheet.Cell(index + 1, 4).Value = products[index - 1].UseVoucher;
-                    worksheet.Cell(index + 1, 5).Value = products[index - 1].PhotoReview;
-                    worksheet.Cell(index + 1, 6).Value = products[index - 1].IdCategory;
-                    worksheet.Cell(index + 1, 7).Value = products[index - 1].Price;
-                    worksheet.Cell(index + 1, 8).Value = products[index - 1].IsFree;
-                    worksheet.Cell(index + 1, 8).Value = products[index - 1].DateAccept;
+                    worksheet.Cell(index + 1, 2).Value = products[index - 1].ProductName;
+                    worksheet.Cell(index + 1, 3).Value = products[index - 1].Price;
+                    worksheet.Cell(index + 1, 4).Value = products[index - 1].PriceExport;
+                    worksheet.Cell(index + 1, 5).Value = products[index - 1].IsShow;
+                    worksheet.Cell(index + 1, 6).Value = products[index - 1].IsStandout;
+                    worksheet.Cell(index + 1, 7).Value = products[index - 1].PhotoReview;
                 }
 
                 using (var stream = new MemoryStream())
@@ -190,6 +216,18 @@ namespace Web.Areas.Admin.Controllers
             var x = await _IproductRepository.ChangeIsStandout(IdProduct);
             return RedirectToAction("Index");
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int IdProduct)
+        {
+            var x = await _IproductRepository.Delete(IdProduct);
+            if (x > 0)
+            {
+                TempData["Delete"] = "Delete Product number " + IdProduct + " Success";
+                return RedirectToAction("Index");
+            }
+            return Content("Delete Failure");
         }
     }
 }

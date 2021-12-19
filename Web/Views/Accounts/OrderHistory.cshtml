@@ -49,7 +49,7 @@
                         @Html.DisplayFor(modelItem => item.OrderDay)
                     </td>
                     <td>
-                        @Convert.ToInt32(item.TotalPice).ToString()
+                        @Convert.ToInt32(item.TotalPice).ToString("#,##0") VNĐ
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.VoucherCode)

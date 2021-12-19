@@ -1069,7 +1069,7 @@ input[type="submit"]:hover, button[type=submit]:hover {background-color: #222}
     overflow: hidden;
 }
 .product-gallery img {
-    height: auto;
+    height: 155px;
     margin-left: 15px;
     width: 76px;
 }
@@ -1434,3 +1434,4 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     border: 1px solid #ddd;
     display: block
 }
+

@@ -12,8 +12,11 @@ namespace ViewModel.ViewModels
         public int IdCategory { get; set; }
         public string ProductName { get; set; }
 
+        public string Description { get; set; }
+
         public DateTime DateAccept { get; set; }
         public decimal Price { get; set; }
+        public decimal PriceExport { get; set; }
 
         public int Quantity { get; set; }
 
@@ -22,6 +25,9 @@ namespace ViewModel.ViewModels
         public bool UseVoucher { get; set; }
 
         public int IdBrand { get; set; }
+
+        public string NameBrand { get; set; }
+        public string NameCategory { get; set; }
 
         public string PhotoReview { get; set; } //đây là file hiển thị
 

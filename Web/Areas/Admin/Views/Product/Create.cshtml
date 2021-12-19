@@ -8,7 +8,7 @@
 
 <h4>ProductCreateVm</h4>
 <hr />
-<div class="row">
+<div class="row" style="margin-left:25px">
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -46,7 +46,11 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label asp-for="PriceExport" class="control-label"></label>
+                <input asp-for="PriceExport" class="form-control" />
+                <span asp-validation-for="PriceExport" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>
                 <input type="number" asp-for="Quantity" class="form-control" />
@@ -57,39 +61,9 @@
                 <input asp-for="Alias" class="form-control" />
                 <span asp-validation-for="Alias" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Keyword" class="control-label"></label>
-                <input asp-for="Keyword" class="form-control" />
-                <span asp-validation-for="Keyword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
 
 
 
-            <div class="form-group">
-                <label asp-for="DateAccept" class="control-label"></label>
-                <input asp-for="DateAccept" class="form-control" />
-                <span asp-validation-for="DateAccept" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input id="gift" class="form-check-input" asp-for="UseVoucher" /> @Html.DisplayNameFor(model => model.UseVoucher)
-                </label>
-            </div>
-            <div style="display:none" id="togive" class="form-group">
-                <label asp-for="IdProductGiveTo" class="control-label"></label>
-                <input type="number" asp-for="IdProductGiveTo" class="form-control" />
-                <span asp-validation-for="IdProductGiveTo" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsGift" /> @Html.DisplayNameFor(model => model.IsGift)
-                </label>
-            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsShow" /> @Html.DisplayNameFor(model => model.IsShow)

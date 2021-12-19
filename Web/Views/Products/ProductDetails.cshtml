@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="@Model.Description"/>
     <meta name="keywords" content=""/>
-    <meta property="og:url" content="http://ustoram.somee.com/products/@Model.Alias"/>
+    <meta property="og:url" content="http://ustoram.somee.com/@Model.Alias"/>
     <meta property="og:image" content="http://ustoram.somee.com/Images/@Model.PhotoReview.Substring(7)"/>
     <meta property="og:type" content="article"/>
     <meta property="og:title" content="@Model.ProductName"/>
@@ -252,16 +252,14 @@
 
                                     <div class="col-sm-6">
                                         <div class="product-inner">
-                                            @{var a = (int)Model.Price;}
+                                            @{var a = Model.Price.ToString("#,##0");}
                                             <h2 class="product-name">@Model.ProductName</h2>
                                             <div class="product-inner-price">
-                                                <ins>@a VND</ins> <del></del>
+                                                <ins style="font-size:25px">@a VND</ins> <del></del>
                                             </div>
 
                                             <form action="" class="cart">
-                                                <div class="quantity">
-                                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
-                                                </div>
+                                               
                                                 <a class="btn btn-primary test" data-IdProduct="@Model.IdProduct">Add To Cart</a>
                                             </form>
                                             <div id="fb-root"></div>
@@ -326,7 +324,7 @@
 
                                                 <h2><a href="">@Model.RelatedProducts[i].ProductName</a></h2>
                                                 <div class="product-carousel-price">
-                                                    <ins>@Model.RelatedProducts[i].Price</ins> <del>$999.00</del>
+                                                    <ins>@Model.RelatedProducts[i].Price.ToString("##,#0")</ins> 
                                                 </div>
                                             </div>
                                         }

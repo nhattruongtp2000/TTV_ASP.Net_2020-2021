@@ -402,6 +402,9 @@ namespace Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("PriceExport")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 

@@ -69,3 +69,79 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+#editplace {
+    border: 3px solid #eb6619;
+    display: block;
+    text-align: center;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    width: 100px;
+    display: inline-block;
+    color: #eb6619
+}
+
+    #editplace:hover {
+        color: white;
+        background-color: #eb6619;
+    }
+
+#deleteplace {
+    border: 3px solid black;
+    display: block;
+    text-align: center;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    width: 50px;
+    color: black
+}
+
+    #deleteplace:hover {
+        color: white;
+        background-color: black;
+    }
+
+#detailsbutton {
+    border: 3px solid #FF392B;
+    display: block;
+    text-align: center;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+    #detailsbutton:hover {
+        color: white;
+        background-color: #FF392B;
+    }
+#createbutton {
+    border: 3px solid #808080;
+    display: block;
+    text-align: center;
+    border-radius: 10px;
+    text-decoration: none;
+}
+    #createbutton:hover {
+        color: white;
+        background-color: #808080;
+    }
+
+#person1 {
+    height: 500px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+#person2 {
+    height: 500px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+}

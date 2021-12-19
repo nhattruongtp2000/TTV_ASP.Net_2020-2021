@@ -32,6 +32,8 @@ namespace DI.DI.Interace
 
         Task<IPagedList<ProductVm>> GetProductPerCategory(int IdCategory, int? page);
 
+        Task<IPagedList<ProductVm>> GetProductPerSubCategory(int IdCategory, int? page);
+
         Task<IPagedList<ProductVm>> GetProductPerBrand(int IdBrand, int? page);
 
         Task<string> UpLoadFile(IFormFile fromFile);

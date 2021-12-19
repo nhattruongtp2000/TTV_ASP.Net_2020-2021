@@ -29,6 +29,8 @@ namespace Data.Data
 
         public decimal Price { get; set; }
 
+        public decimal PriceExport { get; set; }
+
         public DateTime DateAccept { get; set; }
 
         public bool UseVoucher { get; set; }

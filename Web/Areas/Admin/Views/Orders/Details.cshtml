@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ViewModel.ViewModels.OrderDetailsVm>
+﻿@model ViewModel.ViewModels.OrderDetailsUser
 
 @{
     ViewData["Title"] = "Details";
@@ -9,25 +9,62 @@
 <p>
     <div style="font-size:22px;font-weight:bold" >Status </div>
 </p>
+<div style="margin-bottom:40px" class="row">
 
-<div style="margin-bottom:40px  " >
-    <select onchange="change()" id="a" style="width:400px" asp-items="@ViewBag.Status" class="form-select col-md-4" >
-    <option>@ViewBag.GetStatus</option>
-
-    </select>
+    <div  class="col-6" >
+        <select onchange="change()" id="a" style="width:400px" asp-items="@ViewBag.Status" class="form-select col-md-4" >
+        <option>@ViewBag.GetStatus</option>
+    
+        </select>
+    </div>
+    <div style="border:1px solid black" class="col-6">
+        <div style="text-align:center;font-weight:bold;font-size:20px">
+            Thông tin khách hàng
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div>
+                    Họ tên
+                </div>
+                <div>
+                    Email
+                </div>
+                <div>
+                    Số điện thoại
+                </div>
+                <div>
+                    Địa chỉ
+                </div>
+            </div>
+            <div class="col-6">
+                <div>
+                    @Model.NameShip
+                </div>
+                <div>
+                    @Model.EmailShip
+                </div>
+                <div>
+                    @Model.NumberShip
+                </div>
+                <div>
+                    @Model.AddressShip
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdOrder)
+                Mã đơn hàng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductName)
+                Tên
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quality)
+               Số lượng
             </th>
             <th>
                 Price Product
@@ -38,7 +75,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.OrderDetailsVms)
         {
             <tr>
                 <td id="cc" data-value="@item.IdOrder">
@@ -51,7 +88,7 @@
                     @Html.DisplayFor(modelItem => item.Quality)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    @item.Price.ToString("#,##0") VNĐ
                 </td>
                 <td>
                     <img src="~/@item.PhotoReview" class="rounded-circle" height="50" width="50" />

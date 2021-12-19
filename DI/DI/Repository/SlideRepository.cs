@@ -63,7 +63,6 @@ namespace DI.DI.Repository
             var slide =await _iden2Context.Slides.FindAsync(request.Id);
             slide.Alias = request.Alias;
             slide.SlideName = request.SlideName;
-            slide.DateUp = request.DateUp;
             return await _iden2Context.SaveChangesAsync();
         }
 

@@ -12,7 +12,7 @@ namespace DI.DI.Interace
     {
         Task<IPagedList<OrdersVm>> GetAll(int? page);
 
-        Task<List<OrderDetailsVm>> GetDetails(string IdOrder);
+        Task<OrderDetailsUser> GetDetails(string IdOrder);
 
         Task<int> ChangeStatusDetails(string IdOrder,string x);
 
@@ -22,5 +22,6 @@ namespace DI.DI.Interace
 
         Task<OrdersVm> SearchOrder(string IdOrder,string IdUser);
 
+        Task<List<OrdersVm>> GetAllToExcel();
     }
 }

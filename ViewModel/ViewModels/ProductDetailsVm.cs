@@ -19,6 +19,7 @@ namespace ViewModel.ViewModels
         public DateTime DateAccept { get; set; }
 
         public decimal Price { get; set; }
+        public decimal PriceExport { get; set; }
 
         public bool UseVoucher { get; set; }
 

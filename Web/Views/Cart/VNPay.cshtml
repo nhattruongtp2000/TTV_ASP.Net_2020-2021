@@ -14,17 +14,24 @@
                 <option value="other">Thanh toán trực tuyến</option>
             </select>
         </div>
-        <div>@ViewBag.Amount</div>
+
+        <input name="EmailShip" hidden value="@ViewBag.EmailShip" />
+        <input name="NameShip" hidden value="@ViewBag.NameShip" />
+        <input name="AddressShip" hidden value="@ViewBag.AddressShip" />
+        <input name="NumberShip" hidden value="@ViewBag.NumberShip" />
+        <input name="NoticeShip" hidden value="@ViewBag.NoticeShip" />
+        <input name="voucherCode" hidden value="@ViewBag.voucherCode" />
+
         <div class="form-group">
             <label>Số tiên</label>
-            <input name="Amount" type="number" value="@ViewBag.Amount"  class="form-control" />
+            <input name="Amount" readonly type="number" value="@ViewBag.Amount" class="form-control" />
         </div>
         <div class="form-group">
             <label>Nội dung thanh toán</label>
             <textarea name="txtOrderDesc" class="form-control" rows="2"></textarea>
         </div>
-        
-        <input type="submit" class="btn btn-primary" value="Thanh toán"/>
+
+        <input type="submit" class="btn btn-primary" value="Thanh toán" />
 
 
     </form>

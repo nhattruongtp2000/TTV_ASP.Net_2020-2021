@@ -368,7 +368,7 @@
                 var IdOrder = $("#idorder").val();
                 $.ajax({
                     type: "POST",               //update
-                    url: '@Url.Action("SearchOrder", "Account")',
+                    url: '@Url.Action("SearchOrder", "Accounts")',
                     data: {
                         IdOrder: IdOrder,
                         IdUser:Iduser

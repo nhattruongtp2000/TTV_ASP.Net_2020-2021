@@ -1,23 +1,87 @@
-﻿@model IEnumerable<ViewModel.ViewModels.ToTalRevenue>
-
+﻿@model ViewModel.ViewModels.TotalAnalystVm
+@using Newtonsoft.Json
 
 <head>
     <!-- Step 1 - Include the fusioncharts core library -->
-    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
-    <!-- Step 2 - Include the fusion theme -->
-    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-cartesian.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-pie.min.js"></script>
     <style>
-        body {
-            background-color: aquamarine;
+        #taskall {
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+            background-color: #e5e5e5;
+            margin-bottom: 20px;
         }
+
+        #task1 {
+            height: 30px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 10px;
+            width: 160px;
+            background-color: rgba(255, 57, 43, 0.1);
+            text-align: center;
+            color: #FF392B
+        }
+
+        #task2 {
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 10px;
+            height: 30px;
+            width: 160px;
+            text-align: center;
+            background-color: rgba(0, 148, 94, 0.2);
+            color: #00945E
+        }
+
+        #task3 {
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 10px;
+            height: 30px;
+            width: 160px;
+            background-color: #505050;
+            text-align: center;
+            color: #222222;
+        }
+
+        #task4 {
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 10px;
+            height: 30px;
+            width: 160px;
+            background-color: #fcf2e9;
+            text-align: center;
+            color: #E18425
+        }
+
+        .row, .taskbar {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .taskbar {
+            height: 120px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+
+            .taskbar div {
+            }
+
+            .taskbar span {
+                font-size: 24px;
+            }
 
         #one {
             display: none;
         }
 
-        #two {
-            display: none
-        }
 
         #but {
             margin-top: 5px;
@@ -30,52 +94,158 @@
             #but button {
                 width: 100px;
             }
+
+        #container2 {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container4 {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+
+
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container3 {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
     </style>
 
 </head>
 <body>
-    <div id="but" class="col-4">
-        <button onclick="clickone()" style="margin-right:50px" class="btn btn-primary">Day</button>
-        <button onclick="clicktwo()" style="margin-right:50px" class="btn btn-primary">Month</button>
-        <button onclick="clickthree()" class="btn btn-primary">Year</button>
-    </div>
+
+    <form method="post" asp-controller="Analyst" asp-action="GetRevenueMonth">
+        <div name="month" class="form-group">
+            <label>Each Day</label>
+            <select name="month" id="month" class=" col-2 me-2">
+                <option selected>--</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+            </select>
+
+            <label>Year</label>
+            <select id="year" name="year" class="col-2 me-2">
+                <option selected>--</option>
+                <option>2020</option>
+                <option>2021</option>
+                <option>2022</option>
+            </select>
+
+            <button id="searchbt" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
 
 
-    <div id="two">
-        <form class="form-inline" asp-action="GetRevenueMonth" method="post">
-            <div name="month" class="form-group">
-                <label>Each Day</label>
-                <select name="month" class=" col-2 me-2">
-                    <option selected>--</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                </select>
 
-                <label>Year</label>
-                <select name="year" class="col-2 me-2">
-                    <option selected>--</option>
-                    <option>2020</option>
-                    <option>2021</option>
-                    <option>2022</option>
-                </select>
 
-                <button class="btn btn-primary">Submit</button>
+    <div class="container">
+        <div id="taskall" style="margin-top:20px">
+            <div style="text-align:center">
+                <h3>Số liệu thống kê tháng hiện tại</h3>
             </div>
-        </form>
+            <div class="taskbar row">
+                <div class="col-3">
+                    <div id="task1">Đơn hàng mới</div>
+                    <span style="color: #FF392B">@ViewBag.OrdersMonth</span>
+
+                </div>
+                <div class="col-3">
+                    <div id="task2">Sản phẩm bán ra</div>
+                    <span style="color: #00945E">@ViewBag.ProductSold</span>
+                </div>
+                @{
+                    var order = (int)@ViewBag.TotalRevenueMonth;
+                    var orders = order.ToString("#,##0");
+                    <div class="col-3">
+                        <div id="task3">Doanh thu tháng</div>
+                        <span style="color: #222222">@orders VNĐ</span>
+                    </div>
+
+                    var profit = (int)@ViewBag.Profit;
+                    var profits = profit.ToString("#,##0");
+                    <div class="col-3">
+                        <div id="task4">Lợi nhuận tháng</div>
+                        <span style="color: #E18425">@profits VNĐ</span>
+
+                    </div>
+                }
+             </div>
+
+        </div>
+        <div style="margin-bottom:30px">
+            <div style="text-align:center;color:brown;font-size:30px;font-weight:bold">Thống kê Tổng doanh thu theo ngày trong tháng</div>
+            <div style="height:300px" id="container"></div>
+        </div>
+        <div style="margin-bottom:100px">
+            <div style="text-align:center;color:red;font-size:30px;font-weight:bold">Thống kê Số lượng sản phẩm bán chạy trong tháng</div>
+            <div style="height:300px" id="container3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div style="height:500px;width:500px" id="container2"></div>
+            </div>
+            <div style="float:right" class="col-6">
+                <div style="height:500px;width:500px" id="container4"></div>
+            </div>
+
+        </div>
+
+        <h2 style="text-align: center; margin-top: 50px">Danh sách Sản phẩm đã xuất trong tháng hiện tại</h2>
+        <div class="field3">
+            <table class="table" id="listperson">
+                <tr>
+                    <th>Mã Sản Phẩm</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Đơn Hàng</th>
+                    <th>Số Lượng</th>
+                    <th>Giá nhập</th>
+                    <th>Giá xuất</th>
+                    <th>Doanh thu</th>
+                    <th>Lợi nhuận</th>
+                </tr>
+                @foreach (var item in Model.profitMonth)
+                {
+                <tr>
+                    <td>@item.IdProduct</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.IdOrder</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.PriceImport.ToString("#,##0") VNĐ</td>
+                    <td>@item.PriceExport.ToString("#,##0") VNĐ</td>
+                    <td>@item.Revenue.ToString("#,##0") VNĐ</td>
+                    <td>@item.Profit.ToString("#,##0") VNĐ</td>
+
+                </tr>
+                }
+            </table>
+        </div>
     </div>
-
-
-
 
 
 
@@ -83,24 +253,156 @@
 
 @section Scripts{
     <script>
+        var data = [];
+        var model =@Html.Raw(JsonConvert.SerializeObject(this.Model.revenueMonthVms));
+        var j = 0;
+        for (var i = 1; i <= 31; i++) {
+            if (model[j].Day == i) {
+                data.push([i, model[j].Revenue])
+                j++;
+            }
+            else {
+                data.push([i, 0]);
+            }
+        }
 
+
+
+        // create a chart
+        chart = anychart.area();
+
+        // create an area series and set the data
+        var series = chart.area(data);
+        series.name("Tổng doanh thu");
+        // set the container id
+        chart.container("container");
+
+        // initiate drawing the chart
+        chart.draw();
         function clickone() {
             $("#one").css("display", "block");
             $("#two").css("display", "none");
             $("#three").css("display", "none");
         }
 
-        function clicktwo() {
-            $("#one").css("display", "none");
-            $("#two").css("display", "block");
-            $("#three").css("display", "none");
+        /////////////////////////////
+        var data4 = [];
+        var modelset =@Html.Raw(JsonConvert.SerializeObject(this.Model.quantityProducts));
+
+
+        for (var i = 0; i < modelset.length; i++) {
+            data4.push([modelset[i].ProductName, modelset[i].TotalQuantity, modelset[i].Price]);
         }
 
-        function clickthree() {
-            $("#one").css("display", "none");
-            $("#two").css("display", "none");
-            $("#three").css("display", "block");
+
+        var dataSet = anychart.data.set(data4);
+
+        // map data for the first series, take x from the zero column and value from the first column of data set
+        var firstSeriesData = dataSet.mapAs({ x: 0, value: 1 });
+
+        // map data for the second series, take x from the zero column and value from the second column of data set
+        var secondSeriesData = dataSet.mapAs({ x: 0, value: 2 });
+
+        // map data for the third series, take x from the zero column and value from the third column of data set
+        var thirdSeriesData = dataSet.mapAs({ x: 0, value: 3 });
+
+        // create column chart
+        var chartset = anychart.column();
+
+        // turn on chart animation
+        chartset.animation(true);
+
+        // set chart title text settings
+        chartset.title('');
+
+        // create scale for line series and extraYAxis
+        // it force line series to not stuck values with over series
+        var scale = anychart.scales.linear();
+
+        // create extra axis on the right side of chart
+        chartset
+            .yAxis(1)
+            .title('')
+            .orientation('right')
+            .scale(scale);
+
+        // create second series with mapped data
+        var columnSeries = chartset.column(secondSeriesData);
+        columnSeries.name('Tổng doanh thu');
+
+        // create third series with mapped data
+        var splineSeries = chartset.splineArea(thirdSeriesData);
+        splineSeries.name('Spline');
+
+        // create line series and set scale for it
+        var lineSeries = chartset.spline(firstSeriesData);
+        lineSeries.name('Số lượng').yScale(scale).stroke('2.5 #ef6c00');
+
+        chartset.tooltip().displayMode('union');
+
+        chartset.interactivity().hoverMode('by-x');
+
+        // set container id for the chart
+        chartset.container('container3');
+
+        // initiate chart drawing
+        chartset.draw();
+
+
+
+
+        /////////////////////////
+        var model =@Html.Raw(JsonConvert.SerializeObject(this.Model.quantityBrandVms));
+
+        var data2 = [];
+        for (var i = 0; i < model.length;i++) {
+            data2.push({ x: model[i].BrandName, value:model[i].Quantity });
         }
+
+
+        // create a pie chart and set the data
+        var chart2 = anychart.pie(data2);
+
+        /* set the inner radius
+        (to turn the pie chart into a doughnut chart)*/
+        chart2.innerRadius("30%");
+
+        // set the chart title
+        chart2.title("Thị phần số sản phẩm bán được theo loại");
+
+        // set the container id
+        chart2.container("container2");
+
+        // initiate drawing the chart
+        chart2.draw();
+
+
+
+        //////////////////////////////////////////////////
+        var model=@Html.Raw(JsonConvert.SerializeObject(this.Model.revenueBrandVms));
+        var data3 = [];
+        for (var i = 0; i < model.length;i++) {
+               data3.push({ x: model[i].BrandName, value:model[i].TotalRevenue });
+        }
+
+        // create a pie chart and set the data
+        var chart3 = anychart.pie(data3);
+
+        /* set the inner radius
+        (to turn the pie chart into a doughnut chart)*/
+        chart3.innerRadius("30%");
+
+        // set the chart title
+        chart3.title("Thị phần doanh thu sản phẩm bán được theo loại");
+
+        // set the container id
+        chart3.container("container4");
+
+        // initiate drawing the chart
+        chart3.draw();
+
+        
+
     </script>
 }
 

@@ -11,11 +11,7 @@ namespace ViewModel.ViewModels
         public string IdOrder { get; set; }
         public string UserName { get; set; }
 
-        public string EmailShip { get; set; }
-        public string NameShip { get; set; }
-        public string AddressShip { get; set; }
-        public string NumberShip { get; set; }
-        public string NoticeShip { get; set; }
+        
         public DateTime OrderDay { get; set; }
 
         public string OrderType { get; set; }

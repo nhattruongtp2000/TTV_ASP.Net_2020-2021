@@ -113,15 +113,15 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult VNPay(string OrderCategory, decimal Amount, string txtOrderDesc, string cboBankCode)
+        public IActionResult VNPay(string OrderCategory, decimal Amount, string txtOrderDesc, string cboBankCode, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
-            var x = _cartRepository.VNpay(OrderCategory, Amount, txtOrderDesc, cboBankCode);    
+            var x = _cartRepository.VNpay(OrderCategory, Amount, txtOrderDesc, cboBankCode,  EmailShip,  NameShip,  AddressShip,  NumberShip,  NoticeShip,  voucherCode);    
             return Redirect(x);
         }
 
 
         [HttpGet]
-        public IActionResult VNPay(decimal Amount)
+        public IActionResult VNPay(decimal Amount, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
             return View();
         }
@@ -129,7 +129,7 @@ namespace Web.Controllers
         public async Task<IActionResult> VNPayReturn(string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
       
-            var x = await _cartRepository.VNPayReturn( EmailShip, NameShip, AddressShip, NumberShip, NoticeShip, voucherCode);
+            var x = await _cartRepository.VNPayReturn(voucherCode);
             if (x == null)
             {
                 return BadRequest("Cannot return");
@@ -138,9 +138,16 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public  IActionResult PassAmount(decimal Amount)
+        public  IActionResult PassAmount(decimal Amount, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
             ViewBag.Amount = Amount;
+            ViewBag.EmailShip = EmailShip;
+            ViewBag.NameShip = NameShip;
+            ViewBag.AddressShip = AddressShip;
+            ViewBag.NumberShip = NumberShip;
+            ViewBag.NoticeShip = NoticeShip;
+            ViewBag.voucherCode = voucherCode;
+
             return View("VNPay");
         }
         

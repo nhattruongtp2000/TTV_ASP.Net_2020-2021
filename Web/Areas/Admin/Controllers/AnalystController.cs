@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ViewModel.ViewModels;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -80,12 +81,9 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AnalystQuantityProductPerDay(string day,string month, string year)
+        public async Task<IActionResult> AnalystQuantityProductPerDay(DateTime date)
         {
-            ViewBag.day = day;
-            ViewBag.month = month;
-            ViewBag.year = year;
-            var a = await _IanalystRepository.GetTotalQuantityProductsPerDay(day,month, year);
+            var a = await _IanalystRepository.GetTotalQuantityProductsPerDay(date);
             return View(a);
         }
 
@@ -97,9 +95,32 @@ namespace Web.Areas.Admin.Controllers
             return View(a);
         }
 
-        public IActionResult GetRevenue()
+        public async  Task<IActionResult> GetRevenue()
         {
-            return View();
+
+            var month=DateTime.Now.Month.ToString();
+            var year = DateTime.Now.Year.ToString();
+            ViewBag.month = month;
+            ViewBag.year = year;
+
+
+            ViewBag.OrdersMonth = _IanalystRepository.OrdersMonth(month, year);
+            ViewBag.ProductSold = _IanalystRepository.ProductSold(month, year);
+            ViewBag.TotalRevenueMonth = _IanalystRepository.TotalRevenueMonth(month, year);
+
+            var profit = await _IanalystRepository.ProfitMonth(month, year);
+            var totalAnalyst = new TotalAnalystVm()
+            {
+                revenueBrandVms = await _IanalystRepository.RevenuePerBrands(month, year),
+                quantityBrandVms = await _IanalystRepository.QuantityPerBrand(month, year),
+                revenueMonthVms = await _IanalystRepository.RevenuePerMonth(month, year),
+                quantityProducts = await _IanalystRepository.GetTotalQuantityProductsPerMonth(month, year),
+                profitMonth=await _IanalystRepository.ProfitMonth(month,year)
+            };
+            ViewBag.Profit = profit.Sum(x => x.Profit) - _IanalystRepository.TotalPriceVoucher();
+
+
+            return View(totalAnalyst);
         }
 
     
@@ -107,10 +128,28 @@ namespace Web.Areas.Admin.Controllers
         {
             ViewBag.month = month;
             ViewBag.year = year;
+            var revenue = await _IanalystRepository.RevenuePerBrands(month, year);
+            var quantity = await _IanalystRepository.QuantityPerBrand(month, year);
+            var a = await _IanalystRepository.RevenuePerMonth(month, year);
+            var product = await _IanalystRepository.GetTotalQuantityProductsPerMonth(month, year);
 
-            var a = await _IanalystRepository.GetRevenueMonth(month, year);
 
-            return View(a);
+            ViewBag.OrdersMonth = _IanalystRepository.OrdersMonth(month, year);
+            ViewBag.ProductSold = _IanalystRepository.ProductSold(month, year);
+            ViewBag.TotalRevenueMonth = _IanalystRepository.TotalRevenueMonth(month, year);
+
+            var profit = await _IanalystRepository.ProfitMonth(month, year);
+            var totalAnalyst = new TotalAnalystVm()
+            {
+                revenueBrandVms = await _IanalystRepository.RevenuePerBrands(month, year),
+                quantityBrandVms = await _IanalystRepository.QuantityPerBrand(month, year),
+                revenueMonthVms= await _IanalystRepository.RevenuePerMonth(month, year),
+                quantityProducts= await _IanalystRepository.GetTotalQuantityProductsPerMonth(month, year),
+                profitMonth=profit               
+            };
+            ViewBag.Profit = profit.Sum(x => x.Profit);
+
+            return View(totalAnalyst);
         }
 
         public IActionResult Test()
@@ -118,5 +157,6 @@ namespace Web.Areas.Admin.Controllers
             ViewBag.abcs = _IanalystRepository.GetAccess();
             return View();
         }
+
     }
 }

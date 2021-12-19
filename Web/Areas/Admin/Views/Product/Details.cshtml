@@ -1,0 +1,76 @@
+﻿@model ViewModel.ViewModels.ProductVm
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Chi tiết sản phẩm</h1>
+<a class="btn btn-primary" asp-action="Index">Quay lại</a>
+<body style="background-color:#e5e5e5">
+
+    <div class="container" >
+        <div class="row">
+            <div id="person1" class="col-4">
+                <div style="text-align:center;margin-bottom:20px">
+                    <img style="border-radius:20%" src="/@Model.PhotoReview" height="220" width="130" />
+                    <div style="font-weight:bold;font-size:25px">@Model.ProductName</div>                  
+                </div>
+
+
+            </div>
+
+            <div class="col-1">
+
+            </div>
+
+            <div id="person2" class="col-7">
+                <div>
+                    <h3 style="display:inline">
+                        Thông tin chi tiết
+                    </h3>
+                    <a  href="/Admin/Product/Edit/?IdProduct=@Model.IdProduct" style="display: inline; margin-left: 290px; color: red" class="btn btn-primary"> Chỉnh sửa </a>
+
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Mã Sản Phẩm</label>
+                            <input class="form-control col-12" readonly placeholder="" value="@Model.IdProduct" />
+                            <label>Tên loại</label>
+                            <input class="form-control col-12" readonly placeholder="" value="@Model.NameCategory" />
+                            <label>Tên thương hiệu</label>
+                            <input class="form-control col-12" readonly placeholder="" value="@Model.NameBrand" />
+                            <label>Ngày thêm</label>
+                            <input class="form-control col-12" readonly placeholder="" value="@Model.DateAccept" />
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        @{
+                            var price = @Model.Price;
+                            string res = price.ToString("#,##0");
+                            var priceexport = @Model.PriceExport;
+                            string res2 = priceexport.ToString("#,##0");
+
+                        <label>Giá nhập</label>
+                        <input class="form-control col-12" readonly placeholder="" value="@res VNĐ"/>
+                        <label>Giá Xuất</label>
+                        <input class="form-control col-12" readonly placeholder="" value="@res2 VNĐ" />
+                        <label>Tồn kho</label>
+                        <input class="form-control col-12" readonly placeholder="" value="@Model.Quantity" />
+                        <label>Alias</label>
+                        <input class="form-control col-12" readonly placeholder="" value="@Model.Alias" />
+                        }
+                    </div>
+                    <div>
+                        <label>Mô tả</label>
+                        <textarea class="form-control col-12" readonly rows="3" >@Model.Description</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+

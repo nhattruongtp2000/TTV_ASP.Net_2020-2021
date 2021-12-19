@@ -103,7 +103,7 @@
                         <div class="product-carousel ">
                             @for (int i = 1; i < 7; i++)
                             {
-                                var a = (int)Model.NewProduct[i].Price;
+                                var a = (int)Model.NewProduct[i].PriceExport;
                                 string res = a.ToString("#,##0");
                                 <div class="single-product">
                                     <div style="height:282px;width:226px" class="product-f-image">
@@ -162,7 +162,6 @@
                 <div class="col-md-4">
                     <div class="single-product-widget">
                         <h2 style="color:black" class="product-wid-title">Top Sell</h2>
-
                         @for (int i = 0; i < 6; i++)
                         {
                             var topsell2 = Model.TopSell[i];
@@ -189,6 +188,7 @@
                             </div>
                         }
 
+
                     </div>
                     <div style="text-align:center">
                         <a href="@Url.Action("TopSell","Products")" class="seemore btn btn-group">See More</a>
@@ -201,7 +201,7 @@
                         @for (int i = 0; i < 6; i++)
                         {
                             var topstandout = @Model.TopStandout[i];
-                            var a = (int)topstandout.Price;
+                            var a = (int)topstandout.PriceExport;
                             string res = a.ToString("#,##0");
                             <div class="single-wid-product">
                                 <a href="@Url.ActionLink("ProductDetails","Products",new {Alias=Model.TopStandout[i].Alias.ToString() })"><img style="height:130px;width:110px" src="~/@topstandout.PhotoReview" alt="" class="product-thumb" /></a>
@@ -233,26 +233,23 @@
                         @*<a href="#" class="wid-view-more">View All</a>*@
                         @for (int i = 0; i < 6; i++)
                         {
-                            var NewProduct = @Model.NewProduct[i];
-                            var a = NewProduct.Price;
+                            var topstandout = @Model.NewProduct[i];
+                            var a = (int)topstandout.PriceExport;
                             string res = a.ToString("#,##0");
-                            <div class="single-wid-product">
-                                <a href="@Url.ActionLink("ProductDetails","Products",new {Alias=Model.NewProduct[i].Alias })"><img style="height:130px;width:110px" src="~/@NewProduct.PhotoReview" alt="" class="product-thumb" /></a>
-                                <h2><a href="single-product.html">@NewProduct.ProductName</a></h2>
+                    <div class="single-wid-product">
+                        <a href="@Url.ActionLink("ProductDetails","Products",new {Alias=Model.NewProduct[i].Alias.ToString() })"><img style="height:130px;width:110px" src="~/@topstandout.PhotoReview" alt="" class="product-thumb" /></a>
+                        <h2><a href="single-product.html">@topstandout.ProductName</a></h2>
+                        <a class="btn btn-info btn-lg testtest" data-toggle="modal" data-target="#myModal" data-namemodal="@Model.NewProduct[i].ProductName" data-pricemodal="@Model.NewProduct[i].Price" data-imagemodal="@Model.NewProduct[i].PhotoReview">Open Modal</a>
+                        <div>
+                            <!---->     <a class="btn btn-primary test" data-IdProduct="@topstandout.IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
+                        </div>
+                        <div class="product-wid-price">
+                            <ins>@res VND</ins>
 
-                                <a  class="btn btn-info btn-lg testtest" data-toggle="modal" data-target="#myModal" data-namemodal="@NewProduct.ProductName" data-pricemodal="@NewProduct.Price" data-imagemodal="@NewProduct.PhotoReview">Open Modal</a>
-
-                                <div>
-                                    <!---->     <a class="btn btn-primary test" data-IdProduct="@NewProduct.IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
-                                </div>
-                                <div class="product-wid-price">
-                                    <ins>@res VND</ins>
-
-                                </div>
-
-
-                            </div>
+                        </div>
+                    </div>
                         }
+
                     </div>
                     <div style="text-align:center">
                         <a href="@Url.Action("TopNew","Products")" class="seemore btn btn-group">See More</a>
@@ -409,7 +406,7 @@
                 event.preventDefault();
                 var name = $(this).attr("data-namemodal");
                 var price = $(this).attr("data-pricemodal");
-                var image = $(this).attr("data-imagemodal");
+                var image ="/"+ $(this).attr("data-imagemodal");
                 $("#imagemodal").attr("src", image);
                 $("#namemodal").html(name);
                 $("#pricemodal").html(price);

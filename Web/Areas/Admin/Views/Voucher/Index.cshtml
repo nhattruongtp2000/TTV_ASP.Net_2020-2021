@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Danh sách Voucher</h1>
 
 @if (TempData["Success"] != null)
 {
@@ -12,7 +12,7 @@
 }
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a id="createbutton" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -79,8 +79,8 @@
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
-                    <a href="/Admin/Voucher/Edit/?IdVoucher=@item.IdVoucher">Edit</a>|
-                    <a href="/Admin/Voucher/Delete/?IdVoucher=@item.IdVoucher">Delete</a>|
+                    <a style="width:50px" id="editplace" href="/Admin/Voucher/Edit/?IdVoucher=@item.IdVoucher">Edit</a>
+                    <a id="deleteplace" href="/Admin/Voucher/Delete/?IdVoucher=@item.IdVoucher">Delete</a>
                 </td>
             </tr>
         }

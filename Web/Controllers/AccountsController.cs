@@ -50,7 +50,7 @@ namespace Web.Controllers
             }
             else
             {
-                ViewBag.Email = "Your Email duplicated";
+                ViewBag.Email = "Your UserName was duplicated";
             }
             return View(request);
         }

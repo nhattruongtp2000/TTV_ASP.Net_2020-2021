@@ -2,7 +2,7 @@
 @using X.PagedList.Mvc.Core
 @using X.PagedList
 
-<h1>Index</h1>
+<h1>Danh sách thương hiệu</h1>
 
 @if (ViewBag.Success != null)
 {
@@ -19,13 +19,13 @@
 }
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a id="createbutton"  asp-action="Create">Tạo mới</a>
 </p>
 
 <div style="margin-top:30px;margin-bottom:30px">
-    <label>Search Brand</label>
+    <label>Tìm kiếm thương hiệu theo tên</label>
     <input id="namebrand" type="search" class="form-control " style="width:300px" />
-    <a id="searchbrand" class="btn btn-primary">Search</a>
+    <a id="searchbrand" class="btn btn-primary">Tìm kiêm</a>
 </div>
 
 
@@ -55,8 +55,8 @@
 
 
                 <td>
-                    <a href="/Admin/Brand/Edit/?IdBrand=@item.IdBrand">Edit</a>|
-                    <a href="/Admin/Brand/Delete/?IdBrand=@item.IdBrand">Delete</a>|
+                    <a id="editplace" href="/Admin/Brand/Edit/?IdBrand=@item.IdBrand">Edit</a>|
+                    <a id="deleteplace" href="/Admin/Brand/Delete/?IdBrand=@item.IdBrand">Delete</a>|
 
                 </td>
             </tr>

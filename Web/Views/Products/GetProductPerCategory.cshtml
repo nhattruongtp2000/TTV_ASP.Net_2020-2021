@@ -46,10 +46,10 @@
                         </div>
                         <div data-role="rangeslider">
                             <label for="pricemin">Price:</label>
-                            <input type="range" name="pricemin" id="pricemin" value="0" min="0" max="1000" />
+                            <input type="range" name="pricemin" id="pricemin" value="0" min="0" max="10000000" />
                             <p>Price Min: <span id="demo1"></span></p>
                             <label for="pricemax">Price:</label>
-                            <input type="range" name="pricemax" id="pricemax" value="0" min="0" max="20000000" />
+                            <input type="range" name="pricemax" id="pricemax" value="0" min="0" max="30000000" />
                             <p>Price Max: <span id="demo2"></span></p>
                         </div>
                         <div class="row">
@@ -136,7 +136,7 @@
                             <div class="product-upper">
                                <a href="@Url.ActionLink("ProductDetails","Products",new {Alias=item.Alias })"> <img style="height:180px;width:140px" src="~/@item.PhotoReview" alt="" /></a>
                             </div>
-                            <h2><a href="">@item.ProductName</a></h2>
+                            <h2><a href="@Url.ActionLink("ProductDetails","Products",new {Alias=item.Alias })">@item.ProductName</a></h2>
                             <div class="product-carousel-price">
                                 <ins>@res</ins> <label>VND</label>
                             </div>

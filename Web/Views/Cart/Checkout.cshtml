@@ -313,11 +313,24 @@
         $(document).ready(function () {
             $("#PassAmount").click(function () {
                 var Amount = (document.getElementById("totalmoney2").textContent);
+                var EmailShip = $("#emailship").val();
+                var NameShip = $("#nameship").val();
+                var AddressShip = $("#addressship").val();
+                var NumberShip = $("#numbership").val();
+                var NoticeShip = $("#noticeship").val();
+                var voucherCOde = $("#vouchercode").val();
                 $.ajax({
                     type: "POST",
                     url: '/Cart/PassAmount',
                     data: {
-                        Amount:Amount
+                        Amount: Amount,
+                        voucherCode: voucherCOde,
+                        EmailShip: EmailShip,
+                        NameShip: NameShip,
+                        AddressShip: AddressShip,
+                        NumberShip: NumberShip,
+                        NoticeShip: NoticeShip
+                        
                     },
                     success: function (result) {
                         $("body").html(result);

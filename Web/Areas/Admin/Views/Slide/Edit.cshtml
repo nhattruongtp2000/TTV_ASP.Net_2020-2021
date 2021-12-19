@@ -4,16 +4,15 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Chỉnh sửa thông tin slide</h1>
 
-<h4>SlideVm</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input  asp-for="Id" class="form-control" />
+                <input hidden  asp-for="Id" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="SlideName" class="control-label"></label>
@@ -25,11 +24,7 @@
                 <input asp-for="Alias" class="form-control" />
                 <span asp-validation-for="Alias" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DateUp" class="control-label"></label>
-                <input asp-for="DateUp" class="form-control" />
-                <span asp-validation-for="DateUp" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

@@ -12,8 +12,10 @@ namespace ViewModel.ViewModels
         [DataType(DataType.EmailAddress, ErrorMessage = "Không dung kiểu")]
         public string Email { get; set; }
         public string Name { get; set; }
+        [Required(ErrorMessage ="User Name cannot empty")]
+        public string UserName { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Phone Number cannot empty")]
         public string PhoneNumer { get; set; }
 
         [DataType(DataType.Password)]

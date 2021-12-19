@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ViewModel.ViewModels.OrderDetailsVm>
+﻿@model ViewModel.ViewModels.OrderDetailsUser
 
 @{
     ViewData["Title"] = "OrderHistoryDetails";
@@ -11,24 +11,24 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdOrder)
+                Mã đơn hàng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductName)
+               Tên sản phẩm
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quality)
+                Số lượng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Giá
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhotoReview)
+               Ảnh
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.OrderDetailsVms) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.IdOrder)
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Quality)
             </td>
             <td>
-                @Convert.ToInt32(item.Price*item.Quality)
+                @Convert.ToInt32(item.Price).ToString("#,##0")
             </td>
             <td>
                <img src="~/@item.PhotoReview" class="img-rounded" height="40" width="40" />
