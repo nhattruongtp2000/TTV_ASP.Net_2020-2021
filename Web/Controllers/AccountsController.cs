@@ -50,7 +50,7 @@ namespace Web.Controllers
             }
             else
             {
-                ViewBag.Email = "Your Email duplicated";
+                ViewBag.Email = "Your UserName was duplicated";
             }
             return View(request);
         }
@@ -85,7 +85,7 @@ namespace Web.Controllers
             var callback= Url.Action("ResetPassword", "Accounts", new { token, email = email }, Request.Scheme);
             _IaccountRepository.SendTo(email, "Reset Password", callback);
 
-            return RedirectToAction(nameof(SuccessResetPassWork));
+            return RedirectToAction(nameof(SuccessSendResetPassWork));
         }
 
         [HttpGet]
@@ -126,6 +126,10 @@ namespace Web.Controllers
             return View();
         }
 
+        public IActionResult SuccessSendResetPassWork()
+        {
+            return View();
+        }
 
 
 
@@ -190,6 +194,10 @@ namespace Web.Controllers
         public async Task<IActionResult> OrderHistory(string IdUser,int? page)
         {
             var x = await _IorderRepository.OrderHistory(IdUser, page);
+            if (x.Count() == 0)
+            {
+                return Content("Không có đơn hàng nào!");
+            }
             return View(x);
         }
 
@@ -235,9 +243,9 @@ namespace Web.Controllers
             return View();
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            _IaccountRepository.Logout();
+           await _IaccountRepository.Logout();
             return RedirectToAction("Indexx", "Home");
 
         }

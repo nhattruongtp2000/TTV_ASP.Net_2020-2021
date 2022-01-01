@@ -4,39 +4,58 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Chỉnh sửa thông tin sản phẩm</h1>
 
-<h4>ProductVm</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdProduct" class="control-label"></label>
-                <input asp-for="IdProduct"  class="form-control" />
-                <span asp-validation-for="IdProduct" class="text-danger"></span>
+
+                <input hidden asp-for="IdProduct" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label"></label>
                 <input asp-for="ProductName" class="form-control" />
                 <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="DateAccept" class="control-label"></label>
-                <input asp-for="DateAccept" class="form-control" />
-                <span asp-validation-for="DateAccept" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="UseVoucher" /> @Html.DisplayNameFor(model => model.UseVoucher)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdBrand" class="control-label"></label>
-                <input asp-for="IdBrand" class="form-control" />
+                <label  class="control-label">Tên thương hiệu</label>
+                <select asp-for="IdBrand" asp-items="@ViewBag.brand" class="form-control" >
+                    <option></option>
+                </select>
                 <span asp-validation-for="IdBrand" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label  class="control-label">Tên loại</label>
+                <select asp-for="IdCategory" asp-items="@ViewBag.cate" class="form-control" >
+                    <option></option>
+                </select>
+                <span asp-validation-for="IdCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" type="number" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceExport" class="control-label"></label>
+                <input asp-for="PriceExport" type="number" class="form-control" />
+                <span asp-validation-for="PriceExport" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Alias" class="control-label"></label>
+                <input asp-for="Alias"  class="form-control" />
+                <span asp-validation-for="Alias" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" type="number" class="form-control" >@Model.Description</textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

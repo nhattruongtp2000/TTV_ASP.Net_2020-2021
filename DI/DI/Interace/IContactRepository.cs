@@ -16,7 +16,7 @@ namespace DI.DI.Interace
 
         string SendOrderReceived(string IdOrder, string EmailShip, string NameShip, string AddressShip, decimal Total, string TypePayment);
 
-        Task<string> SendOrderDeliveried(string IdOrder);
+        Task<string> SendOrderDeliveried(string IdOrder,string Email);
 
         Task<string> SendOrderCompleted(string IdOrder);
     }

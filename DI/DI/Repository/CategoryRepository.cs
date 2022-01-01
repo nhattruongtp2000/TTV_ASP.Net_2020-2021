@@ -23,12 +23,27 @@ namespace DI.DI.Repository
 
         }
 
+        public async Task<int> ChangeIsShow(int IdCategory)
+        {
+            var cate = await _iden2Context.Categories.Where(x => x.IdCategory == IdCategory).FirstOrDefaultAsync();
+            if (cate.IsShow == true)
+            {
+                cate.IsShow = false;
+            }
+            else
+            {
+                cate.IsShow = true;
+            }
+            return await _iden2Context.SaveChangesAsync();
+        }
+
         public async Task<int> Create(CategoryVm request)
         {
             var x = new Category()
             {
-               NameCategory=request.NameCategory,
-               ParentId=request.ParentId
+                NameCategory = request.NameCategory,
+                ParentId = request.ParentId,
+                IsShow = false
             };
 
             _iden2Context.Categories.Add(x);
@@ -62,7 +77,9 @@ namespace DI.DI.Repository
             var a =await _iden2Context.Categories.Select(x => new CategoryVm() { 
             IdCategory=x.IdCategory,
             NameCategory=x.NameCategory,
-            ParentId=x.ParentId
+            ParentId=x.ParentId,
+            IsShow=x.IsShow
+            
             
             }).ToPagedListAsync(pageNumber,pageSize);
 
@@ -86,18 +103,17 @@ namespace DI.DI.Repository
                 }).ToListAsync();           
         }
 
-        public List<CategoryVm> GetAllCategory2()
+        public async Task<List<CategoryVm>> GetAllCategory2()
         {
-            var query = from c in _iden2Context.Categories
-                        select new { c };
-            return  query.Select(x => new CategoryVm()
+            var query = _iden2Context.Categories.Where(x => x.IsShow == true);
+            return await query.Select(x => new CategoryVm()
             {
-                IdCategory = x.c.IdCategory,
-                NameCategory = x.c.NameCategory,
-                ParentId = x.c.ParentId
+                IdCategory = x.IdCategory,
+                NameCategory = x.NameCategory,
+                ParentId = x.ParentId
 
 
-            }).ToList();
+            }).ToListAsync();
         }
 
         public async Task<CategoryVm> GetOneCategory(int IdCategory)

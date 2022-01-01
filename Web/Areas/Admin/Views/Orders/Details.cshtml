@@ -1,44 +1,85 @@
-﻿@model IEnumerable<ViewModel.ViewModels.OrderDetailsVm>
+﻿@model ViewModel.ViewModels.OrderDetailsUser
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
-<p>
-    <div style="font-size:22px;font-weight:bold" >Status </div>
-</p>
+<div style="display:flex">
+    <div style="font-size:22px;font-weight:bold;float:left">Tình trạng </div>
 
-<div style="margin-bottom:40px  " >
-    <select onchange="change()" id="a" style="width:400px" asp-items="@ViewBag.Status" class="form-select col-md-4" >
-    <option>@ViewBag.GetStatus</option>
+</div>
+<div style="margin-bottom:40px" class="row">
 
-    </select>
+    <div  class="col-6" >
+        <select onchange="change()" id="a" style="width:400px" asp-items="@ViewBag.Status" class="form-select col-md-4" >
+        <option>@ViewBag.GetStatus</option>
+    
+        </select>
+    </div>
+    <div style="border:1px solid black; border-radius:10px" class="col-6">
+
+        <div class="row" >
+            <div class="col-6">
+                <div>
+                    Họ tên khách
+                </div>
+                <div>
+                    Email khách
+                </div>
+                <div>
+                    Số điện thoại
+                </div>
+                <div>
+                    Địa chỉ
+                </div>
+                <div>
+                    Ghi chú
+                </div>
+            </div>
+            <div class="col-6" style="font-weight:bold">
+                <div>
+                    @Model.NameShip
+                </div>
+                <div id="email" data-value="@Model.EmailShip">
+                    @Model.EmailShip
+                </div>
+                <div>
+                    @Model.NumberShip
+                </div>
+                <div>
+                    @Model.AddressShip
+                </div>
+                <div>
+                    @Model.NoticeShip
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<table class="table">
+<table class="table" >
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdOrder)
+                Mã đơn hàng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductName)
+                Tên
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quality)
+               Số lượng
             </th>
             <th>
-                Price Product
+                Giá 
             </th>
             <th>
-                Photo
+                Hình ảnh
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.OrderDetailsVms)
         {
             <tr>
                 <td id="cc" data-value="@item.IdOrder">
@@ -51,7 +92,7 @@
                     @Html.DisplayFor(modelItem => item.Quality)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    @item.Price.ToString("#,##0") VNĐ
                 </td>
                 <td>
                     <img src="~/@item.PhotoReview" class="rounded-circle" height="50" width="50" />
@@ -63,11 +104,10 @@
 </table>
 
 <div class="row" style="display:block">
-    <div style="height:30px;width:390px;text-align:center;margin-bottom:5px" class="alert-primary col-sm-4">Send Email Order Status </div>
+    <div style="height:30px;width:390px;text-align:center;margin-bottom:5px" class="alert-primary col-sm-4">Gửi Mail tới khách hàng </div>
     <div>
-        <a id="receive" class="btn btn-warning col-sm-2" style="display:inline-block">Order has been received</a>
-        <a id="delivery" class="btn btn-success col-sm-2" style="display:inline-block">Order has been delivered</a>
-        <a id="completed" class="btn btn-success col-sm-2" style="display:inline-block">Order has been completed</a>
+        <a id="delivery" class="btn btn-warning col-sm-2" style="display:inline-block">Đơn hàng đang vận chuyển</a>
+        <a id="completed" class="btn btn-success col-sm-2" style="display:inline-block">Đơn hàng đã hoàn thành</a>
     </div>
 </div>
 
@@ -127,12 +167,14 @@
         {
             event.preventDefault();
             var IdOrder = document.getElementById("cc").getAttribute("data-value");
+            var  Email= document.getElementById("email").getAttribute("data-value");
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("SendOrderDelivered", "Contact")',
                 data:
                 {
-                    IdOrder: IdOrder
+                    IdOrder: IdOrder,
+                    Email: Email
                 },
                 success: function () {
                     swal("Notification","Send Email Success")

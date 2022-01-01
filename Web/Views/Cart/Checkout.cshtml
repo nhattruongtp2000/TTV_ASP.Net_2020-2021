@@ -34,57 +34,13 @@
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-
-                    <div class="single-sidebar">
-                        <h2 class="sidebar-title">Products</h2>
-                        <div class="thubmnail-recent">
-                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins> <del>$800.00</del>
-                            </div>
-                        </div>
-                        <div class="thubmnail-recent">
-                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins> <del>$800.00</del>
-                            </div>
-                        </div>
-                        <div class="thubmnail-recent">
-                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins> <del>$800.00</del>
-                            </div>
-                        </div>
-                        <div class="thubmnail-recent">
-                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins> <del>$800.00</del>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="single-sidebar">
-                        <h2 class="sidebar-title">Recent Posts</h2>
-                        <ul>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                        </ul>
-                    </div>
-                </div>
+               </div>
 
                 @if (Model.Count > 0)
                 {
                     var stt = 1;
                     decimal total = 0;
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="product-content-right">
                             <div class="woocommerce">
                                 <div style="">
@@ -94,13 +50,13 @@
                                         <div class="form-group">
                                             <input name="EmailShip" id="emailship" placeholder="Email" class="form-control col-md-8 mb-3" />
                                         </div>
-                                        <input name="NameShip" id="nameship" placeholder="Your Name" class="form-control col-md-8 mb-3" />
+                                        <input name="NameShip" id="nameship" placeholder="Họ và tên" class="form-control col-md-8 mb-3" />
 
-                                        <input name="AddressShip" id="addressship" placeholder="Your Address" class="form-control col-md-8 mb-3" />
+                                        <input name="AddressShip" id="addressship" placeholder="Địa chỉ" class="form-control col-md-8 mb-3" />
 
-                                        <input name="NumberShip" type="number" id="numbership" placeholder="Your Number" class="form-control col-md-8 mb-3" />
+                                        <input name="NumberShip" type="number" id="numbership" placeholder="Số điện thoại" class="form-control col-md-8 mb-3" />
 
-                                        <textarea name="NoticeShip" id="noticeship" placeholder="Your Notice" class="form-control col-md-8 mb-5"></textarea>
+                                        <textarea name="NoticeShip" id="noticeship" placeholder="Ghi chú" class="form-control col-md-8 mb-5"></textarea>
 
                                     </form>
                                 </div>
@@ -111,11 +67,11 @@
                                             <tr>
                                                 <th></th>
                                                 <th class="product-remove">&nbsp;</th>
-                                                <th class="product-name">Product</th>
-                                                <th class="product-quantity">Quantity</th>
-                                                <th class="product-price">Price</th>
+                                                <th class="product-name">Tên sản phẩm</th>
+                                                <th class="product-quantity">Số lượng</th>
+                                                <th class="product-price">Giá</th>
 
-                                                <th class="product-subtotal">Total</th>
+                                                <th class="product-subtotal">Tổng cộng</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -145,13 +101,13 @@
                                                             </div>
                                                         </td>
                                                         <td class="product-price">
-                                                            <span class="amount">@a</span>
+                                                            <span class="amount">@a.ToString("#,##0") VNĐ</span>
                                                         </td>
 
 
 
                                                         <td class="product-subtotal">
-                                                            <span class="amount">@thanhtien</span>
+                                                            <span class="amount">@thanhtien.ToString("#,##0") VNĐ</span>
                                                         </td>
                                                     </tr>
                                                 }
@@ -187,7 +143,7 @@
                                                     <div class="coupon">
                                                         <label for="coupon_code">Coupon:</label>
                                                         <input style="width:100px" type="text" placeholder="Voucher" id="vouchercode" class="input-text" name="coupon_code">
-                                                        <input id="voucher" data-total="@total" type="submit" value="Apply Coupon" name="apply_coupon" class="button">
+                                                        <input id="voucher" data-total="@total" type="submit" value="Sử dụng" name="apply_coupon" class="button">
                                                     </div>
                                                     <div style="display:none" id="alerts" class="alert-primary col-md-4 ml-3">YOUR VOUCHER USE SUCCESS</div>
                                                 </td>
@@ -207,11 +163,11 @@
                                             <tbody>
                                                 <tr class="cart-subtotal">
                                                     <th>Cart Subtotal</th>
-                                                    <td><span class="amount">@total</span></td>
+                                                    <td><span class="amount">@total.ToString("#,##0") VNĐ</span></td>
                                                 </tr>
                                                 <tr>
                                                     <th>Used Voucher</th>
-                                                    <td id="totalmoney">@total</td>
+                                                    <td id="totalmoney">@total.ToString("#,##0") VNĐ</td>
                                                 </tr>
                                                 <tr class="shipping">
                                                     <th>Shipping and Handling</th>
@@ -220,14 +176,9 @@
 
                                                 <tr class="order-total">
                                                     <th>Order Total</th>
-                                                    <td id="totalmoney2">@total </td>
+                                                    <td id="totalmoney2">@total.ToString("#,##0") VNĐ </td>
                                                 </tr>
-                                                <tr style="border:none">
-                                                    <th><span class="text-primary">50 VNĐ</span> more for <span class="text-primary">Fast Delivery</span></th>
-                                                    <td style="text-align:center"><input onclick="deli()" data-total="@total" id="fastdeli" name="fastdeli" class="form-control" type="checkbox" /></td>
-                                                </tr>
-
-
+                                       
                                             </tbody>
                                         </table>
                                     </div>
@@ -313,11 +264,24 @@
         $(document).ready(function () {
             $("#PassAmount").click(function () {
                 var Amount = (document.getElementById("totalmoney2").textContent);
+                var EmailShip = $("#emailship").val();
+                var NameShip = $("#nameship").val();
+                var AddressShip = $("#addressship").val();
+                var NumberShip = $("#numbership").val();
+                var NoticeShip = $("#noticeship").val();
+                var voucherCOde = $("#vouchercode").val();
                 $.ajax({
                     type: "POST",
                     url: '/Cart/PassAmount',
                     data: {
-                        Amount:Amount
+                        Amount: Amount,
+                        voucherCode: voucherCOde,
+                        EmailShip: EmailShip,
+                        NameShip: NameShip,
+                        AddressShip: AddressShip,
+                        NumberShip: NumberShip,
+                        NoticeShip: NoticeShip
+                        
                     },
                     success: function (result) {
                         $("body").html(result);
@@ -359,8 +323,8 @@
                     swal("Thông báo", "Voucher is not available");
                     $("#alerts").css("display", "none");
                 }
-                document.getElementById("totalmoney").innerHTML = Total;
-                document.getElementById("totalmoney2").innerHTML = Total;
+                document.getElementById("totalmoney").innerHTML = Total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + " VNĐ";
+                document.getElementById("totalmoney2").innerHTML = Total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + " VNĐ";
             });
         });
 
@@ -444,7 +408,6 @@
                 },
                     function (isConfirm ) {
                         if (isConfirm && $("#formpurchase").valid() ) {
-                            var Total = document.getElementById("totalmoney2").textContent;
                             var EmailShip = $("#emailship").val();
                             var NameShip = $("#nameship").val();
                             var AddressShip = $("#addressship").val();
@@ -455,7 +418,6 @@
                                 type: "POST",               //update
                                 url: '@Url.Action("Purchase","Cart")',
                                 data: {
-                                    Total: Total,
                                     voucherCode: voucherCOde,
                                     EmailShip: EmailShip,
                                     NameShip: NameShip,

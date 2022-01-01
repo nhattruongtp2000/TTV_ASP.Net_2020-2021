@@ -2,7 +2,7 @@
 @using X.PagedList.Mvc.Core
 @using X.PagedList
 
-<h1>Index</h1>
+<h1>Danh sách loại</h1>
 
 @if (ViewBag.Success != null)
 {
@@ -19,13 +19,13 @@
 }
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a id="createbutton" asp-action="Create">Tạo mới</a>
 </p>
 
 <div style="margin-top:30px;margin-bottom:30px">
-    <label>Search category</label>
+    <label>Tìm kiếm theo tên loại</label>
     <input id="namecate" type="search" class="form-control " style="width:300px" />
-    <a id="searchcate" class="btn btn-primary" >Search</a>
+    <a id="searchcate" class="btn btn-primary" >Tìm kiếm</a>
 </div>
 
 
@@ -39,7 +39,10 @@
                 @Html.DisplayNameFor(model => model.NameCategory)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ParentId)
+                Hiển thị
+            </th>
+            <th>
+                Mã loại cha
             </th>
             <th></th>
         </tr>
@@ -48,23 +51,33 @@
         @foreach (var item in Model)
         {
 
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdCategory)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NameCategory)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ParentId)
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameCategory)
+            </td>
+            <td>
+                @if (item.IsShow == true)
+                {
+                    <a class="clickcate" id="change_@item.IdCategory" data-idproduct="@item.IdCategory" href="#"><img src="~/Images/icons8-like-1.png" /></a>
+                }
+                else
+                {
+                    <a class="clickcate" id="change_@item.IdCategory" data-idproduct="@item.IdCategory" href="#"><img src="~/Images/icons8-like-2.png" /></a>
+                }
+            </td>
+            <td>
+                @item.ParentId
+            </td>
 
-                <td>
-                    <a href="/Admin/Category/Edit/?IdCategory=@item.IdCategory">Edit</a>|
-                    <a href="/Admin/Category/Delete/?IdCategory=@item.IdCategory">Delete</a>|
+            <td>
+                <a id="editplace" href="/Admin/Category/Edit/?IdCategory=@item.IdCategory">Edit</a>|
+                <a id="deleteplace" href="/Admin/Category/Delete/?IdCategory=@item.IdCategory">Delete</a>|
 
-                </td>
-            </tr>
+            </td>
+        </tr>
         }
 
 
@@ -78,3 +91,38 @@
 
     })
 
+@section Scripts
+{
+    <script>
+    $(document).ready(function () {
+        $(".clickcate").click(function () {
+            event.preventDefault();
+            Swal.fire({
+                showDenyButton: true,
+                title: 'Thông báo',
+                text: 'Đồng ý thay đổi trạng thái? ',
+                icon: 'warning',
+                confirmButtonText: 'Đồng ý',
+                denyButtonText: 'Hủy bỏ',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var blogidd = parseInt($(this).attr("data-idproduct"));
+                    $.ajax({
+                        type: "POST",               //update
+                        url: '@Url.Action("ChangeIsShow","Category")',
+                        data: {
+                            IdCategory: blogidd,
+                        },
+                        success: function (result) {
+                            window.alert = 'Thay đổi thành công'
+                            window.location.href = '@Url.Action("Index", "Category")'
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Trạng thái chưa được thay đổi,vui lòng thử lại', '', 'info')
+                }
+            })
+        });
+    });
+    </script>
+}

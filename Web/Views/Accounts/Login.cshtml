@@ -2,13 +2,23 @@
 @using Microsoft.AspNetCore.Identity;
 @{
     ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <style>
         .main {
             display: flex;
             justify-content: center;
+            align-items:center;
         }
 
             .main > div {
@@ -23,26 +33,29 @@
         h3 {
             margin-left: 255px;
         }
+
+        body{
+            background-color:#e5e5e5;
+        }
     </style>
 </head>
 
 <body>
-    <div class="body2">
+    <div class="body2" >
         <h3>
-            Welcome to Ustora. Let's Login!
         </h3>
-        <div class="main">
+        <div class="main" >
             <div class="row">
                 <div class="col-6">
                     <form method="post" asp-controller="Accounts" asp-action="Login">
                         <div class="form-group">
-                            <label>PhoneNumber*</label>
-                            <input asp-for="UserName" class="form-control col-12" placeholder="Please fill your PhoneNumber" />
+                            <label>Tên tài khoản</label>
+                            <input asp-for="UserName" class="form-control col-12" placeholder="Vui lòng nhập tài khoản" />
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label>Password*</label>
-                            <input asp-for="Pass" type="password" class="form-control col-12" placeholder="Please fill your Password" />
+                            <label>Mật khẩu</label>
+                            <input asp-for="Pass" type="password" class="form-control col-12" placeholder="Vui lòng nhập mật khẩu" />
                             <span asp-validation-for="Pass" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -52,7 +65,7 @@
                             <br>
                         </div>
                         <div>
-                            <a href="/Accounts/ForgotPassword">Forgot Password</a>
+                            <a href="/Accounts/ForgotPassword">Quên mật khẩu</a>
                         </div>
                         @if (ViewBag.Error != null) { 
                         <div style="color:red">@ViewBag.Error</div>
@@ -61,16 +74,16 @@
                     </form>
                 </div>
                 <div class="col-6">
-                    <div>New User? Let's Register in there</div>
-                    <a style="margin-bottom:10px" href="@Url.Action("Register","Accounts")" class="btn btn-success col-12">Register</a>
-                    <p>or login with</p>
+                    <div>Tạo tài khoản mới</div>
+                    <a style="margin-bottom:10px" href="@Url.Action("Register","Accounts")" class="btn btn-success col-12">Đăng ký</a>
+                    <p>Hoặc đăng nhập với</p>
                     <div style="margin-bottom:10px">
                         <form asp-action="ExternalLogin" asp-controller="Accounts">
-                            <input style="background-color: #d34836" type="submit" value="Login With Google" class="btn  col-12" />
+                            <input style="background-color: #d34836" type="submit" value="Đăng nhập với Google" class="btn  col-12" />
                         </form>
                     </div>
                     <form asp-action="ExternalLoginFacebook" asp-controller="Accounts">
-                        <input style="background-color: #3b5998" type="submit" value="Login With Facebook" class="btn col-12" />
+                        <input style="background-color: #3b5998" type="submit" value="Đăng nhập với Facebook" class="btn col-12" />
                     </form>
                 </div>
             </div>

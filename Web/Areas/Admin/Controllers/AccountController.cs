@@ -79,6 +79,13 @@ namespace Web.Areas.Admin.Controllers
             return View(request);
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await _IaccountRepository.Logout();
+            return RedirectToAction("Indexx", "Home");
+
+        }
+
         public IActionResult Chart()
         {
             return View();

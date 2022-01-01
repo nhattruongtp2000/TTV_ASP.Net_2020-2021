@@ -157,6 +157,9 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<bool>("IsShow")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NameCategory")
                         .HasColumnType("nvarchar(max)");
 
@@ -402,6 +405,9 @@ namespace Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("PriceExport")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
@@ -420,6 +426,8 @@ namespace Data.Migrations
                         .IsUnique()
                         .HasFilter("[Alias] IS NOT NULL");
 
+                    b.HasIndex("IdCategory");
+
                     b.ToTable("Products");
                 });
 
@@ -437,6 +445,8 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("IdPhoto");
+
+                    b.HasIndex("IdProduct");
 
                     b.ToTable("ProductPhotos");
                 });
@@ -660,6 +670,28 @@ namespace Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Data.Data.Product", b =>
+                {
+                    b.HasOne("Data.Data.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("IdCategory")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Data.Data.ProductPhoto", b =>
+                {
+                    b.HasOne("Data.Data.Product", "Product")
+                        .WithMany("ProductPhotos")
+                        .HasForeignKey("IdProduct")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -711,6 +743,11 @@ namespace Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Data.Data.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("Data.Data.Order", b =>
                 {
                     b.Navigation("OrderDetails");
@@ -719,6 +756,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Data.Product", b =>
                 {
                     b.Navigation("OrderDetails");
+
+                    b.Navigation("ProductPhotos");
                 });
 #pragma warning restore 612, 618
         }

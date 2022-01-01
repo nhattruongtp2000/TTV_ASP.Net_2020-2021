@@ -38,12 +38,16 @@
                     <div class="col-md-8">
                         <div class="user-menu">
                             <ul>
-                                <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
-                                <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
-                                <li><a href="@Url.ActionLink("Checkout","Cart")"><i class="fa fa-user"></i> Checkout</a></li>
+
                                 @if (!User.Identity.IsAuthenticated)
                                 {
-                                    <li><a href="~/Accounts/Login"><i class="fa fa-user"></i> Login</a></li>
+                                    <li><a href="~/Accounts/Login"><i class="fa fa-user"></i> Đăng nhập</a></li>
+                                }
+                                else
+                                {
+
+                                    <li><a href="@Url.ActionLink("Checkout","Cart")"><i class="fa fa-user"></i> Checkout</a></li>
+                                    <li><a href="@Url.ActionLink("OrderHistory","Accounts",new {IdUser=User.Identity.Name })"><i class="fa fa-shopping-cart"></i>lịch sử đặt hàng</a></li>
                                 }
                             </ul>
                         </div>
@@ -54,12 +58,12 @@
                         <div class="col-md-4">
                             <div class="header-right">
                                 <ul class="list-unstyled list-inline">
-                                    <li><a href="@Url.ActionLink("OrderHistory","Accounts",new {IdUser=User.Identity.Name })"><i class="fa fa-shopping-cart"></i>Order History</a></li>
+                                    
                                     <li>
-                                        <a href="@Url.ActionLink("GetUser", "Accounts")"><i class="fa fa-user"></i> My Account</a>
+                                        <a href="@Url.ActionLink("GetUser", "Accounts")"><i class="fa fa-user"></i> Tài khoản</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.ActionLink("Logout", "Accounts")"><i class="fa fa-sign-out"></i>Log out</a>
+                                        <a href="@Url.ActionLink("Logout", "Accounts")"><i class="fa fa-sign-out"></i>Đăng xuất</a>
                                     </li>
                                 </ul>
                             </div>
@@ -80,7 +84,7 @@
 
                     <div class="col-sm-4">
                         <form class="form-inline pt-5" asp-controller="Products" asp-action="GetAllProduct" method="post">
-                            <input name="key" class="form-control" placeholder="Search" style="width:300px" />
+                            <input name="key" class="form-control" placeholder="Tìm kiếm" style="width:300px" />
                             <button style="height:35px;width:50px" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
@@ -136,7 +140,7 @@
                         @await Component.InvokeAsync("Category")
 
                         <li class="li_co_cap">
-                            <a href="#">Brand</a>
+                            <a href="#">Thương hiệu</a>
                             <ul class="menu_con">
                                 <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=1})">SamSung</a></li>
                                 <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=2})">Dell</a></li>
@@ -147,10 +151,10 @@
                             </ul>
                         </li>
                         <li class="li_co_cap">
-                            <a class="para" onclick="Data(this)" href="/Contact/Index">Contact</a>
+                            <a class="para" onclick="Data(this)" href="/Contact/Index">Liện hệ</a>
                         </li>
                         <li class="li_co_cap">
-                            <a class="para" onclick="Data(this)" href="/Blog/Index">Blog</a>
+                            <a class="para" onclick="Data(this)" href="/Blog/Index">Bài viết</a>
                         </li>
 
                     </ul>
@@ -368,7 +372,7 @@
                 var IdOrder = $("#idorder").val();
                 $.ajax({
                     type: "POST",               //update
-                    url: '@Url.Action("SearchOrder", "Account")',
+                    url: '@Url.Action("SearchOrder", "Accounts")',
                     data: {
                         IdOrder: IdOrder,
                         IdUser:Iduser

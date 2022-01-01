@@ -37,57 +37,13 @@
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-
-                    <div class="single-sidebar">
-                        <h2 class="sidebar-title">Products</h2>
-                        <div class="thubmnail-recent">
-                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins> <del>$800.00</del>
-                            </div>
-                        </div>
-                        <div class="thubmnail-recent">
-                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins> <del>$800.00</del>
-                            </div>
-                        </div>
-                        <div class="thubmnail-recent">
-                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins> <del>$800.00</del>
-                            </div>
-                        </div>
-                        <div class="thubmnail-recent">
-                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins> <del>$800.00</del>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="single-sidebar">
-                        <h2 class="sidebar-title">Recent Posts</h2>
-                        <ul>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                            <li><a href="#">Sony Smart TV - 2015</a></li>
-                        </ul>
-                    </div>
-                </div>
+              
 
                 @if (Model.Count > 0)
                 {
                     var stt = 1;
                     decimal total = 0;
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="product-content-right">
                             <div class="woocommerce">
                                 <form method="post" action="#">
@@ -97,10 +53,10 @@
                                                 <th></th>
                                                 <th class="product-remove">&nbsp;</th>
                                                 <th class="product-thumbnail">&nbsp;</th>
-                                                <th class="product-name">Product</th>
-                                                <th class="product-price">Price</th>
-                                                <th class="product-quantity">Quantity</th>
-                                                <th class="product-subtotal">Total</th>
+                                                <th class="product-name">Tên sản phẩm</th>
+                                                <th class="product-price">Giá sản phẩm</th>
+                                                <th class="product-quantity">Số lượng</th>
+                                                <th class="product-subtotal">Tổng giá sản phẩm</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -129,7 +85,7 @@
                                                         </td>
 
                                                         <td class="product-price">
-                                                            <span class="amount">@a</span>
+                                                            <span class="amount">@a.ToString("#,##0") VNĐ</span>
                                                         </td>
 
                                                         <td class="product-quantity">
@@ -139,7 +95,7 @@
                                                         </td>
 
                                                         <td class="product-subtotal">
-                                                            <span class="amount">@thanhtien</span>
+                                                            <span class="amount">@thanhtien.ToString("#,##0") VNĐ</span>
                                                         </td>
                                                         <td>
                                                             <button class="btn btn-success updatecartitem" data-productId="@cart.Product.IdProduct">
@@ -218,22 +174,22 @@
 
 
                                     <div class="cart_totals ">
-                                        <h2>Cart Totals</h2>
+                                        <h2>Tổng giỏ hàng</h2>
 
                                         <table cellspacing="0">
                                             <tbody>
                                                 <tr class="cart-subtotal">
-                                                    <th>Cart Subtotal</th>
-                                                    <td><span class="amount">@total</span></td>
+                                                    <th>Tổng cộng giỏ hàng</th>
+                                                    <td><span class="amount">@total.ToString("#,##0")</span></td>
                                                 </tr>
                                                <tr class="shipping">
-                                                    <th>Shipping and Handling</th>
-                                                    <td>Free Shipping</td>
+                                                    <th>Giao hàng và xử lý</th>
+                                                    <td>Miễn phí giao hàng</td>
                                                 </tr>
 
                                                 <tr class="order-total">
-                                                    <th>Order Total</th>
-                                                    <td id="totalmoney2">@total </td>
+                                                    <th>Tổng cộng </th>
+                                                    <td id="totalmoney2">@total.ToString("#,##0") </td>
                                                 </tr>
                                             </tbody>
                                         </table>

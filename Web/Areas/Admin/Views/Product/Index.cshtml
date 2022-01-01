@@ -15,6 +15,10 @@
 {
     <div class="alert-primary">@ViewBag.AddImage</div>
 }
+@if (ViewBag.Delete != null)
+{
+    <div class="alert-dark">@ViewBag.Delete</div>
+}
 
 
 
@@ -23,34 +27,26 @@
 }
 
 
-<h1>Index</h1>
+<h1>Danh sách sản phẩm</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a id="createbutton" asp-action="Create">Tạo mới</a>
 </p>
-<table class="table ">
+<table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.IdProduct)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdBrand)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.ProductName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateAccept)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                @Html.DisplayNameFor(model => model.PriceExport)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsShow)
@@ -68,62 +64,52 @@
         @foreach (var item in Model)
         {
 
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdProduct)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdCategory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdBrand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateAccept)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @if (item.IsShow == true)
-                {
-                    <a class="click" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-1.png" /></a>
-                }
-                else
-                {
-                    <a class="click" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-2.png" /></a>
-                }
-            </td>
-            <td>
-                @if (item.IsStandout == true)
-                {
-                    <a class="click2" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-1.png" /></a>
-                }
-                else
-                {
-                    <a class="click2" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-2.png" /></a>
-                }
-            </td>
-            <td>
-                <img src="~/@item.PhotoReview" class="rounded-circle" height="40" width="40" />
-            </td>
-            <td>
-                @Html.CheckBoxFor(modelItem => item.IsFree, new { disabled = "disabled" })
-            </td>
-            <td>
-                <a href="/Admin/Product/Edit/?IdProduct=@item.IdProduct">Edit</a>|
-                <a href="/Admin/Product/Details/?IdProduct=@item.IdProduct">Details</a>|
-                <a href="/Admin/Product/Delete/?IdProduct=@item.IdProduct">Delete</a>|
-                <a href="/Admin/Product/AddImages/?IdProduct=@item.IdProduct">AddImages</a>|
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdProduct)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
 
-            </td>
-        </tr>
+                <td>
+                    @item.Price.ToString("#,##0") VNĐ
+                </td>
+                <td>
+                    @item.PriceExport.ToString("#,##0") VNĐ
+                </td>>
+                <td>
+                    @if (item.IsShow == true)
+                    {
+                        <a class="click" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-1.png" /></a>
+                    }
+                    else
+                    {
+                        <a class="click" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-2.png" /></a>
+                    }
+                </td>
+                <td>
+                    @if (item.IsStandout == true)
+                    {
+                        <a class="click2" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-1.png" /></a>
+                    }
+                    else
+                    {
+                        <a class="click2" id="change_@item.IdProduct" data-idproduct="@item.IdProduct" href="#"><img src="~/Images/icons8-like-2.png" /></a>
+                    }
+                </td>
+                <td>
+                    <img src="~/@item.PhotoReview" class="rounded-circle" height="40" width="40" />
+                </td>
+
+                <td>
+                    <a style="width:50px" id="editplace" href="/Admin/Product/Edit/?IdProduct=@item.IdProduct">Edit</a>
+                    <a style="width:55px" id="editplace" href="/Admin/Product/Details/?IdProduct=@item.IdProduct">Details</a>
+                    <a style="width:50px" id="deleteplace" href="/Admin/Product/Delete/?IdProduct=@item.IdProduct">Delete</a>
+                    <a id="detailsbutton" href="/Admin/Product/AddImages/?IdProduct=@item.IdProduct">AddImages</a>
+
+                </td>
+            </tr>
         }
 
 
@@ -201,12 +187,9 @@
     });
 
 
-
-
-
     </script>
 
 
 
 
- }
+}

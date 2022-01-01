@@ -11,7 +11,10 @@ namespace DI.DI.Interace
     {
         Task<List<CategoryVm>> GetAllCategory();
 
-        List<CategoryVm> GetAllCategory2();
+        Task<List<CategoryVm>> GetAllCategory2();
+
+        Task<int> ChangeIsShow(int IdCategory);
+
 
         // list category in admin
         Task<IPagedList<CategoryVm>> GetAll(int? page);

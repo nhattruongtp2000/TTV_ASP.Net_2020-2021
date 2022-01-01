@@ -35,13 +35,14 @@ namespace DI.DI.Repository
 
             var product = new Product()
             {
-                DateAccept = request.DateAccept,
+                DateAccept=DateTime.Now,
                 IdBrand = request.IdBrand,
                 ProductName = request.ProductName,
                 UseVoucher = request.UseVoucher,
                 IdCategory = request.IdCategory,
                 IsFree = false,
                 Price = request.Price,
+                PriceExport=request.PriceExport,
                 PhotoReview = c,
                 Content = request.Content,
                 Description = request.Description,
@@ -70,10 +71,15 @@ namespace DI.DI.Repository
         {
             var product = await _iden2Context.Products.FirstOrDefaultAsync(x => x.IdProduct == IdProduct);
 
-            product.DateAccept = request.DateAccept;
             product.IdBrand = request.IdBrand;
             product.ProductName = request.ProductName;
             product.UseVoucher = request.UseVoucher;
+            product.PriceExport = request.PriceExport;
+            product.Price = request.Price;
+            product.Alias = request.Alias;
+            product.Quantity = request.Quantity;
+            product.IdCategory = request.IdCategory;
+            product.Description = request.Description;
 
             await _iden2Context.SaveChangesAsync();
             return product.IdBrand;
@@ -82,22 +88,25 @@ namespace DI.DI.Repository
 
         public async Task<List<ProductVm>> GetAll()
         {
-            var products = _iden2Context.Products;
+            var product = from p in _iden2Context.Products
+                           join pt in _iden2Context.Brands on p.IdBrand equals pt.IdBrand
+                           join ptt in _iden2Context.Categories on p.IdCategory equals ptt.IdCategory
+                           select new { p, pt, ptt };
 
 
-            var a = await products.Select(x => new ProductVm()
+            var a = await product.Select(x => new ProductVm()
             {
-                IdProduct = x.IdProduct,
-                DateAccept = x.DateAccept,
-                IdBrand = x.IdBrand,
-                ProductName = x.ProductName,
-                UseVoucher = x.UseVoucher,
-                PhotoReview = x.PhotoReview,
-                IdCategory = x.IdCategory,
-                IsFree = x.IsFree,
-                Price = x.Price,
-                Alias = x.Alias,
-                Quantity = x.Quantity
+                IdProduct = x.p.IdProduct,
+                ProductName = x.p.ProductName,
+                Price = x.p.Price,
+                PriceExport = x.p.PriceExport,
+                IsShow=x.p.IsShow,
+                IsStandout=x.p.IsStandout,
+                PhotoReview = x.p.PhotoReview,
+                Description = x.p.Description,
+                NameBrand = x.pt.BrandName,
+                NameCategory = x.ptt.NameCategory
+
             }).ToListAsync();
             return a;
         }
@@ -107,19 +116,30 @@ namespace DI.DI.Repository
             var pageNumber = page ?? 1;
             int pageSize = 9;
 
-            var x = _iden2Context.Products.Where(x => x.IdCategory == IdCategory);
-            var a = await x.Select(x => new ProductVm()
+
+            var cate2 = from p in _iden2Context.Products
+                        join pt in _iden2Context.Categories on p.IdCategory equals pt.IdCategory
+                        select new { p, pt };
+
+
+            var product = cate2.Where(x => x.p.IdCategory == IdCategory || x.pt.ParentId == IdCategory);
+
+
+
+
+            var a = await product.Select(x => new ProductVm()
             {
-                IdProduct = x.IdProduct,
-                DateAccept = x.DateAccept,
-                IdBrand = x.IdBrand,
-                ProductName = x.ProductName,
-                UseVoucher = x.UseVoucher,
-                PhotoReview = x.PhotoReview,
-                IdCategory = x.IdCategory,
-                IsFree = x.IsFree,
-                Price = x.Price,
-                Alias = x.Alias
+                IdProduct = x.p.IdProduct,
+                DateAccept = x.p.DateAccept,
+                IdBrand = x.p.IdBrand,
+                ProductName = x.p.ProductName,
+                UseVoucher = x.p.UseVoucher,
+                PhotoReview = x.p.PhotoReview,
+                IdCategory = x.p.IdCategory,
+                IsFree = x.p.IsFree,
+                Price = x.p.Price,
+                PriceExport = x.p.PriceExport,
+                Alias = x.p.Alias
             }).ToPagedListAsync(pageNumber, pageSize);
             return a;
         }
@@ -142,6 +162,7 @@ namespace DI.DI.Repository
                 IdCategory = x.IdCategory,
                 IsFree = x.IsFree,
                 Price = x.Price,
+                PriceExport = x.PriceExport,
                 Alias = x.Alias,
                 Quantity = x.Quantity,
                 IsShow=x.IsShow,
@@ -153,17 +174,29 @@ namespace DI.DI.Repository
 
         public async Task<ProductVm> GetProduct(int IdProduct)
         {
-            var product = await _iden2Context.Products.FirstOrDefaultAsync(x => x.IdProduct == IdProduct);
+
+            var product = await(from p in _iden2Context.Products
+                          join pt in _iden2Context.Brands on p.IdBrand equals pt.IdBrand
+                          join ptt in _iden2Context.Categories on p.IdCategory equals ptt.IdCategory
+                          select new { p, pt, ptt }).Where(x=>x.p.IdProduct==IdProduct).FirstOrDefaultAsync();
+
             var a = new ProductVm()
             {
-                IdProduct = product.IdProduct,
-                DateAccept = product.DateAccept,
-                IdBrand = product.IdBrand,
-                ProductName = product.ProductName,
-                UseVoucher = product.UseVoucher,
-                IdCategory = product.IdCategory,
-                Price = product.Price,
-                Alias = product.Alias
+                IdProduct = product.p.IdProduct,
+                DateAccept = product.p.DateAccept,
+                IdBrand = product.p.IdBrand,
+                ProductName = product.p.ProductName,
+                UseVoucher = product.p.UseVoucher,
+                IdCategory = product.p.IdCategory,
+                Price = product.p.Price,
+                PriceExport = product.p.PriceExport,
+                Alias = product.p.Alias,
+                PhotoReview=product.p.PhotoReview,
+                Quantity=product.p.Quantity,    
+                Description=product.p.Description,
+                NameBrand=product.pt.BrandName,
+                NameCategory=product.ptt.NameCategory
+                
 
             };
             return a;
@@ -188,6 +221,7 @@ namespace DI.DI.Repository
                 IdCategory = x.IdCategory,
                 IsFree = x.IsFree,
                 Price = x.Price,
+                PriceExport = x.PriceExport,
                 Alias = x.Alias
             }).ToPagedListAsync(pageNumber, pageSize);
 
@@ -282,6 +316,7 @@ namespace DI.DI.Repository
                 ListPhotos = linkPhotos,
                 RelatedProducts = relateProduct,
                 Price = product.Price,
+                PriceExport = product.PriceExport,
                 Comments = commentvm,
                 Description = product.Description,
                 MaybeLike = MaybeLikes,
@@ -306,6 +341,7 @@ namespace DI.DI.Repository
                 UseVoucher = x.UseVoucher,
                 PhotoReview = x.PhotoReview,
                 IdCategory = x.IdCategory,
+                PriceExport = x.PriceExport,
                 IsFree = x.IsFree,
                 Price = x.Price,
                 Alias = x.Alias
@@ -349,6 +385,7 @@ namespace DI.DI.Repository
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
                 Price = x.Price,
+                PriceExport = x.PriceExport,
                 Alias = x.Alias
             }).ToPagedListAsync(pageNumber, pageSize);
             return a;
@@ -367,6 +404,7 @@ namespace DI.DI.Repository
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
                 Price = x.Price,
+                PriceExport = x.PriceExport,
                 Alias = x.Alias
             }).ToListAsync();
             return a;
@@ -385,6 +423,7 @@ namespace DI.DI.Repository
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
                 Price = x.Price,
+                PriceExport = x.PriceExport,
                 Alias = x.Alias
             }).ToListAsync();
             return a;
@@ -406,7 +445,7 @@ namespace DI.DI.Repository
             }
             if (pricemax != 0)
             {
-                pro = pro.Where(x => x.Price >= pricemin && x.Price <= pricemax);
+                pro = pro.Where(x => x.PriceExport >= pricemin && x.PriceExport <= pricemax);
             }
            
             var pageNumber = page ?? 1;
@@ -422,6 +461,7 @@ namespace DI.DI.Repository
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
                 Price = x.Price,
+                PriceExport = x.PriceExport,
                 Alias = x.Alias
             }).ToPagedListAsync(pageNumber, pageSize);
             return a;
@@ -474,6 +514,7 @@ namespace DI.DI.Repository
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
                 Price = x.Price,
+                PriceExport = x.PriceExport,
                 Alias = x.Alias
             };
             return product;
@@ -505,6 +546,29 @@ namespace DI.DI.Repository
                 product.IsStandout = true;
             }
             return await _iden2Context.SaveChangesAsync();
+        }
+
+        public async Task<IPagedList<ProductVm>> GetProductPerSubCategory(int IdCategory, int? page)
+        {
+            var pageNumber = page ?? 1;
+            int pageSize = 9;
+
+            var x = _iden2Context.Products.Where(x => x.IdCategory == IdCategory);
+            var a = await x.Select(x => new ProductVm()
+            {
+                IdProduct = x.IdProduct,
+                DateAccept = x.DateAccept,
+                IdBrand = x.IdBrand,
+                ProductName = x.ProductName,
+                UseVoucher = x.UseVoucher,
+                PhotoReview = x.PhotoReview,
+                IdCategory = x.IdCategory,
+                IsFree = x.IsFree,
+                Price = x.Price,
+                PriceExport = x.PriceExport,
+                Alias = x.Alias
+            }).ToPagedListAsync(pageNumber, pageSize);
+            return a;
         }
     }
 }

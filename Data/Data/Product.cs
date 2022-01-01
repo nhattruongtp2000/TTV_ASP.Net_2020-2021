@@ -29,6 +29,8 @@ namespace Data.Data
 
         public decimal Price { get; set; }
 
+        public decimal PriceExport { get; set; }
+
         public DateTime DateAccept { get; set; }
 
         public bool UseVoucher { get; set; }
@@ -51,6 +53,11 @@ namespace Data.Data
 
 
         public ICollection<OrderDetails> OrderDetails { get; set; }
+
+        public ICollection<ProductPhoto> ProductPhotos { get; set; }
+
+        [ForeignKey("IdCategory")]
+        public Category Category { get; set; }
 
     }
 }

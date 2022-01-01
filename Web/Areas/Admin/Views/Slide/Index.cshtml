@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Danh sách Slide</h1>
 
 @if (ViewBag.Success != null)
 {
@@ -20,7 +20,7 @@
     <div class="alert-primary">@ViewBag.Delete</div>
 }
 <p>
-    <a asp-action="Create">Create New</a>
+    <a id="createbutton" asp-action="Create">Tạo mới</a>
 </p>
 <table class="table">
     <thead>
@@ -76,8 +76,8 @@
                     <img src="~/@item.FromFile" class="" height="200" width="300" />
                 </td>
                 <td>
-                    <a href="/Admin/Slide/Edit/?IdSlide=@item.Id">Edit</a>|
-                    <a href="/Admin/Slide/Delete/?IdSlide=@item.Id">Delete</a>|
+                    <a id="editplace" href="/Admin/Slide/Edit/?IdSlide=@item.Id">Edit</a>
+                    <a style="width:100px" id="deleteplace" href="/Admin/Slide/Delete/?IdSlide=@item.Id">Delete</a>
 
 
                 </td>

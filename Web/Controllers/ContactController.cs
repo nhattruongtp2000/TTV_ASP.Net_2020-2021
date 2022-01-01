@@ -90,9 +90,9 @@ namespace Web.Controllers
         //}
 
         [HttpPost]
-        public async Task<IActionResult> SendOrderDelivered(string IdOrder)
+        public async Task<IActionResult> SendOrderDelivered(string IdOrder,string Email)
         {
-            await _contactRepository.SendOrderDeliveried(IdOrder);
+            await _contactRepository.SendOrderDeliveried(IdOrder,Email);
             return Ok();
         }
 

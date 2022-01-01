@@ -13,18 +13,19 @@
 
 
         <li class="li_co_cap">
-            <a class="para" onclick="Data(this)" href="#montht">Category</a>
+            <a class="para" onclick="Data(this)" href="#montht">Loại</a>
             <ul class="menu_con">
                 @foreach (var item in Model.Where(x => x.ParentId == null))
                 {
                     if (Model.Any(x => x.ParentId == item.IdCategory))
                     {
+                        
                         <li onmouseover="showcon()" onmouseout="hidecon()">
                             <a class="para"  href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=item.IdCategory})">@item.NameCategory</a>
                             <ul class="menu_con_con" style="display:none">
                                 @foreach (var subitem in Model.Where(x => x.ParentId == item.IdCategory))
                                 {
-                                    <li><a href="">@subitem.NameCategory</a></li>
+                                    <li><a class="para" href="@Url.ActionLink("GetProductPerSubCategory","Products",new {IdCategory=subitem.IdCategory})">@subitem.NameCategory</a></li>
                                 }
                             </ul>
                         </li>

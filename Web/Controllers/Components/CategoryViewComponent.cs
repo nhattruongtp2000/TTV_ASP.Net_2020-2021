@@ -23,9 +23,10 @@ namespace Web.Controllers
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            var a =await _categoryRepository.GetAllCategory2();
             var categories = _memoryCache.GetOrCreate(CacheKeys.ProductCategories, entry => {
-                entry.SlidingExpiration = TimeSpan.FromHours(2);
-                return _categoryRepository.GetAllCategory2();
+                entry.SlidingExpiration = TimeSpan.FromSeconds(2);
+                return a;
             });
 
 

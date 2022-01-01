@@ -22,7 +22,7 @@ namespace DI.DI.Interace
 
         Task<List<ProductVm>> GetAll();
 
-        Task<string> Purchase(string IdOrder,string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, decimal total,string voucherCode);
+        Task<string> Purchase(string IdOrder,string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip,string voucherCode);
 
         //Task<List<OrderDetailsVm>> Checkout(string IdUser);
 
@@ -32,9 +32,9 @@ namespace DI.DI.Interace
 
         Task<string> CheckoutFail();
 
-        string VNpay(string OrderCategory,decimal Amount,string txtOrderDesc,string cboBankCode);
+        string VNpay(string OrderCategory,decimal Amount,string txtOrderDesc,string cboBankCode, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode);
 
-        Task<VNPayReturnVm> VNPayReturn( string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode);
+        Task<VNPayReturnVm> VNPayReturn(  string voucherCode);
         
     }
 }

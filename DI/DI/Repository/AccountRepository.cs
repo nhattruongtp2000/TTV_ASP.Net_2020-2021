@@ -17,6 +17,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ViewModel.ViewModels;
+using X.PagedList;
 
 namespace DI.DI.Repository
 {
@@ -203,7 +204,7 @@ namespace DI.DI.Repository
             return 0;
         }
 
-        public async void Logout()
+        public async Task Logout()
         {
             await _signInManager.SignOutAsync();
         }
@@ -212,7 +213,7 @@ namespace DI.DI.Repository
         {
             var user = new AppUser()
             {
-                UserName = request.PhoneNumer,
+                UserName = request.UserName,
                 Email = request.Email ,
                 PhoneNumber=request.PhoneNumer,
                 Name=request.Name
@@ -282,6 +283,80 @@ namespace DI.DI.Repository
                 return 2;
             }
             return 3;
+        }
+
+        public async Task<IPagedList<UserVm>> GetAllUser(int? page)
+        {
+            var pageNumber = page ?? 1;
+            int pageSize = 9;
+
+            var k = from p in _iden2Context.Users
+                    join pt in _iden2Context.UserRoles on p.Id equals pt.UserId into ptt
+                    from subpet in ptt.DefaultIfEmpty()
+                    select new { p, ptt,subpet };
+            var user = await k.Select(x => new UserVm() { 
+                UserId=x.p.Id,
+            Address=x.p.Address,
+            Email=x.p.Email,
+            Name=x.p.Name,
+            PhoneNumber=x.p.PhoneNumber,
+            UserName=x.p.UserName,
+            Role=x.subpet.RoleId
+            }).ToPagedListAsync(pageNumber,pageSize);
+
+            return user;
+        }
+
+        public async Task<UserVm> GetUser(string UserId)
+        {
+            var user = await _iden2Context.Users.FindAsync(UserId);
+            var uservm = new UserVm()
+            {
+                UserId=user.Id,
+                Address=user.Address,
+                Email=user.Email,
+                Name=user.Name,
+                PhoneNumber=user.PhoneNumber,
+                UserName=user.UserName
+            };
+            return uservm;
+
+        }
+
+        public async Task<int> DeleteUser(string UserId)
+        {
+            var user = await _iden2Context.Users.FindAsync(UserId);
+            _iden2Context.Users.Remove(user);
+            return await _iden2Context.SaveChangesAsync();
+        }
+
+        public async Task<int> EditUserAdmin(UserVm request)
+        {
+            var a = await _iden2Context.Users.FindAsync(request.UserId);
+            a.Address = request.Address;
+            a.Email = request.Email;
+            a.PhoneNumber = request.PhoneNumber;
+            a.Name = request.Name;
+
+            return await _iden2Context.SaveChangesAsync();
+        }
+
+        public async Task<int> CreateUser(UserCreateVm request)
+        {
+            var x = new AppUser()
+            {
+                Email=request.Email,
+                PhoneNumber=request.Email,
+                Name=request.Name,
+                UserName=request.UserName,              
+            };
+
+            var create=await _userManager.CreateAsync(x,request.Password);
+            if (create.Succeeded)
+            {
+                return 1;
+            }
+            return 0;
         }
     }
 }

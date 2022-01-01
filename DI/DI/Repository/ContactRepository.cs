@@ -149,7 +149,7 @@ namespace DI.DI.Repository
             return IdOrder;
         }
 
-        public async Task<string> SendOrderDeliveried(string IdOrder)
+        public async Task<string> SendOrderDeliveried(string IdOrder,string Email)
         {
             var order = await _iden2Context.Orders.Where(x => x.IdOrder == IdOrder).FirstOrDefaultAsync();
             var user = await _iden2Context.Users.Where(x => x.Id == order.IdUser).FirstOrDefaultAsync();
@@ -231,6 +231,9 @@ namespace DI.DI.Repository
                                 .tach{
                                     padding-left:200px;
                                 }
+                                .details{
+                                font-weight:bold;
+                                }
                         
                             </style>
                         </head>
@@ -243,10 +246,8 @@ namespace DI.DI.Repository
                         
                                     <div class=""introduce"">
                                         <p class=""first"">Nhật Trường thân mến,</p>
-                                        <p>Một kiện hàng thuộc đơn hàng <span>#"+order.IdOrder+ @"</span> đang được giao đến bạn bởi LELEXPRESS. Bạn sẽ nhận được cuộc gọi từ đơn vị vận chuyển để thông báo thời gian giao hàng cụ thể.</p>
-                                        <a href=""@Url.Action(""OrderHistoryDetails"", ""Account"", new { IdOrder = ""071523"" })"" class=""nut"">
-                                            XEM CHI TIẾT ĐƠN HÀNG
-                                        </a>
+                                        <p>Một kiện hàng thuộc đơn hàng <span>#" + order.IdOrder+ @"</span> đang được giao đến bạn bởi LELEXPRESS. Bạn sẽ nhận được cuộc gọi từ đơn vị vận chuyển để thông báo thời gian giao hàng cụ thể.</p>
+                                        <p class=""details"">Vui lòng kiểm tra lịch sử giao dịch để xem chi tiết đơn hàng</p>
                                     </div>
                                     <div>
                                         <p class=""first"">Bước tiếp theo</p>
@@ -277,7 +278,7 @@ namespace DI.DI.Repository
                         </body>
                         </html>
                                 ";
-            _IaccountRepository.SendTo(user.Email, "Your order" +IdOrder+ "has been delivered",body);
+            _IaccountRepository.SendTo(Email, "Your order" +IdOrder+ "has been delivered",body);
             return IdOrder;
         }
 

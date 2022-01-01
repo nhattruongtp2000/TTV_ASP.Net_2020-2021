@@ -16,13 +16,13 @@ namespace DI.DI
 
         public void AddRequestData(string key, string value)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!String.IsNullOrEmpty(value)) //add data
             {
                 _requestData.Add(key, value);
             }
         }
 
-        public void AddResponseData(string key, string value)
+        public void AddResponseData(string key, string value)  //thêm vào list những data mình đã thêm lúc nãy(bắt đầu bằng vnp) để tí gọi ra
         {
             if (!String.IsNullOrEmpty(value))
             {
@@ -30,7 +30,7 @@ namespace DI.DI
             }
         }
 
-        public string GetResponseData(string key)
+        public string GetResponseData(string key)  //gọi data ra
         {
             string retValue;
             if (_responseData.TryGetValue(key, out retValue))
@@ -45,7 +45,7 @@ namespace DI.DI
 
         #region Request
 
-        public string CreateRequestUrl(string baseUrl, string vnp_HashSecret)
+        public string CreateRequestUrl(string baseUrl, string vnp_HashSecret)  //tạo đường dẫn
         {
             StringBuilder data = new StringBuilder();
             foreach (KeyValuePair<string, string> kv in _requestData)

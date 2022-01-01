@@ -1,36 +1,84 @@
-﻿@{ 
+﻿@model ViewModel.ViewModels.LoginVm
+
+@{
     Layout = null;
 }
-@model ViewModel.ViewModels.LoginVm
+
+
+
+
 <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dashboard - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
+    <link href="/admin-side/css/styles.css" rel="stylesheet" />
+    <link href="/admin-side/css/site.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body{
-            background-color:aqua
+        .main {
+            display: flex;
+            justify-content: center;
+        }
+
+            .main > div {
+                border: 1px solid none;
+                border-radius: 10px;
+                padding: 20px;
+                width: 600px;
+                height: 325px;
+                background-color: antiquewhite
+            }
+
+        h3 {
+            margin-left: 255px;
         }
     </style>
 </head>
-<body>
-    <div class="container h-100">
-        <div class="d-flex row h-100 justify-content-center align-items-center">
-            <form method="post"  asp-action="Login"   >
-                <div class="form-group">
-                    <label asp-for="UserName">Tên Đăng Nhập:</label>
-                    <input asp-for="UserName" type="text" class="form-control sm-6" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="Pass">Mật khẩu</label>
-                    <input asp-for="Pass" type="password" class="form-control  sm-6" />
-                </div>
-                <div class="form-group">
-                    <input asp-for="RememberMe" type="checkbox" />
-                    <label asp-for="RememberMe">@Html.DisplayNameFor(m=>m.RememberMe)</label>
-                </div>
 
-                <button class="btn btn-primary" type="submit">Login</button>
-            </form>
-            <a href="/Admin/Account/Register">
-                <input type="button" class="btn btn-light" value="Register" />
-            </a>
+<body>
+    <div class="body2">
+        <div class="main">
+            <div style="display:flex;justify-content:center">
+                <div style="text-align:center">
+                    <form method="post" asp-controller="Account" asp-action="Login">
+                        <div class="form-group">
+                            <label asp-for="UserName" style="text-align: right; clear: both; float: left; margin-right: 15px;"></label>
+                            <input asp-for="UserName" class="form-control col-12" placeholder="Please fill your PhoneNumber" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Pass" style="text-align: right; clear: both; float: left; margin-right: 15px;"></label>
+                            <input asp-for="Pass" type="password" class="form-control col-12" placeholder="Please fill your Password" />
+                            <span asp-validation-for="Pass" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="RememberMe" style="text-align: right; clear: both; float: left; margin-right: 15px;display:inline" type="checkbox" />
+                            <label style="text-align: right; clear: both; float: left; margin-right: 15px;display:inline">Lưu tài khoản</label>
+                            <br>
+                        </div>
+                        @if (ViewBag.Login != null)
+                        {
+                            <div class="alert-danger" style="float:left;clear:both">@ViewBag.Login</div>
+                        }
+                        <input type="submit" style="background-color:#c82333" class="btn btn-primary col-12" value="Login" />
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </body>
+
+
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

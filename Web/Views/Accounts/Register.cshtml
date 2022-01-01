@@ -1,10 +1,24 @@
 ﻿@model ViewModel.ViewModels.RegisterVm
-
+@{
+    Layout = null;
+}
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <style>
         .main {
             display: flex;
             justify-content: center;
+        }
+        body{
+            background-color:#e5e5e5
         }
 
             .main > div {
@@ -14,7 +28,7 @@
                 width: 300px;
                 height: 400px;
                 background-color: antiquewhite;
-                height:500px;
+                height: 550px;
             }
 
         h3 {
@@ -30,42 +44,46 @@
 <body>
     <div class="body2">
         <h3>
-            Welcome to Ustora. Let's Login!
+            Đăng ký tài khoản
         </h3>
         <div class="main">
             <div>
-                <h4>Register User</h4>
                 <form method="post" asp-controller="Accounts" asp-action="Register">
                     <div class="form-group">
-                        <label>PhoneNumber*</label>
-                        <input asp-for="PhoneNumer" class="form-control col-12" placeholder="Please fill your PhoneNumber" />
+                        <label asp-for="UserName"></label>
+                        <input asp-for="UserName" class="form-control col-12" placeholder="Nhập tên tài khoản" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumer"></label>
+                        <input asp-for="PhoneNumer" class="form-control col-12" placeholder="Nhập số điện thoại" />
                         <span asp-validation-for="PhoneNumer" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>Password*</label>
-                        <input asp-for="Pass" type="password" class="form-control col-12" placeholder="Please fill your Password" />
+                        <label asp-for="Pass"></label>
+                        <input asp-for="Pass" type="password" class="form-control col-12" placeholder="Nhập mật khẩu" />
                         <span asp-validation-for="Pass" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>Confirm Password*</label>
-                        <input asp-for="ConfirmPass" type="password" class="form-control col-12" placeholder="Please fill your Password" />
+                        <label asp-for="ConfirmPass"></label>
+                        <input asp-for="ConfirmPass" type="password" class="form-control col-12" placeholder="Xác nhận mật khẩu" />
                         <span asp-validation-for="ConfirmPass" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>Full Name</label>
-                        <input asp-for="Name" class="form-control col-12" placeholder="Please fill your Name" />
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control col-12" placeholder="Nhập họ và tên" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>Email*</label>
-                        <input asp-for="Email" type="email" class="form-control col-12" placeholder="Please fill your Email" />
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" type="email" class="form-control col-12" placeholder="Nhập email" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     @if (ViewBag.Email != null)
                     {
                         <div style="color:red">@ViewBag.Email</div>
                     }
-                    <input type="submit" class="btn btn-success col-12" value="Register" />
+                    <input type="submit" class="btn btn-success col-12" value="Đăng ký" />
                 </form>
               
             </div>

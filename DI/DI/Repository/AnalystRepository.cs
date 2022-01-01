@@ -28,17 +28,12 @@ namespace DI.DI.Repository
 
         public async Task<List<OrdersVm>> GetALlProcessOrdersPerDay(DateTime date)
         {
-            var get = _iden2Context.Orders.Where(x=>x.Status== Status.Process && x.OrderDay.DayOfYear==date.DayOfYear);
+            var get = _iden2Context.Orders.Where(x=>x.Status== Status.Process && x.OrderDay.Date==date.Date);
             var c = await get.Select(x => new OrdersVm()
             {
                 IdOrder = x.IdOrder,
                 Status = x.Status,
                 UserName = x.IdUser,
-                AddressShip = "",
-                NameShip = "",
-                EmailShip = "",
-                NoticeShip = "",
-                NumberShip = "",
                 VoucherCode = "",
                 OrderDay = x.OrderDay,
                 TotalPice = x.TotalPice
@@ -57,11 +52,6 @@ namespace DI.DI.Repository
                 IdOrder = x.IdOrder,
                 Status = x.Status,
                 UserName = x.IdUser,
-                AddressShip="",
-                NameShip="",
-                EmailShip="",
-                NoticeShip="",
-                NumberShip="",
                 VoucherCode="",
                 OrderDay = x.OrderDay,
                 TotalPice = x.TotalPice
@@ -72,17 +62,12 @@ namespace DI.DI.Repository
 
         public async Task<List<OrdersVm>> GetOrdersPerDay(DateTime date)
         {
-            var get = _iden2Context.Orders.Where(x => x.OrderDay.DayOfYear == date.DayOfYear);
+            var get = _iden2Context.Orders.Where(x => x.OrderDay.Date == date.Date);
             var x = await get.Select(x => new OrdersVm() 
             {
                 IdOrder = x.IdOrder,
                 Status = x.Status,
                 UserName = x.IdUser,
-                AddressShip = "",
-                NameShip = "",
-                EmailShip = "",
-                NoticeShip = "",
-                NumberShip = "",
                 VoucherCode = "",
                 OrderDay = x.OrderDay,
                 TotalPice = x.TotalPice
@@ -107,55 +92,7 @@ namespace DI.DI.Repository
 
 
 
-        public async Task<List<QuantityProducts>> GetTotalQuantityProducts()
-        {
-            var orderDetails = _iden2Context.OrderDetails;
-            var product = _iden2Context.Products;
-
-            var k = from p in orderDetails
-                   join  pt in product on p.IdProduct equals pt.IdProduct
-                    select new { p, pt };
-
-            var x = await k.Select(x=>new QuantityProducts()
-            {
-            IdProduct=x.pt.IdProduct,
-            TotalQuantity=x.p.Quality*x.p.Price,
-            IFromFile=x.pt.PhotoReview,
-            Price=x.p.Price,
-            Description=x.pt.Description,
-            ProductName=x.pt.ProductName
-            }).ToListAsync();
-
-            List<int> Id = await product.Select(x => x.IdProduct).ToListAsync();
-
-            List<QuantityProducts> a = new List<QuantityProducts>();
-
-            for(int i = 0; i < Id.Count(); i++)
-            {
-                var c = new QuantityProducts()
-                {
-                    IdProduct = Id[i],
-                    TotalQuantity = 0
-                };
-                a.Add(c);
-            }
-            for(int i = 0; i < a.Count(); i++)
-            {
-                for(int j = 0; j < x.Count(); j++)
-                {
-                    if (a[i].IdProduct == x[j].IdProduct)
-                    {
-                        a[i].TotalQuantity += x[j].TotalQuantity;
-                        a[i].IFromFile = x[j].IFromFile;
-                        a[i].Price = x[j].Price;
-                        a[i].Description = x[j].Description;
-                        a[i].ProductName = x[j].ProductName;
-                    }
-                }
-            }
-            var aa = a.OrderByDescending(x => x.TotalQuantity).ToList();
-            return aa;
-        }
+  
 
         public async Task<List<ToTalRevenue>> GetRevenueMonth(string month, string year)
         {
@@ -217,60 +154,30 @@ namespace DI.DI.Repository
             return xx;
         }
 
-        public async Task<List<QuantityProducts>> GetTotalQuantityProductsPerDay(string day, string month, string year)
+        public async Task<List<QuantityProducts>> GetTotalQuantityProductsPerDay(DateTime date)
         {
-            int day2 = int.Parse(day);
-            int month2 = int.Parse(month);
-            int year2 = int.Parse(year);
+
 
             var order = from p in _iden2Context.Orders
                         join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
-                        select new { p, pt };
+                        join ptt in _iden2Context.Products on pt.IdProduct equals ptt.IdProduct
+                        select new { p, pt, ptt };
 
-            var order2 = order.Where(x => x.p.OrderDay.Month == month2 &&x.p.OrderDay.Day==day2 && x.p.OrderDay.Year == year2);
+            var order2 = order.Where(x => x.p.OrderDay.Date==date.Date);
 
-            var standout = order2
-                .GroupBy(x => x.pt.IdProduct)
-                .Select(x => new
+            var standout = await order2
+                .GroupBy(x => x.ptt.ProductName)
+                .Select(x => new QuantityProducts
                 {
-                    key = x.Key,
-                    Countx = x.Count()
+                    ProductName = x.Key,
+                    TotalQuantity = x.Count(),
+                    Price = x.Sum(x => x.pt.Price)
                 })
-                .OrderByDescending(x => x.Countx);
+                .OrderByDescending(x => x.Price).ToListAsync();
 
 
 
-            var products = from p in standout
-                           join pt in _iden2Context.Products on p.key equals pt.IdProduct
-                           select new { p, pt };
-
-            var x = await products.Select(x => new QuantityProducts()
-            {
-                IdProduct = x.pt.IdProduct,
-                TotalQuantity = x.p.Countx,
-                ProductName = x.pt.ProductName,
-                Price = x.pt.Price,
-                Description = "",
-                IFromFile = ""
-            }).ToListAsync();
-
-            if (x.Count() < 10)
-            {
-                while (x.Count() <= 9)
-                {
-                    QuantityProducts qua = new QuantityProducts()
-                    {
-                        IdProduct = 0,
-                        TotalQuantity = 0,
-                        ProductName = "",
-                        Price = 0,
-                        Description = "",
-                        IFromFile = ""
-                    };
-                    x.Add(qua);
-                }
-            }
-            return x;
+            return standout;
         }
 
         public async Task<List<QuantityProducts>> GetTotalQuantityProductsPerMonth(string month, string year)
@@ -280,52 +187,24 @@ namespace DI.DI.Repository
 
             var order = from p in _iden2Context.Orders
                         join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
-                        select new { p, pt };
+                        join ptt in _iden2Context.Products on pt.IdProduct equals ptt.IdProduct
+                        select new { p, pt,ptt};
 
             var order2 = order.Where(x => x.p.OrderDay.Month == month2 && x.p.OrderDay.Year == year2);
 
-            var standout = order2
-                .GroupBy(x => x.pt.IdProduct)
-                .Select(x => new
+            var standout =await order2
+                .GroupBy(x => x.ptt.ProductName)
+                .Select(x => new QuantityProducts
                 {
-                    key = x.Key,
-                    Countx = x.Count()
+                    ProductName = x.Key,
+                    TotalQuantity = x.Count(),
+                    Price=x.Sum(x=>x.pt.Price)
                 })
-                .OrderByDescending(x => x.Countx);
+                .OrderByDescending(x => x.Price).ToListAsync();
 
-    
 
-            var products = from p in standout
-                           join pt in _iden2Context.Products on p.key equals pt.IdProduct
-                           select new { p, pt };
 
-            var x = await products.Select(x => new QuantityProducts()
-            {
-                IdProduct=x.pt.IdProduct,
-                TotalQuantity=x.p.Countx,
-                ProductName=x.pt.ProductName,
-                Price=x.pt.Price,
-                Description="",
-                IFromFile=""
-            }).ToListAsync();
-
-            if (x.Count() < 10)
-            {
-                while (x.Count() <= 9)
-                {
-                    QuantityProducts qua = new QuantityProducts()
-                    {
-                        IdProduct = 0,
-                        TotalQuantity = 0,
-                        ProductName = "",
-                        Price = 0,
-                        Description = "",
-                        IFromFile = ""
-                    };
-                    x.Add(qua);
-                }
-            }
-            return x;
+            return standout;
         }
 
         public async Task<List<QuantityProducts>> GetTotalQuantityProductsPerYear(string year)
@@ -355,12 +234,9 @@ namespace DI.DI.Repository
 
             var x = await products.Select(x => new QuantityProducts()
             {
-                IdProduct = x.pt.IdProduct,
                 TotalQuantity = x.p.Countx,
                 ProductName = x.pt.ProductName,
                 Price = x.pt.Price,
-                Description = "",
-                IFromFile = ""
             }).ToListAsync();
 
             if (x.Count() < 10)
@@ -369,12 +245,9 @@ namespace DI.DI.Repository
                 {
                     QuantityProducts qua = new QuantityProducts()
                     {
-                        IdProduct = 0,
                         TotalQuantity = 0,
                         ProductName = "",
                         Price = 0,
-                        Description = "",
-                        IFromFile = ""
                     };
                     x.Add(qua);
                 }
@@ -396,6 +269,7 @@ namespace DI.DI.Repository
                 UseVoucher = x.UseVoucher,
                 PhotoReview = x.PhotoReview,
                 Price = x.Price,
+                PriceExport=x.PriceExport,
                 Alias=x.Alias,
             }).OrderByDescending(x => x.IdProduct).ToListAsync();
             return a;
@@ -427,6 +301,7 @@ namespace DI.DI.Repository
                 PhotoReview = x.pt.PhotoReview,
                 IdCategory = x.pt.IdCategory,
                 IsFree = x.pt.IsFree,
+                PriceExport=x.pt.PriceExport,
                 Price = x.pt.Price,
                 Alias = x.pt.Alias,
             }).ToListAsync();
@@ -446,6 +321,7 @@ namespace DI.DI.Repository
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
                 PhotoReview = x.PhotoReview,
+                PriceExport=x.PriceExport,
                 Price = x.Price,
                 Alias = x.Alias,
             }).OrderByDescending(x => x.IdProduct).ToListAsync();
@@ -454,17 +330,12 @@ namespace DI.DI.Repository
 
         public async Task<List<OrdersVm>> GetALlDeliveredOrdersPerDay(DateTime date)
         {
-            var get = _iden2Context.Orders.Where(x => x.Status == Status.Delivering && x.OrderDay.DayOfYear == date.DayOfYear);
+            var get = _iden2Context.Orders.Where(x => x.Status == Status.Delivering && x.OrderDay.Date == date.Date);
             var c = await get.Select(x => new OrdersVm()
             {
                 IdOrder = x.IdOrder,
                 Status = x.Status,
                 UserName = x.IdUser,
-                AddressShip = "",
-                NameShip = "",
-                EmailShip = "",
-                NoticeShip = "",
-                NumberShip = "",
                 VoucherCode = "",
                 OrderDay = x.OrderDay,
                 TotalPice = x.TotalPice
@@ -484,7 +355,7 @@ namespace DI.DI.Repository
             var date = DateTime.Now;
 
             var Ip = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-            var x = await _iden2Context.IpAccesses.Where(x => x.IPAddress == Ip && x.DateAccess.DayOfYear==date.DayOfYear   ).FirstOrDefaultAsync();
+            var x = await _iden2Context.IpAccesses.Where(x => x.IPAddress == Ip && x.DateAccess.DayOfYear==date.DayOfYear).FirstOrDefaultAsync();
 
             if (x == null)
             {
@@ -506,7 +377,7 @@ namespace DI.DI.Repository
 
         public  int IPAccessDay()
         {
-            var x = _iden2Context.IpAccesses.Where(x => x.DateAccess == DateTime.Now);
+            var x = _iden2Context.IpAccesses.Where(x => x.DateAccess.Date == DateTime.Now.Date);
             var xx = x.Count();
             return xx;
         }
@@ -517,6 +388,219 @@ namespace DI.DI.Repository
             var xx = x.Sum(x => x.CountAcess);
             return xx;
         }
+
+        public async Task<List<RevenueBrandVm>> RevenuePerBrands(string month, string year)
+        {
+            int month2 = int.Parse(month);
+            int year2 = int.Parse(year);
+
+
+            var orderdetais = (from p in _iden2Context.Products
+                              join pt in _iden2Context.OrderDetails on p.IdProduct equals pt.IdProduct
+                              join ptt in _iden2Context.Brands on p.IdBrand equals ptt.IdBrand
+                              join pttt in _iden2Context.Orders on pt.IdOrder equals pttt.IdOrder
+                              select new { p, pt, ptt,pttt }).Where(x => x.pttt.OrderDay.Month == month2 && x.pttt.OrderDay.Year == year2);
+
+            var brandrevenue =await orderdetais.GroupBy(x => x.ptt.BrandName)
+                .Select(x => new RevenueBrandVm
+                {
+                    BrandName=x.Key,
+                    TotalRevenue=x.Sum(dd=>dd.pt.Price)
+                }).ToListAsync();
+
+            return brandrevenue;
+
+        }
+
+        public async Task<List<QuantityBrandVm>> QuantityPerBrand(string month, string year)
+        {
+            int month2 = int.Parse(month);
+            int year2 = int.Parse(year);
+
+
+            var orderdetais = (from p in _iden2Context.Products
+                               join pt in _iden2Context.OrderDetails on p.IdProduct equals pt.IdProduct
+                               join ptt in _iden2Context.Brands on p.IdBrand equals ptt.IdBrand
+                               join pttt in _iden2Context.Orders on pt.IdOrder equals pttt.IdOrder
+                               select new { p, pt, ptt, pttt }).Where(x => x.pttt.OrderDay.Month == month2 && x.pttt.OrderDay.Year == year2);
+
+            var brandquantity = await orderdetais.GroupBy(x => x.ptt.BrandName)
+                .Select(x => new QuantityBrandVm
+                {
+                    BrandName = x.Key,
+                    Quantity = x.Sum(dd => dd.pt.Quality)
+                }).ToListAsync();
+
+            return brandquantity;
+        }
+
+        public async Task<List<RevenueMonthVm>> RevenuePerMonth(string month, string year)
+        {
+
+            int month2 = int.Parse(month);
+            int year2 = int.Parse(year);
+
+            var order = _iden2Context.Orders.Where(x => x.OrderDay.Month == month2 && x.OrderDay.Year == year2);
+
+
+            var permonth =await order
+                .GroupBy(x => x.OrderDay.Day)
+                .Select(x => new RevenueMonthVm
+                {
+                    Day = x.Key,
+                    Revenue = x.Sum(re => re.TotalPice)
+                })
+                .OrderBy(x => x.Day)
+                .ToListAsync();
+
+            var k = new RevenueMonthVm()
+            {
+                Day = 32,
+                Revenue = 0
+            };
+            permonth.Add(k);
+
+
+
+            
+            return permonth;
+        }
+
+        public int OrdersMonth(string month, string year)
+        {
+            int month2 = int.Parse(month);
+            int year2 = int.Parse(year);
+
+            var order = _iden2Context.Orders.Where(x => x.OrderDay.Month == month2 && x.OrderDay.Year == year2);
+
+            return order.Count() ;
+        }
+
+        public  int ProductSold(string month, string year)
+        {
+            int month2 = int.Parse(month);
+            int year2 = int.Parse(year);
+            var sold = (from p in _iden2Context.Orders
+                        join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
+                        select new { p, pt }).Where(x => x.p.OrderDay.Month == month2 && x.p.OrderDay.Year == year2);
+
+            var sold2 =  sold.Sum(x => x.pt.Quality);
+
+            return sold2;
+
+        }
+
+        public decimal TotalRevenueMonth(string month, string year)
+        {
+            int month2 = int.Parse(month);
+            int year2 = int.Parse(year);
+
+            var order = _iden2Context.Orders.Where(x => x.OrderDay.Month == month2 && x.OrderDay.Year == year2);
+            var sum = order.Sum(x => x.TotalPice);
+            return sum;
+
+        }
+
+        public int OrdersDay(DateTime date)
+        {
+
+            var order = _iden2Context.Orders.Where(x => x.OrderDay.Date==date.Date);
+
+            return order.Count();
+        }
+
+        public int ProductDay(DateTime date)
+        {
+
+            var sold = (from p in _iden2Context.Orders
+                        join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
+                        select new { p, pt }).Where(x => x.p.OrderDay == date);
+
+            var sold2 = sold.Sum(x => x.pt.Quality);
+
+            return sold2;
+        }
+        public decimal TotalRevenueDay(DateTime date)
+        {           
+            var order = _iden2Context.Orders.Where(x => x.OrderDay == date);
+            var sum = order.Sum(x => x.TotalPice);
+            return sum;
+        }
+
+        public List<AnalystAccessVm> AnalystAccessMonth(string month, string year)
+        {
+            int month2 = int.Parse(month);
+            int year2 = int.Parse(year);
+
+            var access = _iden2Context.IpAccesses.Where(x => x.DateAccess.Month == month2 && x.DateAccess.Year == year2);
+            var analystaccess = access.GroupBy(x => x.DateAccess.Day)
+                .Select(x => new AnalystAccessVm() { 
+                
+                    Day=x.Key,
+                    TotalAccess=x.Sum(x=>x.CountAcess)
+                }).ToList();
+
+            analystaccess.Add(new AnalystAccessVm() { 
+            Day=32,
+            TotalAccess=0
+            });
+            return analystaccess;
+        }
+
+        public async Task<List<ProductExportVm>> ProfitMonth(string month, string year)
+        {
+            int month2 = int.Parse(month);
+            int year2 = int.Parse(year);
+
+            var order = from p in _iden2Context.Orders
+                        join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
+                        join ptt in _iden2Context.Products on pt.IdProduct equals ptt.IdProduct
+                        select new { p, pt, ptt };
+
+            var order2 = order.Where(x => x.p.OrderDay.Month == month2 && x.p.OrderDay.Year == year2);
+
+            var standout = order2
+                .GroupBy(x => x.ptt.IdProduct)
+                .Select(x => new
+                {
+                    IdProduct = x.Key,
+                    TotalQuantity = x.Count(),
+                    Revenue = x.Sum(x => x.pt.Price),
+                });
+
+            var profit = from p in _iden2Context.Products
+                         join pt in standout on p.IdProduct equals pt.IdProduct
+                         join ptt in _iden2Context.OrderDetails on p.IdProduct equals ptt.IdProduct
+                         select new { p, pt, ptt };
+
+            var profitvm =await profit.Select(x => new ProductExportVm() { 
+            IdProduct=x.p.IdProduct,
+            IdOrder=x.ptt.IdOrder,
+            PriceExport=x.p.PriceExport,
+            PriceImport=x.p.Price,
+            ProductName=x.p.ProductName,
+            Profit=x.p.PriceExport*x.pt.TotalQuantity-x.p.Price*x.pt.TotalQuantity,
+            Quantity=x.pt.TotalQuantity,
+            Revenue=x.pt.Revenue
+            }).ToListAsync();
+            
+
+
+            return profitvm;
+        }
+
+        public decimal? TotalPriceVoucher()
+        {
+            var x = _iden2Context.Orders.Where(x => x.VoucherCode != null);
+            var query = from p in _iden2Context.Vouchers
+                        join pt in x on p.VoucherCode equals pt.VoucherCode
+                        select new { p, pt };
+
+            decimal? total = query.Sum(x => x.p.DiscountAmount);
+            return total;
+        }
+
+
 
         //public TotalnameIp ListNameIp()
         //{

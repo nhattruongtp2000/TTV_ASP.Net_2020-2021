@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using ViewModel.ViewModels;
 
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/Home/[Action]")]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IAccountRepository _IaccountRepository;
@@ -28,26 +30,39 @@ namespace Web.Areas.Admin.Controllers
         //[Authorize]        
         public async Task<IActionResult> Index()
         {
-            
+            DateTime date = DateTime.Now;
 
-            var x =await GetOrdersPerDay();
-            var y = await GetALlProcessOrdersPerDay();
-            var z = await GetALlDeliveredOrdersPerDay();
-            var t = _IanalystRepository.IPAccessDay();
-            ViewBag.GetOD = x;
-            ViewBag.GetAP = y;
-            ViewBag.GetAD = z;
-            ViewBag.IP = t;
-            return View();
+
+            ViewBag.GetOrder = _IanalystRepository.OrdersDay(date);
+            ViewBag.GetProcess = await GetALlProcessOrdersPerDay();
+            ViewBag.GetDelivery = await GetALlDeliveredOrdersPerDay();
+            ViewBag.GetIP = _IanalystRepository.IPAccessDay();
+
+
+            var access = _IanalystRepository.AnalystAccessMonth(date.Month.ToString(), DateTime.Now.Year.ToString());
+            var product=await  _IanalystRepository.GetTotalQuantityProductsPerDay(date);
+            var model = new HomeIndexVm()
+            {
+                analystAccessVms = access,
+                quantityProducts = product
+            };
+            return View(model);
         }
 
-        public async Task<int> GetOrdersPerDay()
+        public int GetOrdersPerDay()
         {
             var date = DateTime.Now;
-            var x =await  _IanalystRepository.GetOrdersPerDay(date);
+            var x = _IanalystRepository.OrdersDay(date);
 
-            return x.Count();
+            return x;
         }
+
+    
+
+
+
+
+
         public async Task<IActionResult> GetOrdersPerDayDetails()
         {
             var date = DateTime.Now;

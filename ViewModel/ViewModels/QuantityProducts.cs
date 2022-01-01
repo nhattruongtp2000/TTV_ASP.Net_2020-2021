@@ -11,11 +11,9 @@ namespace ViewModel.ViewModels
 
         public string ProductName { get; set; }
 
-        public string Description { get; set; }
+        public decimal TotalQuantity { get; set; }
 
         public string IFromFile { get; set; }
-
-        public decimal TotalQuantity { get; set; }
 
         public decimal Price { get; set; }
     }

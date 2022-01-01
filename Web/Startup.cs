@@ -2,6 +2,7 @@
 using Data.DB;
 using DI.DI.Interace;
 using DI.DI.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -83,6 +84,13 @@ namespace Web
 
             });
 
+            services.ConfigureApplicationCookie(options => {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+                options.LoginPath = "/Admin/Account/Index";
+
+
+            });
+
          
             services.AddLogging();
             services.AddDistributedMemoryCache();
@@ -127,6 +135,7 @@ namespace Web
                 app.UseHsts();
             }
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("*"));
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -242,10 +251,6 @@ namespace Web
                name: "news",
                pattern: "lenovo",
                new { controller = "Products", action = "GetProductPerBrand", IdBrand = 6 });
-
-
-
-
 
 
 

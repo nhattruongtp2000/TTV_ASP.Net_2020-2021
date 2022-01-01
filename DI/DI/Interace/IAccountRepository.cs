@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.ViewModels;
+using X.PagedList;
 
 namespace DI.DI.Interace
 {
@@ -19,10 +20,27 @@ namespace DI.DI.Interace
         Task<string> GetId();
 
         Task<string> GetEmail();
+        
 
         Task<UserVm> GetUser();
 
-         void Logout();
+
+        ///
+        Task<IPagedList<UserVm>> GetAllUser(int? page);
+
+        Task<UserVm> GetUser(string UserId);
+
+        Task<int> EditUserAdmin(UserVm request);
+
+        Task<int> DeleteUser(string UserId);
+
+        Task<int> CreateUser(UserCreateVm request);
+
+            
+
+        ///
+
+        Task Logout();
 
         Task<int> EditUser(UserVm request);
 

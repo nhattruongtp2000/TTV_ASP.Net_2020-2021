@@ -59,6 +59,14 @@ namespace Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetProductPerSubCategory(int IdCategory, int? page)
+        {
+            var x = await _iproductRepository.GetProductPerSubCategory(IdCategory, page);
+            return View(x);
+        }
+
+
+        [HttpGet]
         public async Task<IActionResult> GetProductPerBrand(int IdBrand,int? page)
         {
             var x = await _iproductRepository.GetProductPerBrand(IdBrand,page);

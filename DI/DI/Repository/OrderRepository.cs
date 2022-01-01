@@ -62,11 +62,7 @@ namespace DI.DI.Repository
             { 
             IdOrder=x.p.IdOrder,
             UserName=x.pt.UserName,
-            EmailShip=x.p.EmailShip,
-            AddressShip=x.p.AddressShip,
-            NameShip=x.p.NameShip,
-            NoticeShip=x.p.NoticeShip,
-            NumberShip=x.p.NumberShip,
+
             Status=x.p.Status,
             OrderDay=x.p.OrderDay,
             TotalPice=x.p.TotalPice,
@@ -75,9 +71,33 @@ namespace DI.DI.Repository
             return c;
         }
 
-        public async Task<List<OrderDetailsVm>> GetDetails(string IdOrder)
+        public async Task<List<OrdersVm>> GetAllToExcel()
+        {
+            var orders = from p in _iden2Context.Orders
+                         join pt in _iden2Context.Users on p.IdUser equals pt.Id
+                         select new { p, pt };
+
+
+
+            //join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
+            //join ptt in _iden2Context.Products on pt.IdProduct equals ptt.IdProduct
+
+            var c = await orders.Select(x => new OrdersVm()
+            {
+                IdOrder = x.p.IdOrder,
+                UserName = x.pt.UserName,
+                TotalPice = x.p.TotalPice,
+                OrderDay = x.p.OrderDay,
+                Status=x.p.Status,
+                VoucherCode=x.p.VoucherCode
+            }).ToListAsync();
+            return c;
+        }
+
+        public async Task<OrderDetailsUser> GetDetails(string IdOrder)
         {
             var query = _iden2Context.OrderDetails.Where(x => x.IdOrder == IdOrder);
+            var order = await _iden2Context.Orders.FindAsync(IdOrder);
 
             var orderdetais = from p in query
                               join pt in _iden2Context.Products on p.IdProduct equals pt.IdProduct
@@ -88,11 +108,21 @@ namespace DI.DI.Repository
             IdOrder=x.p.IdOrder,
             ProductName=x.pt.ProductName,
             PhotoReview=x.pt.PhotoReview,
-            Price=x.pt.Price,
+            Price=x.pt.PriceExport,
             Quality=x.p.Quality,
             Status=x.ptt.Status
             }).ToListAsync();
-            return x;
+            var details = new OrderDetailsUser()
+            {
+                AddressShip = order.AddressShip,
+                EmailShip = order.EmailShip,
+                NameShip = order.NameShip,
+                NoticeShip = order.NoticeShip,
+                NumberShip = order.NumberShip,
+                OrderDetailsVms = x
+            };
+
+            return details;
         }
 
         public async Task<string> GetStatus(string IdOrder)
@@ -120,12 +150,7 @@ namespace DI.DI.Repository
             {
                 IdOrder = x.p.IdOrder,
                 UserName = x.p.IdUser,
-                EmailShip = "",
-                AddressShip = "",
-                NameShip = "",
                 OrderType=x.p.PaymentType,
-                NoticeShip = "",
-                NumberShip = "",
                 Status = x.p.Status,
                 OrderDay = x.p.OrderDay,
                 TotalPice = x.p.TotalPice,

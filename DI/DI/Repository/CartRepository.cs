@@ -63,7 +63,7 @@ namespace DI.DI.Repository
                     IdCategory = gift.IdCategory,
                     IdProduct = gift.IdProduct,
                     PhotoReview = gift.PhotoReview,
-                    Price = gift.Price,
+                    Price = gift.PriceExport,
                     ProductName = gift.ProductName,
                     UseVoucher = gift.UseVoucher,
                     isGift=gift.IsGift,
@@ -76,7 +76,7 @@ namespace DI.DI.Repository
                 IdCategory = product.IdCategory,
                 IdProduct = product.IdProduct,
                 PhotoReview = product.PhotoReview,
-                Price = product.Price,
+                Price = product.PriceExport,
                 ProductName = product.ProductName,
                 UseVoucher = product.UseVoucher,
                 isGift=product.IsGift,
@@ -166,7 +166,7 @@ namespace DI.DI.Repository
                 IdCategory = x.IdCategory,
                 IdProduct = x.IdProduct,
                 PhotoReview = x.PhotoReview,
-                Price = x.Price,
+                Price = x.PriceExport,
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
             }).ToListAsync();
@@ -175,7 +175,7 @@ namespace DI.DI.Repository
 
 
 
-        public async Task<string> Purchase(string IdOrder, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, decimal total, string voucherCode)
+        public async Task<string> Purchase(string IdOrder, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
 
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
@@ -191,6 +191,11 @@ namespace DI.DI.Repository
                 {
                     item.Quantity = item.Quantity - 1;
                 }
+            }
+            decimal pricevou = 0;
+            if (voucherCode != null)
+            {
+                pricevou = vouchers.Where(x => x.VoucherCode == voucherCode).FirstOrDefault().DiscountAmount.Value;
             }
 
 
@@ -213,7 +218,7 @@ namespace DI.DI.Repository
                 IdUser = Id,
                 Status = Data.Enums.Status.Process,
                 OrderDay = DateTime.Now,
-                TotalPice = total,
+                TotalPice = b.Sum(x=>x.Product.Price*x.Quantity)- pricevou,
                 NameShip = NameShip,
                 EmailShip = EmailShip,
                 NumberShip = NumberShip,
@@ -267,7 +272,7 @@ namespace DI.DI.Repository
                 {
                     Name = item.Product.ProductName,
                     Currency = "USD",
-                    Price = Math.Round(item.Product.Price, 2).ToString(),
+                    Price = Math.Round(item.Product.PriceExport, 2).ToString(),
                     Quantity = item.Quantity.ToString(),
                     Sku = "sku",
                     Tax = "0"
@@ -364,7 +369,7 @@ namespace DI.DI.Repository
                     IdOrder = IdOrder,
                     IdProduct = item.Product.IdProduct,
                     StatusDetails = Data.Enums.Status.Process,
-                    Price = item.Product.Price * item.Quantity,
+                    Price = item.Product.PriceExport * item.Quantity,
                     Quality = item.Quantity
                 };
                 _iden2Context.OrderDetails.Add(orderdetails);
@@ -392,7 +397,7 @@ namespace DI.DI.Repository
         private static readonly ILog log =
          LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public string VNpay(string OrderCategory, decimal Amount, string txtOrderDesc, string cboBankCode)
+        public string VNpay(string OrderCategory, decimal Amount, string txtOrderDesc, string cboBankCode, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
             string vnp_Returnurl = _configuration["VNPay:vnp_Returnurl"]; //URL nhan ket qua tra ve 
             string vnp_Url = _configuration["VNPay:vnp_Url"]; //URL thanh toan cua VNPAY 
@@ -403,12 +408,14 @@ namespace DI.DI.Repository
             OrderInfo order = new OrderInfo();
             //Save order to db
             Random generator = new Random();
+            /// không cần thiết
             string IdOrder = generator.Next(0, 1000000).ToString("D6");
             order.OrderId = IdOrder; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
             order.Amount = Amount; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
             order.Status = "0"; //0: Trạng thái thanh toán "chờ thanh toán" hoặc "Pending"
             order.OrderDesc = txtOrderDesc; ;// noi dung thanh toan
             order.CreatedDate = DateTime.Now; //loai ngna hang
+            ///////
             //Build URL for VNPAY
             VNPayLibrary vnpay = new VNPayLibrary();
 
@@ -427,7 +434,7 @@ namespace DI.DI.Repository
             vnpay.AddRequestData("vnp_Locale", "vn");
 
 
-            vnpay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang:" + order.OrderId);
+            vnpay.AddRequestData("vnp_OrderInfo", EmailShip +","+NameShip+","+AddressShip+","+NumberShip+","+NoticeShip+","+voucherCode);
             vnpay.AddRequestData("vnp_OrderType", OrderCategory); //default value: other //loai thanh toan
             vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
             vnpay.AddRequestData("vnp_TxnRef", order.OrderId.ToString()); // Mã tham chiếu của giao dịch tại hệ thống của merchant. Mã này là duy nhất dùng để phân biệt các đơn hàng gửi sang VNPAY. Không được trùng lặp trong ngày
@@ -440,7 +447,7 @@ namespace DI.DI.Repository
             return paymentUrl;
         }
 
-        public async Task<VNPayReturnVm> VNPayReturn( string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
+        public async Task<VNPayReturnVm> VNPayReturn( string voucherCode)
         {
            
             string vnp_HashSecret = _configuration["VNPay:vnp_HashSecret"]; //Chuoi bi mat
@@ -465,16 +472,28 @@ namespace DI.DI.Repository
             String TerminalID = _httpContextAccessor.HttpContext.Request.Query["vnp_TmnCode"].ToString();
             String bankCode = _httpContextAccessor.HttpContext.Request.Query["vnp_BankCode"].ToString();
 
+            string info = _httpContextAccessor.HttpContext.Request.Query["vnp_OrderInfo"].ToString();
+            string[] arrListStr = info.Split(new char[] { ',' });
+            
+
+
             bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, vnp_HashSecret);
             VNPayReturnVm VNreturn = new VNPayReturnVm();
             if (checkSignature)
             {
-                VNreturn.IdOrder=orderId;
-                VNreturn.TerminalID = TerminalID;
-                VNreturn.OrderId = orderId.ToString();
-                VNreturn.VnPayAmount = vnp_Amount.ToString();
-                VNreturn.BankCode = bankCode;
-                VNreturn.VnPayTranId = vnpayTranId.ToString();
+                if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
+                {
+                    VNreturn.IdOrder = orderId;
+                    VNreturn.TerminalID = TerminalID;
+                    VNreturn.OrderId = orderId.ToString();
+                    VNreturn.VnPayAmount = vnp_Amount.ToString();
+                    VNreturn.BankCode = bankCode;
+                    VNreturn.VnPayTranId = vnpayTranId.ToString();
+                }
+                else
+                {
+                    VNreturn=null;
+                }    
             }
             else
             {
@@ -507,7 +526,7 @@ namespace DI.DI.Repository
                     IdOrder = orderId,
                     IdProduct = item.Product.IdProduct,
                     StatusDetails = Data.Enums.Status.Process,
-                    Price = item.Product.Price * item.Quantity,
+                    Price = item.Product.PriceExport * item.Quantity,
                     Quality = item.Quantity
                 };
                 _iden2Context.OrderDetails.Add(orderdetails);
@@ -519,18 +538,19 @@ namespace DI.DI.Repository
                 Status = Data.Enums.Status.Process,
                 OrderDay = DateTime.Now,
                 TotalPice = vnp_Amount,
-                NameShip = NameShip,
-                EmailShip = EmailShip,
-                NumberShip = NumberShip,
-                NoticeShip = NoticeShip,
-                AddressShip = AddressShip,
+                NameShip = arrListStr[2],
+                EmailShip = arrListStr[0],
+                NumberShip = arrListStr[3],
+                NoticeShip = arrListStr[4],
+                AddressShip = arrListStr[1],
                 VoucherCode = voucherCode,
                 PaymentType = "VN PAY"
             };
 
             _iden2Context.Orders.Add(a);
-            ClearCart();
             await _iden2Context.SaveChangesAsync();
+            ClearCart();
+            
 
             return VNreturn;
         }

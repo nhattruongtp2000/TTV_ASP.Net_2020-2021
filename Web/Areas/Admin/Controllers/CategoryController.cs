@@ -39,6 +39,13 @@ namespace Web.Areas.Admin.Controllers
             return View(x);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ChangeIsShow(int IdCategory)
+        {
+            var x = await _categoryRepository.ChangeIsShow(IdCategory);
+            return RedirectToAction("Index");
+
+        }
         public async Task<IActionResult> Edit(int IdCategory)
         {
             var c = await _categoryRepository.GetOneCategory(IdCategory);

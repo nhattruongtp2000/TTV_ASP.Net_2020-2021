@@ -60,14 +60,14 @@ namespace Web.Controllers
 
        
         [HttpPost]
-        public async Task<string> Purchase(string EmailShip,string NameShip,string AddressShip,string NumberShip,string NoticeShip, decimal Total,string voucherCode)
+        public async Task<string> Purchase(string EmailShip,string NameShip,string AddressShip,string NumberShip,string NoticeShip,string voucherCode)
         {
             Random generator = new Random();
             string IdOrder = generator.Next(0, 1000000).ToString("D6");
-
-            string a= await _cartRepository.Purchase(IdOrder,EmailShip,  NameShip,  AddressShip,  NumberShip,  NoticeShip, Total, voucherCode);
-            string email =await _accountRepository.GetEmail(); 
-            _contactRepository.SendOrderReceived(IdOrder,EmailShip,NameShip,AddressShip,Total, "Payment on delivery");
+            var x = _cartRepository.GetCartItems();
+            var total = x.Sum(x => x.Product.Price * x.Quantity);
+            string a= await _cartRepository.Purchase(IdOrder,EmailShip,  NameShip,  AddressShip,  NumberShip,  NoticeShip, voucherCode);
+            _contactRepository.SendOrderReceived(IdOrder,EmailShip,NameShip,AddressShip,total, "Payment on delivery");
             return IdOrder;
         }
 
@@ -113,15 +113,15 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult VNPay(string OrderCategory, decimal Amount, string txtOrderDesc, string cboBankCode)
+        public IActionResult VNPay(string OrderCategory, decimal Amount, string txtOrderDesc, string cboBankCode, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
-            var x = _cartRepository.VNpay(OrderCategory, Amount, txtOrderDesc, cboBankCode);    
+            var x = _cartRepository.VNpay(OrderCategory, Amount, txtOrderDesc, cboBankCode,  EmailShip,  NameShip,  AddressShip,  NumberShip,  NoticeShip,  voucherCode);    
             return Redirect(x);
         }
 
 
         [HttpGet]
-        public IActionResult VNPay(decimal Amount)
+        public IActionResult VNPay(decimal Amount, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
             return View();
         }
@@ -129,18 +129,25 @@ namespace Web.Controllers
         public async Task<IActionResult> VNPayReturn(string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
       
-            var x = await _cartRepository.VNPayReturn( EmailShip, NameShip, AddressShip, NumberShip, NoticeShip, voucherCode);
+            var x = await _cartRepository.VNPayReturn(voucherCode);
             if (x == null)
             {
-                return BadRequest("Cannot return");
+                return BadRequest("Cannot return, It's have something problem");
             }
             return View(x);
         }
 
         [HttpPost]
-        public  IActionResult PassAmount(decimal Amount)
+        public  IActionResult PassAmount(decimal Amount, string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
         {
             ViewBag.Amount = Amount;
+            ViewBag.EmailShip = EmailShip;
+            ViewBag.NameShip = NameShip;
+            ViewBag.AddressShip = AddressShip;
+            ViewBag.NumberShip = NumberShip;
+            ViewBag.NoticeShip = NoticeShip;
+            ViewBag.voucherCode = voucherCode;
+
             return View("VNPay");
         }
         
