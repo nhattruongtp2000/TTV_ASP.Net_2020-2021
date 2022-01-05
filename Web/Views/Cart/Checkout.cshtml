@@ -44,7 +44,7 @@
                         <div class="product-content-right">
                             <div class="woocommerce">
                                 <div style="">
-                                    <h2 class="text-primary">Please fill in your information</h2>
+                                    <h2 class="text-primary">Vui lòng nhập chính xác thông tin của bạn</h2>
 
                                     <form id="formpurchase" class="form-group">
                                         <div class="form-group">
@@ -177,6 +177,7 @@
                                                 <tr class="order-total">
                                                     <th>Order Total</th>
                                                     <td id="totalmoney2">@total.ToString("#,##0") VNĐ </td>
+                                                    <td style="display:none" id="totalmoney3">@total</td>
                                                 </tr>
                                        
                                             </tbody>
@@ -194,9 +195,6 @@
                                             <tbody>
                                                 <tr>
                                                     <td><button id="purchase" class="btn btn-info">Payment on delivery</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="text-align:center"><button data-total="" class="btn btn-primary"><icon class="fa fa-paypal"></icon>PayPal</button></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center"><a id="PassAmount" data-total="" class="btn btn-secondary "><span style="color:red;font-weight:bold">VN</span><span style="color:blue;font-weight:bold">PAY</span></a></td>
@@ -263,7 +261,7 @@
 
         $(document).ready(function () {
             $("#PassAmount").click(function () {
-                var Amount = (document.getElementById("totalmoney2").textContent);
+                var Amount = (document.getElementById("totalmoney3").textContent);
                 var EmailShip = $("#emailship").val();
                 var NameShip = $("#nameship").val();
                 var AddressShip = $("#addressship").val();
@@ -312,11 +310,11 @@
                 event.preventDefault();
                 var Total = parseInt($(this).attr("data-total"));
                 var idvoucher = $("#vouchercode").val();
-                if (idvoucher == "TET2021" && Total > 10000000) {
-                    Total = Total - 1000000;
+                if (idvoucher == "TET2022" && Total > 100000) {
+                    Total = Total - 50000;
                     $("#alerts").css("display", "");
                 }
-                else if (idvoucher == "HE2021" && Total > 10000000) {
+                else if (idvoucher == "HE2021" && Total > 100000) {
                     Total = Total - (Total * 5 / 100);
                 }
                 else {

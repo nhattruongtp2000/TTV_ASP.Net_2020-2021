@@ -33,12 +33,6 @@
                 @Html.DisplayNameFor(model => model.ToDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApplyForAll)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiscountPercent)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.DiscountAmount)
             </th>
             <th>
@@ -66,15 +60,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ToDate)
                 </td>
+                @if (item.DiscountAmount != null)
+                {
                 <td>
-                    @Html.DisplayFor(modelItem => item.ApplyForAll)
+                    @item.DiscountAmount.Value.ToString("#,##0") VNĐ
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DiscountPercent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DiscountAmount)
-                </td>
+                }
+                else
+                {
+                    <td>
+
+                    </td>
+                }    
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>

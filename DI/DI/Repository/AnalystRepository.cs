@@ -302,7 +302,7 @@ namespace DI.DI.Repository
                 IdCategory = x.pt.IdCategory,
                 IsFree = x.pt.IsFree,
                 PriceExport=x.pt.PriceExport,
-                Price = x.pt.Price,
+                Price = x.pt.PriceExport,
                 Alias = x.pt.Alias,
             }).ToListAsync();
             return productvm;

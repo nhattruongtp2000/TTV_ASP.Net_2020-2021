@@ -3,7 +3,30 @@
 @{
     ViewData["Title"] = "Create";
 }
-
+<head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '#myTextarea'
+        });
+    </script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '#myTextarea',
+            height: 300,
+            theme: 'modern',
+            plugins: [
+                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools'
+            ],
+            toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            toolbar2: 'print preview media | forecolor backcolor emoticons',
+            image_advtab: true
+        });
+    </script>
+</head>
 <h1>Create</h1>
 
 <h4>ProductCreateVm</h4>
@@ -16,6 +39,11 @@
                 <label asp-for="ProductName" class="control-label"></label>
                 <input asp-for="ProductName" class="form-control" />
                 <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Alias" class="control-label"></label>
+                <input asp-for="Alias" class="form-control" />
+                <span asp-validation-for="Alias" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdCategory" class="control-label"></label>
@@ -32,14 +60,14 @@
                 <span asp-validation-for="IdBrand" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" ></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" placeholder="Write Description"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Content"></label>
+                <textarea id="myTextarea" asp-for="Content" class="form-control"></textarea>
+                <span asp-validation-for="Content"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
@@ -56,12 +84,6 @@
                 <input type="number" asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Alias" class="control-label"></label>
-                <input asp-for="Alias" class="form-control" />
-                <span asp-validation-for="Alias" class="text-danger"></span>
-            </div>
-
 
 
             <div class="form-group form-check">

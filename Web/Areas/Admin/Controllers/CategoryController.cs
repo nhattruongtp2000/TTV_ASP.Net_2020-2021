@@ -1,4 +1,5 @@
 ﻿using DI.DI.Interace;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/Category/[Action]")]
+    [Authorize(Roles = "admin")]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;

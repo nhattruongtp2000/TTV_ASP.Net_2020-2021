@@ -71,7 +71,7 @@ namespace DI.DI.Repository
             var vouchers = _iden2Context.Vouchers;
             var vouchervm = await vouchers.Select(x => new VoucherVm() 
             {
-                IdVoucher=x.Id,
+            IdVoucher=x.Id,
             VoucherCode=x.VoucherCode,
             VoucherName=x.VoucherName,
             Status=x.Status,

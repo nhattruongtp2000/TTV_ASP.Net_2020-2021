@@ -38,8 +38,9 @@ namespace ViewModel.ViewModels
         public string Title { get; set; }
         [DisplayName("Số lượng")]
         public int Quantity { get; set; }
+        [DisplayName("Hiển thị")]
         public bool IsShow { get; set; }
-
+        [DisplayName("Nổi bật")]
         public bool IsStandout { get; set; }
 
         [DisplayName("Mô tả")]

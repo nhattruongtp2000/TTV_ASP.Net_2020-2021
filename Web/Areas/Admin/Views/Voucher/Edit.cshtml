@@ -13,6 +13,9 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <input hidden asp-for="IdVoucher" class="form-control" />
+            </div>
+            <div class="form-group">
                 <label asp-for="VoucherName" class="control-label"></label>
                 <input asp-for="VoucherName" class="form-control" />
                 <span asp-validation-for="VoucherName" class="text-danger"></span>

@@ -1,4 +1,5 @@
 ﻿using DI.DI.Interace;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/Brand/[Action]")]
+    [Authorize(Roles = "admin")]
     public class BrandController : Controller
     {
         private readonly IBrandRepository _brandRepository;

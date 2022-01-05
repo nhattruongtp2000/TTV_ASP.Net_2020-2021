@@ -158,6 +158,9 @@ namespace Web.Controllers
                     return RedirectToAction("Indexx", "Home");
 
                 }
+                else if(x == 2){
+                    ViewBag.Error = "Your Email is not confirm";
+                }
                 else
                 {
                     ViewBag.Error = "Your account or password is incorrect!";
@@ -275,6 +278,19 @@ namespace Web.Controllers
             return Challenge(properties, provider);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalLoginFacebook(string returnUrl = null)
+        {
+
+            string provider = "Facebook";
+            // Request a redirect to the external login provider.
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Accounts", new { returnUrl });
+            var properties = _IaccountRepository.ConfigureExternal(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
@@ -305,18 +321,7 @@ namespace Web.Controllers
             return View("Login");
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public IActionResult ExternalLoginFacebook(string returnUrl = null)
-        {
-
-            string provider = "Facebook";
-            // Request a redirect to the external login provider.
-            var redirectUrl = Url.Action("ExternalLoginCallback", "Accounts", new { returnUrl });
-            var properties = _IaccountRepository.ConfigureExternal(provider, redirectUrl);
-            return Challenge(properties, provider);
-        }
+      
 
         public IActionResult GoogleLogInSuccess()
         {

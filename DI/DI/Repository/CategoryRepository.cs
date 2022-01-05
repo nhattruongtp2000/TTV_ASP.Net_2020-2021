@@ -74,11 +74,17 @@ namespace DI.DI.Repository
             var pageNumber = page ?? 1;
             int pageSize = 9;
 
-            var a =await _iden2Context.Categories.Select(x => new CategoryVm() { 
-            IdCategory=x.IdCategory,
-            NameCategory=x.NameCategory,
-            ParentId=x.ParentId,
-            IsShow=x.IsShow
+            var x = from p in _iden2Context.Categories
+                    join pt in _iden2Context.Categories on p.ParentId equals pt.IdCategory into ptt
+                    from subet in ptt.DefaultIfEmpty()
+                    select new { p, ptt,subet };
+
+            var a =await x.Select(x => new CategoryVm() { 
+            IdCategory=x.p.IdCategory,
+            NameCategory=x.p.NameCategory,
+            ParentId=x.p.ParentId,
+            IsShow=x.p.IsShow,
+            NameParent=x.subet.NameCategory
             
             
             }).ToPagedListAsync(pageNumber,pageSize);

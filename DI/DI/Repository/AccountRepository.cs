@@ -55,7 +55,7 @@ namespace DI.DI.Repository
             return 1;
         }
 
-        public AuthenticationProperties ConfigureExternal(string x, string y)
+        public  AuthenticationProperties ConfigureExternal(string x, string y)
         {
             return _signInManager.ConfigureExternalAuthenticationProperties(x, y);
         }
@@ -196,11 +196,18 @@ namespace DI.DI.Repository
             {
                 return 0;
             }
+            var testemail =await _userManager.FindByNameAsync(request.UserName);
+
+            if (testemail.EmailConfirmed == false)
+            {
+                return 2;
+            }
             var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Pass, request.RememberMe, false);
             if (result.Succeeded)
             {
                 return 1;
             }
+            
             return 0;
         }
 

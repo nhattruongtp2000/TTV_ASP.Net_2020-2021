@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using DI.DI.Interace;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -12,6 +13,7 @@ namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/Orders/[Action]")]
+    [Authorize(Roles = "admin")]
     public class OrdersController : Controller
     {
         private readonly IOrderRepository _IorderRepository;

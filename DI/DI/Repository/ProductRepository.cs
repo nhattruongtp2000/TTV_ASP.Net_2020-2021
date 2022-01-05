@@ -80,6 +80,7 @@ namespace DI.DI.Repository
             product.Quantity = request.Quantity;
             product.IdCategory = request.IdCategory;
             product.Description = request.Description;
+            product.Content = request.Content;
 
             await _iden2Context.SaveChangesAsync();
             return product.IdBrand;
@@ -117,9 +118,9 @@ namespace DI.DI.Repository
             int pageSize = 9;
 
 
-            var cate2 = from p in _iden2Context.Products
+            var cate2 = (from p in _iden2Context.Products
                         join pt in _iden2Context.Categories on p.IdCategory equals pt.IdCategory
-                        select new { p, pt };
+                        select new { p, pt }).Where(x=>x.p.IsShow==true);
 
 
             var product = cate2.Where(x => x.p.IdCategory == IdCategory || x.pt.ParentId == IdCategory);
@@ -327,7 +328,7 @@ namespace DI.DI.Repository
 
         public async Task<IPagedList<ProductVm>> Filters(int pricemin, int pricemax, int? page)
         {
-            var a = _iden2Context.Products.Where(x => x.Price >= pricemin && x.Price <= pricemax);
+            var a = _iden2Context.Products.Where(x => x.Price >= pricemin && x.Price <= pricemax && x.IsShow==true);
 
             var pageNumber = page ?? 1;
             int pageSize = 9;
@@ -370,7 +371,7 @@ namespace DI.DI.Repository
 
         public async Task<IPagedList<ProductVm>> GetProductPerBrand(int IdBrand, int? page)
         {
-            var x = _iden2Context.Products.Where(x => x.IdBrand == IdBrand);
+            var x = _iden2Context.Products.Where(x => x.IdBrand == IdBrand).Where(x => x.IsShow == true);
 
             var pageNumber = page ?? 1;
             int pageSize = 9;

@@ -50,6 +50,11 @@ namespace Web.Controllers
 
         }
 
+        public void ClearCart()
+        {
+            _cartRepository.ClearCart();
+        }
+
 
    
         public IActionResult Cart()
@@ -67,7 +72,7 @@ namespace Web.Controllers
             var x = _cartRepository.GetCartItems();
             var total = x.Sum(x => x.Product.Price * x.Quantity);
             string a= await _cartRepository.Purchase(IdOrder,EmailShip,  NameShip,  AddressShip,  NumberShip,  NoticeShip, voucherCode);
-            _contactRepository.SendOrderReceived(IdOrder,EmailShip,NameShip,AddressShip,total, "Payment on delivery");
+            _contactRepository.SendOrderReceived(IdOrder,EmailShip,NameShip,AddressShip,total, "Payment on Process");
             return IdOrder;
         }
 

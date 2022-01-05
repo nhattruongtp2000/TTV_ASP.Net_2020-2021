@@ -193,11 +193,15 @@ namespace DI.DI.Repository
                 }
             }
             decimal pricevou = 0;
+            var voucher2=new Voucher();
             if (voucherCode != null)
             {
-                pricevou = vouchers.Where(x => x.VoucherCode == voucherCode).FirstOrDefault().DiscountAmount.Value;
+                voucher2 = vouchers.Where(x => x.VoucherCode == voucherCode).FirstOrDefault();
             }
-
+            if (voucher2.Id !=0)
+            {
+                pricevou = voucher2.DiscountAmount.Value;
+            }
 
             var b = GetCartItems();
             foreach (var item in b)
@@ -233,6 +237,8 @@ namespace DI.DI.Repository
             await _iden2Context.SaveChangesAsync();
             return IdOrder;
         }
+
+
 
         //public async Task<List<OrderDetailsVm>> Checkout(string IdUser)
         //{
@@ -309,8 +315,8 @@ namespace DI.DI.Repository
                 },
                 RedirectUrls = new RedirectUrls()
                 {
-                    CancelUrl = "https://localhost:5002/Cart/CheckoutFail",
-                    ReturnUrl = "https://localhost:5002/Cart/CheckoutSuccess"
+                    CancelUrl = "http://ustoram.somee.com/Cart/CheckoutFail",
+                    ReturnUrl = "http://ustoram.somee.com/Cart/CheckoutSuccess"
                 },
                 Payer = new Payer()
                 {

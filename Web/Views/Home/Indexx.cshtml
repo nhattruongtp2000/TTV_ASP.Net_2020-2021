@@ -239,7 +239,7 @@
                     <div class="single-wid-product">
                         <a href="@Url.ActionLink("ProductDetails","Products",new {Alias=Model.NewProduct[i].Alias.ToString() })"><img style="height:130px;width:110px" src="~/@topstandout.PhotoReview" alt="" class="product-thumb" /></a>
                         <h2><a href="single-product.html">@topstandout.ProductName</a></h2>
-                        <a class="btn btn-info btn-lg testtest" data-toggle="modal" data-target="#myModal" data-namemodal="@Model.NewProduct[i].ProductName" data-pricemodal="@Model.NewProduct[i].Price" data-imagemodal="@Model.NewProduct[i].PhotoReview">Open Modal</a>
+                        <a class="btn btn-info btn-lg testtest" data-IdProduct="@topstandout.IdProduct" data-toggle="modal" data-target="#myModal" data-namemodal="@Model.NewProduct[i].ProductName" data-pricemodal="@Model.NewProduct[i].PriceExport" data-imagemodal="@Model.NewProduct[i].PhotoReview">Mua hàng nhanh</a>
                         <div>
                             <!---->     <a class="btn btn-primary test" data-IdProduct="@topstandout.IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
                         </div>
@@ -317,9 +317,6 @@
                                 <p style="font-weight:bold;font-size:15px">HÌNH THỨC THANH TOÁN</p>
                                 <div>
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio" checked><a data-total="" class="btn btn-primary"><icon class="fa fa-paypal"></icon>PayPal</a></label>
-                                    </div>
-                                    <div class="radio">
                                         <label><input type="radio" name="optradio"><a id="purchase" class="btn btn-info">Payment on delivery</a></label>
                                     </div>
                                     <div class="radio">
@@ -368,7 +365,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
                 </div>
             </div>
 
@@ -410,6 +407,21 @@
                 $("#imagemodal").attr("src", image);
                 $("#namemodal").html(name);
                 $("#pricemodal").html(price);
+                var IdProduct = $(this).attr("data-IdProduct");
+                $.ajax({
+                    type: "POST",
+                    url: '/Cart/AddToCart',
+                    data: {
+                        IdProduct: IdProduct,  //tham số chuyển tới controller
+                    }
+                });
+            });
+            $(".close").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/Cart/ClearCart',
+                });
+
             });
         });
 

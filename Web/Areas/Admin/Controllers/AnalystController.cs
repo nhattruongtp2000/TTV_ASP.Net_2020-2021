@@ -1,4 +1,5 @@
 ﻿using DI.DI.Interace;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -12,6 +13,7 @@ namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/Analyst/[Action]")]
+    [Authorize(Roles = "admin")]
     public class AnalystController : Controller
     {
         private readonly IAnalystRepository _IanalystRepository;

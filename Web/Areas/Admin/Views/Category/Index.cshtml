@@ -42,7 +42,7 @@
                 Hiển thị
             </th>
             <th>
-                Mã loại cha
+                Loại cha
             </th>
             <th></th>
         </tr>
@@ -69,12 +69,11 @@
                 }
             </td>
             <td>
-                @item.ParentId
+                @item.NameParent
             </td>
 
             <td>
-                <a id="editplace" href="/Admin/Category/Edit/?IdCategory=@item.IdCategory">Edit</a>|
-                <a id="deleteplace" href="/Admin/Category/Delete/?IdCategory=@item.IdCategory">Delete</a>|
+                <a id="editplace" href="/Admin/Category/Edit/?IdCategory=@item.IdCategory">Edit</a>
 
             </td>
         </tr>

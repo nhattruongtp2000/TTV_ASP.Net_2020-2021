@@ -13,7 +13,7 @@ namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/Home/[Action]")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class HomeController : Controller
     {
         private readonly IAccountRepository _IaccountRepository;

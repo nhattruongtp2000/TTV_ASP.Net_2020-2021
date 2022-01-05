@@ -1,5 +1,6 @@
 ﻿using Data.Enums;
 using DI.DI.Interace;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -13,6 +14,7 @@ namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/Voucher/[Action]")]
+    [Authorize(Roles = "admin")]
     public class VoucherController : Controller
     {
         private readonly IVoucherRepository _ivoucherRepository;

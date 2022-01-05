@@ -15,5 +15,7 @@ namespace ViewModel.ViewModels
         public int? ParentId { get; set; }
         [DisplayName("Hiển thị")]
         public bool IsShow { get; set; }
+        [DisplayName("Loại cha")]
+        public string NameParent { get; set; }
     }
 }
